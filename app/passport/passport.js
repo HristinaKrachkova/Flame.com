@@ -38,10 +38,9 @@ module.exports = function(app, passport) {
 
     // Facebook Strategy    
     passport.use(new FacebookStrategy({
-            clientID: '310132302703073', // Replace with your Facebook Developer App client ID
-            clientSecret: '2e94e77add384b6e2b2029947c3861b4', // Replace with your Facebook Developer client secret
-            // callbackURL: "http://localhost:8080/auth/facebook/callback", // Replace with your Facebook Developer App callback URL
-            callbackURL: "http://www.herokutestapp3z24.com/auth/facebook/callback", // Replace with your Facebook Developer App callback URL
+            clientID: '1910659462594618', // Replace with your Facebook Developer App client ID
+            clientSecret: 'b749364b55473bc7b7883be42633bf8a', // Replace with your Facebook Developer client secret
+            callbackURL: "https://young-crag-36367.herokuapp.com/auth/facebook/callback", // Replace with your Facebook Developer App callback URL
             profileFields: ['id', 'displayName', 'photos', 'email']
         },
         function(accessToken, refreshToken, profile, done) {
@@ -61,7 +60,7 @@ module.exports = function(app, passport) {
     passport.use(new TwitterStrategy({
             consumerKey: 'nAsRdF40TX5fQ7QivmuJGWWSj', // Replace with your Twitter Developer App consumer key
             consumerSecret: 'WH4MaKulaiPzrBttgS5KlQzanXmZIKZ4hmAlflfwX8jk3WNTwA', // Replace with your Twitter Developer App consumer secret
-            callbackURL: "http://www.herokutestapp3z24.com/auth/twitter/callback", // Replace with your Twitter Developer App callback URL
+            callbackURL: "https://young-crag-36367.herokuapp.com/auth/twitter/callback", // Replace with your Twitter Developer App callback URL
             userProfileURL: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true"
         },
         function(token, tokenSecret, profile, done) {
@@ -91,7 +90,7 @@ module.exports = function(app, passport) {
     passport.use(new GoogleStrategy({
             clientID: '852222686887-ld3cnfu1g76lpi0bgrmpbr37css6c3o0.apps.googleusercontent.com', // Replace with your Google Developer App client ID
             clientSecret: 'j-k8frTBw-6u-De6vPqk3uSI', // Replace with your Google Developer App client ID
-            callbackURL: "http://www.herokutestapp3z24.com/auth/google/callback" // Replace with your Google Developer App callback URL
+            callbackURL: "https://young-crag-36367.herokuapp.com/auth/google/callback" // Replace with your Google Developer App callback URL
         },
         function(accessToken, refreshToken, profile, done) {
             User.findOne({ email: profile.emails[0].value }).select('username active password email').exec(function(err, user) {
