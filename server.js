@@ -32,6 +32,10 @@ app.get('*', function(req, res) {
     res.sendFile(path.join(__dirname + '/public/UI/index.html')); // Set index.html as layout
 });
 
+app.post('*', function(req, res) {
+    console.log("Vliza!");
+});
+
 // Start Server
 app.listen(port, function() {
     console.log('Running the server on port ' + port); // Listen on configured port

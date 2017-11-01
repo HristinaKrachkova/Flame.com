@@ -6,8 +6,8 @@
     <div id="overlay"></div>
 </div>
 
-<form id="logInForm" action="">
+<form id="logInForm" method="POST" ng-controller="login">
     <label for="logInEmail">Имейл:</label> <br> <input type="ermail" id="logInEmail">
     <label for="logInPass">Парола:</label> <br> <input type="password" id="logInPass">
-    <button id="logInButton">Влез</button>
+    <button id="logInButton" ng-click="login()">Влез</button>
 </form>

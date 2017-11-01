@@ -20,8 +20,8 @@
 }
 
 main h1{
-    margin-left:340px;
-    width:65%;
+    /* margin-left:340px; */
+    /* width:65%; */
     margin-bottom:0px;
     background:linear-gradient(135deg, rgba(221,70,135,0.82) 0%, rgba(255,139,66,0.60) 100%);
     border-top-left-radius: 10px;

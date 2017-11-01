@@ -1,5 +1,5 @@
 
-<div id="userPage">
+<div id="userPage" ng-controller="profile">
     <div id="hoverContainer">
         <div id="userOptions">
             <h2>Профил</h2>
@@ -7,11 +7,11 @@
                 <img class="profielThumbnailPhoto" src="http://1.bp.blogspot.com/-DKzHkOGWzRI/VPdpSpkaApI/AAAAAAAAAP8/thGcMVC6qGI/s1600/Jason%2BDavis%2Bheadshot.jpg"
                     alt="photo">
             </div>
-            <h3> Иван Петканов </h3>
+            <h3> {{signedUser.firstName + " " + signedUser.lastName}} </h3>
             <ul>
                 <li> <a class="active" href="#info">Информация</a></li>
                 <li> <a href="#userPhotos">Снимки</a></li>
-                <li> <a href="#pref"></a>Предпочитания</li>
+                <li> <a href="#pref">Предпочитания</a></li>
                 <li>Още</li>
             </ul>
         </div>
@@ -114,7 +114,7 @@
     </div>
 </div>
 
-<!-- <script>
+<script>
 $(document).ready(function () {
     $(document).on("scroll", onScroll);
     
@@ -132,9 +132,8 @@ $(document).ready(function () {
             menu = target;
         $target = $(target);
         $('html, body').stop().animate({
-            'scrollTop': $target.offset().top+2
+            'scrollTop': $target.offset().top - 10
         }, 500, 'swing', function () {
-            window.location.hash = target;
             $(document).on("scroll", onScroll);
         });
     });
@@ -154,7 +153,7 @@ function onScroll(event){
         }
     });
 }
-</script> -->
+</script>
 <br>
 <br>
 <br>

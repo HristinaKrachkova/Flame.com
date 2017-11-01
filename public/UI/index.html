@@ -25,9 +25,9 @@
                 <nav>
                     <ul>
                         <li>Начало</li>
-                        <li class="disabled">Профил</li>
-                        <li class="disabled">Открий</li>
-                        <li class="disabled">Съобщения</li>
+                        <li class="disabled" id="profileLink">Профил</li>
+                        <li class="disabled" id="findLink">Открий</li>
+                        <li class="disabled" id="messagesLink">Съобщения</li>
                         <li>За нас</li>
                         <li>Контакти</li>
                         <li>Кариера</li>
@@ -45,26 +45,8 @@
         </footer>
     </div>
     <!-- <script src="Assets/javascript/validateRegistration.js"></script> -->
+    <script src="Assets/javascript/userService.js"></script>
     <script src="Assets/javascript/app.js"></script>
-    <!-- <script src="Assets/javascript/userService.js"></script> -->
-    
-    <script>
-        app.config(function($routeProvider) {
-            $routeProvider
-            .when("/", {
-                templateUrl : "mainPage.html"
-            })
-            .when("/login",{
-                templateUrl : "emailLogIn.html"
-            })
-            .when("/user",{
-                templateUrl : "userProfile.html"
-            })
-            .when("/messages",{
-                templateUrl : "userMessages.html"
-            })
-        });
-        </script>
 </body>
 
 </html>
