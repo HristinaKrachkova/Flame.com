@@ -9,15 +9,15 @@
             </div>
             <h3> Иван Петканов </h3>
             <ul>
-                <li>Информация</li>
-                <li>Снимки</li>
-                <li>Предпочитания</li>
+                <li> <a class="active" href="#info">Информация</a></li>
+                <li> <a href="#userPhotos">Снимки</a></li>
+                <li> <a href="#pref"></a>Предпочитания</li>
                 <li>Още</li>
             </ul>
         </div>
     </div>
     <div id="editUserContainer">
-        <div class="userCard">
+        <div class="userCard" id="info">
             <h1>Информация</h1>
             <p>Фейсбук профил:
                 <a href="https://www.facebook.com/">https://www.facebook.com/</a>
@@ -47,7 +47,7 @@
             </p>
             <button>Запази Промените</button>
         </div>
-        <div class="userCard">
+        <div class="userCard" id="userPhotos">
             <h1>Снимки</h1>
             <div id="photos">
                 <div class="photo">
@@ -97,7 +97,7 @@
                 <button>Добави</button>
             </div>
         </div>
-        <div class="userCard">
+        <div class="userCard" id="pref">
             <h1>Предпочитания</h1>
             <div class="check">
                 <input type="checkBox" id="showMe" class="checkbox">
@@ -113,6 +113,48 @@
         </div>
     </div>
 </div>
+
+<!-- <script>
+$(document).ready(function () {
+    $(document).on("scroll", onScroll);
+    
+    //smoothscroll
+    $('a[href^="#"]').on('click', function (e) {
+        e.preventDefault();
+        $(document).off("scroll");
+        
+        $('a').each(function () {
+            $(this).removeClass('active');
+        })
+        $(this).addClass('active');
+      
+        var target = this.hash,
+            menu = target;
+        $target = $(target);
+        $('html, body').stop().animate({
+            'scrollTop': $target.offset().top+2
+        }, 500, 'swing', function () {
+            window.location.hash = target;
+            $(document).on("scroll", onScroll);
+        });
+    });
+});
+
+function onScroll(event){
+    var scrollPos = $(document).scrollTop();
+    $('#userOptions a').each(function () {
+        var currLink = $(this);
+        var refElement = $(currLink.attr("href"));
+        if (refElement.position().top <= scrollPos && refElement.position().top + refElement.height() > scrollPos) {
+            $('#userOptions ul li a').removeClass("active");
+            currLink.addClass("active");
+        }
+        else{
+            currLink.removeClass("active");
+        }
+    });
+}
+</script> -->
 <br>
 <br>
 <br>
