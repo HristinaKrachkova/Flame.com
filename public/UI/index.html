@@ -1,0 +1,67 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Flame</title>
+    <link rel="stylesheet" href="Assets/Styles/mainPage.css">
+    <script
+    src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="Assets/Styles/register.css">
+    <!-- <script src="Assets/javascript/facebookLogin.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-route.min.js"></script>
+</head>
+<body ng-app="myApp">
+    <div id="pageWrapper">
+        <header>
+            <div id="menu">
+                <img width="38px" src="Assets/Images/Icons and logos/menu.png" alt="">
+                <nav>
+                    <ul>
+                        <li>Начало</li>
+                        <li class="disabled">Профил</li>
+                        <li class="disabled">Открий</li>
+                        <li class="disabled">Съобщения</li>
+                        <li>За нас</li>
+                        <li>Контакти</li>
+                        <li>Кариера</li>
+                        <li>Поддръжка</li>
+                    </ul>
+                    <p id="copyRight">&copy flame.com</p>
+                </nav>
+            </div>
+        </header>
+        <main ng-view>
+
+        </main>
+        <footer>
+
+        </footer>
+    </div>
+    <!-- <script src="Assets/javascript/validateRegistration.js"></script> -->
+    <script src="Assets/javascript/app.js"></script>
+    <!-- <script src="Assets/javascript/userService.js"></script> -->
+    
+    <script>
+        app.config(function($routeProvider) {
+            $routeProvider
+            .when("/", {
+                templateUrl : "mainPage.html"
+            })
+            // .when("/red", {
+            //     templateUrl : "red.htm"
+            // })
+            // .when("/green", {
+            //     templateUrl : "green.htm"
+            // })
+            // .when("/blue", {
+            //     templateUrl : "blue.htm"
+            // });
+        });
+        </script>
+</body>
+
+</html>

@@ -13,7 +13,7 @@ var social = require('./app/passport/passport')(app, passport); // Import passpo
 app.use(morgan('dev')); // Morgan Middleware
 app.use(bodyParser.json()); // Body-parser middleware
 app.use(bodyParser.urlencoded({ extended: true })); // For parsing application/x-www-form-urlencoded
-app.use(express.static(__dirname + '/public')); // Allow front end to access public folder
+app.use(express.static(__dirname + '/public/UI')); // Allow front end to access public folder
 app.use('/api', appRoutes); // Assign name to end points (e.g., '/api/management/', '/api/users' ,etc. )
 
 // 
@@ -29,7 +29,7 @@ mongoose.connect('mongodb://HristinaKrachkova:Hristina1@ds237475.mlab.com:37475/
 
 // Set Application Static Layout
 app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname + '/public/app/views/index.html')); // Set index.html as layout
+    res.sendFile(path.join(__dirname + '/public/UI/index.html')); // Set index.html as layout
 });
 
 // Start Server
