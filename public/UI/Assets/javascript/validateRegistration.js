@@ -4,6 +4,11 @@ var password = $("#password");
 var password2 = $("#confirmPassword");
 var button = $("#submitRegisterForm")
 button.prop("disabled", true);
+var inputValidation = $("#name").val().length >0 && 
+$("#lastName").val().length >0 && 
+password2.val==password.val &&
+password.val.length>0 &&
+$("#email").val.length>0;
 
 $("form input").keyup(function () {
     if ($(this).val().slice(-1) == " ") {
@@ -16,8 +21,13 @@ password.keyup(function () {
         password.next().fadeIn("400");
         button.prop("disabled", true);
     } else {
+        var inputValidation = $("#name").val().length >0 && 
+        $("#lastName").val().length >0 && 
+        password2.val==password.val &&
+        password.val.length>0 &&
+        $("#email").val.length>0;
         password.next().hide("slow");
-        if($("#username").val().length >0) button.prop("disabled", false);
+        if(inputValidation) button.prop("disabled", false);
     }
 }).focusout(function () {
     if (password.val() != password2.val()) {
@@ -31,20 +41,24 @@ password2.keyup(function(){
         $("#confirmPassword").next().fadeIn("400");
         button.prop("disabled", true);
     }else{
+        var inputValidation = $("#name").val().length >0 && 
+        $("#lastName").val().length >0 && 
+        password2.val==password.val &&
+        password.val.length>0 &&
+        $("#email").val.length>0;
         $("#confirmPassword").next().hide("slow");
-        if($("#username").val().length >0) button.prop("disabled", false);
+        if(inputValidation) button.prop("disabled", false);
     }
 })
 
-$("#username").keyup(function(){
-    $("#username").next().fadeIn("400");
-}).focusout(function(){
-    if($("#username").val().length >0){
-        $("#username").next().hide("slow");
-        if(password.val() == password2.val() && password.val().length>8){
-            button.prop("disabled", false);
-        }
-    }else{
-        button.prop("disabled", true);
-    }
+$("#email").focusout(function(){
+    var inputValidation = $("#name").val().length >0 && 
+    $("#lastName").val().length >0 && 
+    password2.val==password.val &&
+    password.val.length>0 &&
+    $("#email").val.length>0;
+    if(inputValidation) button.prop("disabled", false);
+    console.log
 })
+
+

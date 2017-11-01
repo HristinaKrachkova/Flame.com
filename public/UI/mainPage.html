@@ -11,6 +11,7 @@
     </script>
     <link rel="stylesheet" href="Assets/Styles/register.css">
     <!-- <script src="Assets/javascript/facebookLogin.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
 </head>
 <body>
     <div id="pageWrapper">
@@ -32,7 +33,7 @@
                 </nav>
             </div>
         </header>
-        <main>
+        <main ng-app="myApp">
             <div id="logo">
                 <img src="" alt="">
                 <p>flame</p>
@@ -48,15 +49,15 @@
                 <button>Вход c Имейл</button>
             </div>
             <p>Ако си готов да запалиш своя пламък и да разгориш страстите, регистрирай се.</p>
-            <form action="" method="POST">
+            <form action="" method="POST" ng-controller = "registrationForm">
                 <label for="name">Име</label> <br> <input type="text" id="name">
                 <label for="lastName">Фамилия</label> <br> <input type="text" id="lastName">
                 <label for="password">Парола</label> <br> <input type="password" id="password">
                 <div class="hint">* Паролата трябва да е повече от 8 символа!</div>
                 <label for="confirmPassword">Подтвърди паролата</label> <br> <input type="password" id="confirmPassword"> 
                 <div class="hint">* Паролите трябва да съвпадата!</div>
-                <label for="username">Имейл</label> <br> <input type="email" id="username">
-                <button id="submitRegisterForm">Регистрирай се</button>
+                <label for="email">Имейл</label> <br> <input type="email" id="email"> <br>
+                <button id="submitRegisterForm" ng-click="registerAUser()"> Регистрирай се</button>
             </form> <br>
             <a href="">Log In</a>
             <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
@@ -66,6 +67,8 @@
         </footer>
     </div>
     <script src="Assets/javascript/validateRegistration.js"></script>
+    <script src="Assets/javascript/app.js"></script>
+    <script src="Assets/javascript/userService.js"></script>
 </body>
 
 </html>
