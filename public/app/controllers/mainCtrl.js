@@ -168,18 +168,6 @@ angular.module('mainController', ['authServices', 'userServices'])
         $window.location = $window.location.protocol + '//' + $window.location.host + '/auth/facebook';
     };
 
-    // Function to redirect users to twitter authentication page        
-    this.twitter = function() {
-        app.disabled = true;
-        $window.location = $window.location.protocol + '//' + $window.location.host + '/auth/twitter';
-    };
-
-    // Function to redirect users to google authentication page
-    this.google = function() {
-        app.disabled = true;
-        $window.location = $window.location.protocol + '//' + $window.location.host + '/auth/google';
-    };
-
     // Function that performs login
     this.doLogin = function(loginData) {
         app.loading = true; // Start bootstrap loading icon
