@@ -131,8 +131,13 @@ $(document).ready(function () {
         var target = this.hash,
             menu = target;
         $target = $(target);
+        if($( window ).width()<900){
+            var topDistance = 250;
+        }else{
+            var topDistance = 50;
+        }
         $('html, body').stop().animate({
-            'scrollTop': $target.offset().top - 10
+            'scrollTop': $target.offset().top - topDistance
         }, 500, 'swing', function () {
             $(document).on("scroll", onScroll);
         });
