@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="Assets/Styles/mainPage.css">
     <link rel="stylesheet" href="Assets/Styles/register.css">
     <link rel="stylesheet" href="Assets/Styles/userPage.css">
+    <link rel="stylesheet" href="Assets/Styles/userMessages.css">
     <script
     src="https://code.jquery.com/jquery-3.2.1.min.js"
     integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
@@ -58,6 +59,9 @@
             })
             .when("/user",{
                 templateUrl : "userProfile.html"
+            })
+            .when("/messages",{
+                templateUrl : "userMessages.html"
             })
         });
         </script>
