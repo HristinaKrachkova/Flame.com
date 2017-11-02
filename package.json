@@ -21,6 +21,7 @@
     "express-session": "^1.14.2",
     "favicon": "0.0.2",
     "jsonwebtoken": "^7.1.9",
+    "mongodb": "^2.2.33",
     "mongoose": "^4.6.0",
     "mongoose-title-case": "0.0.4",
     "mongoose-validator": "^1.2.5",
@@ -33,6 +34,7 @@
     "passport-google-oauth": "^1.0.0",
     "passport-twitter": "^1.0.4",
     "path": "^0.12.7",
-    "serve-favicon": "^2.4.5"
+    "serve-favicon": "^2.4.5",
+    "socket.io": "^2.0.4"
   }
 }
