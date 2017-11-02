@@ -17,42 +17,41 @@ app.config(function($routeProvider) {
     })
 })
 .controller('registrationForm', function($scope, $location) {
-    $scope.registerAUser = function() {
+    $scope.registerAUser = function () {
+        event.preventDefault();
         var password = $("#password").val();
         var name = $("#name").val();
         var lastName = $("#lastName").val();
         var email = $("#email").val();
-        var finder = userDB.users.find(a=>a.email == email);
 
-        if(!finder){
-            userDB.addUser(name, lastName, password, email);
-            console.log(userDB);
-            alert("You are registered now!");
-            $location.path('/login');
-        }else{
-            alert("We already have this user!");
-        }
+        userDB.register(name, lastName, password, email, function (data) {
+            if (data.success) {
+                alert("You are registered now!");
+            } else {
+                console.log(data.error);
+                alert("There was a problem with your registration");
+            }
+        });
     }
 })
 .controller('login', function($scope, $location){
     $scope.login = function(){
         event.preventDefault();
-        var logInPass = $("#logInPass");
-        var logInEmail = $("#logInEmail");
-        var finderLog = userDB.users.find(a=>a.email === logInEmail.val());
-        if(finderLog){
-            if(finderLog.password===logInPass.val()){
-                userDB.signedUser = finderLog;
+        var logInPass = $("#logInPass").val();
+        var logInEmail = $("#logInEmail").val();
+        
+        userDB.login(logInEmail, logInPass, function (data) {
+            if (data.success == true) {
                 $("#profileLink").removeClass("disabled");
                 $("#findLink").removeClass("disabled");
                 $("#messagesLink").removeClass("disabled");
                 $location.path('/user');
-            }else{
-               alert("Wrong password!");
+                $scope.$apply();
+            } else {
+                console.log(data);
+                alert("Nope!");
             }
-        }else{
-            alert("Wrong email");
-        }
+        });
     }
 })
 .controller("profile", function($scope){

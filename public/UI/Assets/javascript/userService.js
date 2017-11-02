@@ -1,11 +1,5 @@
 var userDB = (function(){
     function _userDB(){
-        if(localStorage.getItem('users')!==null){
-            this.users=JSON.parse(localStorage.getItem('users'));
-        }else{
-            this.users=[];
-            localStorage.setItem('users',JSON.stringify(this.users));
-        }
         this.signedUser = null;
     }
     
@@ -77,9 +71,39 @@ var userDB = (function(){
             this.weight = weight;
     }   
 
-    _userDB.prototype.addUser = function(firstName, lastName, password, email){
-        this.users.push(new _user(password, email, firstName, lastName));
-        localStorage.setItem('users',JSON.stringify(this.users));
+    _userDB.prototype.register = function(firstName, lastName, password, email, callback){
+        $.ajax({
+            url: './api/register',
+            method: 'POST',
+            data: { firstName: firstName, lastName: lastName, email: email, password: password },
+        }).done(function (data) {
+            callback(data);
+        });
     }
+
+    _userDB.prototype.login = function (email, password, callback) {
+        var self = this;
+        $.ajax({
+            url: './api/login',
+            method: 'POST',
+            data: { email: email, password: password },
+        }).done(function (data) {
+            if (data.success == true) {
+                self.signedUser = data.user;
+            }
+            callback(data);
+        });
+    }
+
+    _userDB.prototype.getUser = function (email, callback) {
+        $.ajax({
+            url: './api/getUser',
+            method: 'POST',
+            data: { email: email },
+        }).done(function (data) {
+            callback(data);
+        });
+    }
+
     return new _userDB();
 }())
