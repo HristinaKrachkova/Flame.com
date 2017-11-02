@@ -10,7 +10,7 @@ app.config(function($routeProvider) {
         templateUrl : "emailLogIn.html"
     })
     .when("/user",{
-        templateUrl : "userProfile.html"
+        templateUrl : "userProfile.html",
     })
     .when("/messages",{
         templateUrl : "userMessages.html"
@@ -57,4 +57,9 @@ app.config(function($routeProvider) {
 })
 .controller("profile", function($scope){
     $scope.signedUser = userDB.signedUser;
+    $scope.saveChanges = function(){
+        userDB.signedUser.setUserAge($("#input1").val());
+        userData();
+        
+    }
 });

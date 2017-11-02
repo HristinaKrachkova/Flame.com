@@ -66,7 +66,6 @@
     margin: 0 auto;
     height: 100%;
     width: auto;
-    margin-left:-30%;
 }
 
 #editUserContainer button{
@@ -120,7 +119,9 @@
     margin-top:0px;
 }
 
-
+#editUserContainer{
+    font-size:0.9em;
+}
 
 #photos{
     display:flex;
@@ -163,6 +164,8 @@
     color:white;
     text-align: center;
     font-size:1.2em;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif ;
+    
 }
 .delete:hover{
     cursor: pointer;
@@ -228,6 +231,37 @@
     font-weight:700 !important;
 }
 
+#changeProfile{
+    background-color:orange;
+    height:30px;
+    width:30px;
+    border-radius:50%;
+    display:inline-block;
+    color:white;
+    font-weight:bolder;
+    font-size:1.1em;
+    padding-top:3px;
+    box-sizing: border-box;
+    border:2px solid white;
+    cursor: pointer;
+    z-index:5;
+    position:relative;
+    top:-20px;
+    left:10px;
+    overflow: hidden;
+}
+
+#profileImageInput{
+    opacity:0;
+    z-index:100;
+    position:absolute;
+    top:0;
+    left:0;
+    cursor: pointer;
+    width:30px;
+}
+
+
 @media (max-width: 900px) { 
     /*#userOptions{
         display:none;
@@ -260,7 +294,6 @@
         margin: 0 auto;
         height: 100%;
         width: auto;
-        margin-left:-30%;
     }
 
     .image-cropper{

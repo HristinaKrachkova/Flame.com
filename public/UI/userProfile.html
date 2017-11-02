@@ -3,10 +3,19 @@
     <div id="hoverContainer">
         <div id="userOptions">
             <h2>Профил</h2>
-            <div class="image-cropper">
-                <img class="profielThumbnailPhoto" src="http://1.bp.blogspot.com/-DKzHkOGWzRI/VPdpSpkaApI/AAAAAAAAAP8/thGcMVC6qGI/s1600/Jason%2BDavis%2Bheadshot.jpg"
+            <div class="image-cropper" ng-if="!signedUser.profileImage">
+                <img class="profielThumbnailPhoto" src="http://freelanceme.net/Images/default%20profile%20picture.png"
                     alt="photo">
             </div>
+            <div class="image-cropper" ng-if="signedUser.profileImage">
+                <img class="profielThumbnailPhoto" src="{{signedUser.profileImage}}"
+                    alt="photo">
+            </div>
+            <span id="changeProfile">
+                +
+                <input type="file"  name="profile_pic" id="profileImageInput"  accept=".jpg, .jpeg, .png">
+            </span>
+
             <h3> {{signedUser.firstName + " " + signedUser.lastName}} </h3>
             <ul>
                 <li> <a class="active" href="#info">Информация</a></li>
@@ -23,10 +32,10 @@
                 <a href="https://www.facebook.com/">https://www.facebook.com/</a>
             </p>
             <p id="nameP">Име:
-                <span>Иван Петканов</span>
+                <span>{{signedUser.firstName + " " + signedUser.lastName}}</span>
             </p>
             <label for="userEmailEdit">Имейл:
-                <span>iwan_petkanoww94@abv.bg</span>
+                <span>{{signedUser.email}}</span>
             </label>
             <input type="text" id="userEmailEdit" placeholder="Промени имейла ...">
             <label for="userEmailEdit">Парола:
@@ -34,18 +43,15 @@
             </label>
             <input type="text" id="userEmailEdit" placeholder="Промени паролата ...">
             <p>Възраст:
-                <span>23 години</span>
-            </p>
-            <p>Тегло:
-                <span>86кг</span>
+                <span id=ageInput>{{signedUser.age}}</span>
             </p>
             <p>Височина:
-                <span>182см</span>
+                <span id="heightInput">182см</span>
             </p>
             <p>Пол:
-                <span>Мъж</span>
+                <span id="genderInput">Мъж</span>
             </p>
-            <button>Запази Промените</button>
+            <button ng-click="saveChanges()">Запази Промените</button>
         </div>
         <div class="userCard" id="userPhotos">
             <h1>Снимки</h1>
@@ -167,3 +173,5 @@ function onScroll(event){
 <br>
 <br>
 <br>
+<script src="Assets/javascript/modifyUserData.js"></script>
+<script src="Assets/javascript/changeProfileImage.js"></script>

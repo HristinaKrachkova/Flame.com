@@ -58,7 +58,6 @@ $("#email").focusout(function(){
     password.val.length>0 &&
     $("#email").val.length>0;
     if(inputValidation) button.prop("disabled", false);
-    console.log
 })
 
 

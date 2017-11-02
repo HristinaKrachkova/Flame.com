@@ -15,11 +15,12 @@ var userDB = (function(){
         this.password = password;
         this.email=email;
 
+        this.profileImage = "";
         this.photos = [];
         this.likedPersons = [];
         this.messages  = [];
 
-        this.age;
+        this.age = "";
         this.gender;
         this.height;
         this.weight;
@@ -57,6 +58,7 @@ var userDB = (function(){
     _user.prototype.setUserAge = function(age){
         if(age>=18 && age <100 && this.age == undefined){
             this.age = age;
+            localStorage.setItem('users',JSON.stringify(this.users));
         }
     }
 
