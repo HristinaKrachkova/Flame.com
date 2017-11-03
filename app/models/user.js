@@ -4,7 +4,7 @@ var bcrypt = require('bcrypt-nodejs'); // Import Bcrypt Package
 var titlize = require('mongoose-title-case'); // Import Mongoose Title Case Plugin
 var validate = require('mongoose-validator'); // Import Mongoose Validator Plugin
 
- // User Name Validator
+// User Name Validator
 var nameValidator = [
     validate({
         validator: 'matches',
@@ -63,12 +63,23 @@ var passwordValidator = [
 var UserSchema = new Schema({
     firstName: { type: String, required: true, validate: nameValidator },
     lastName: { type: String, required: true, validate: nameValidator },
-    password: { type: String, required: true},
+    password: { type: String, required: true },
     email: { type: String, required: true, lowercase: true, unique: true, validate: emailValidator },
+    age: { type: Number, required: false },
+    gender: { type: String, required: false },
+    height: { type: Number, required: false },
+    location: { type: String, required: false },
     active: { type: Boolean, required: true, default: false },
     likes: { type: Array, required: false, default: [] },
     dislikes: { type: Array, required: false, default: [] },
     matches: { type: Array, required: false, default: [] },
+    facebookUrl: { type: String, required: false, default: "http://www.facebook.com" },
+    profileImage: { type: String, required: false },
+    photos: { type: Array, required: false, default: [] },
+    messages: { type: Array, required: false, default: [] },
+    preferences: { type: Object, required: false }
+
+
 });
 
 // Middleware to ensure password is encrypted before saving user to database
@@ -91,12 +102,12 @@ UserSchema.plugin(titlize, {
 });
 
 // Method to compare passwords in API (when user logs in) 
-UserSchema.methods.comparePassword = function (password) {
+UserSchema.methods.comparePassword = function(password) {
     return bcrypt.compareSync(password, this.password); // Returns true if password matches, false if doesn't
 };
 
 // Method to compare passwords in API (when user logs in) 
-UserSchema.methods.setPassword = function (password) {
+UserSchema.methods.setPassword = function(password) {
     this.password = bcrypt.hashSync(password);
 };
 
