@@ -78,6 +78,7 @@
 #editUserContainer  input{
     margin-bottom:10px;
     width:90%;
+    font-size:1.1em;
 }
 
 #editUserContainer  label, #editUserContainer p{
@@ -261,6 +262,9 @@
     width:30px;
 }
 
+.changeInput{
+    width:80px !important;
+}
 
 @media (max-width: 900px) { 
     /*#userOptions{

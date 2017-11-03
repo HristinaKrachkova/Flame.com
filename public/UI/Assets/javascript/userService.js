@@ -10,12 +10,12 @@ var userDB = (function() {
         this.email = email;
 
         this.profileImage = '';
-        this.photos = [];
+        this.photos = ["https://ichef-1.bbci.co.uk/news/660/cpsprodpb/180CD/production/_97090589_gettyimages-814600274.jpg"];
         this.likedPersons = [];
         this.messages = [];
 
         this.age = '';
-        this.gender;
+        this.gender = '';
         this.height;
         this.weight;
         this.facebookURL;

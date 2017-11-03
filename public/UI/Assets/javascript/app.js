@@ -26,9 +26,9 @@ app.config(function($routeProvider) {
             var name = $('#name').val();
             var lastName = $('#lastName').val();
             var email = $('#email').val();
-
             userDB.register(name, lastName, password, email, function (data) {
                 if (data.success) {
+                    $location.path('/login')
                     alert('You are registered now!');
                 } else {
                     console.log(data.error);
@@ -60,7 +60,13 @@ app.config(function($routeProvider) {
     .controller('profile', function($scope) {
         $scope.signedUser = userDB.signedUser;
         $scope.saveChanges = function() {
-            userDB.signedUser.setUserAge($('#input1').val());
+            if($('#inputAge').val())
+                userDB.signedUser.age = $('#inputAge').val();
+            if($('#inputHeight').val())
+                userDB.signedUser.height = $('#inputHeight').val();
+            if($('#inputGender').val())
+                userDB.signedUser.gender = $('#inputGender').val();
+            $scope.signedUser = userDB.signedUser;
             userData();
         };
     })
