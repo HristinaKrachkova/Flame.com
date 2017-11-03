@@ -256,7 +256,7 @@ main{
     
 }
 footer{
-    display:block;
+    display:none;
     background-color:#eee;
     height:510px;
     width:100%;

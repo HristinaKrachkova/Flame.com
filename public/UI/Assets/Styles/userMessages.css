@@ -63,3 +63,41 @@ cursor: pointer;
 .image-cropper:hover>.moreOptions{
     display:block;
 }
+
+.messagesContainer{
+    position:fixed;
+    right:5%;;
+    bottom:0;
+    width:300px;
+    background:linear-gradient(135deg, rgba(221,70,135,0.56) 0%, rgba(255,139,66,0.35) 100%);
+    height:400px;
+    display:inline-block;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+
+}
+
+#textarea{
+    width:90%;
+    background-color:white;
+    position:absolute;
+    bottom:20px;
+    border-radius:10px;
+    border:none;
+    margin-left:-134px;
+    height:50px;
+}
+
+#chat{
+    height:250px;
+    width:90%;
+    background-color:white;
+    border-radius:10px;
+    margin:auto;
+}
+
+#clear{
+    height:20px;
+    font-size:10px;
+    width:initial;
+}
