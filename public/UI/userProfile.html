@@ -1,26 +1,30 @@
-
 <div id="userPage" ng-controller="profile">
     <div id="hoverContainer">
         <div id="userOptions">
             <h2>Профил</h2>
             <div class="image-cropper" ng-if="!signedUser.profileImage">
-                <img class="profielThumbnailPhoto" src="http://freelanceme.net/Images/default%20profile%20picture.png"
-                    alt="photo">
+                <img class="profielThumbnailPhoto" src="http://freelanceme.net/Images/default%20profile%20picture.png" alt="photo">
             </div>
             <div class="image-cropper" ng-if="signedUser.profileImage">
-                <img class="profielThumbnailPhoto" src="{{signedUser.profileImage}}"
-                    alt="photo">
+                <img class="profielThumbnailPhoto" src="{{signedUser.profileImage}}" alt="photo">
             </div>
             <span id="changeProfile">
                 +
-                <input type="file"  name="profile_pic" id="profileImageInput"  accept=".jpg, .jpeg, .png">
+                <input type="file"  id="profileImageInput" accept=".jpg, .jpeg, .png">
             </span>
+
 
             <h3> {{signedUser.firstName + " " + signedUser.lastName}} </h3>
             <ul>
-                <li> <a class="active" href="#info">Информация</a></li>
-                <li> <a href="#userPhotos">Снимки</a></li>
-                <li> <a href="#pref">Предпочитания</a></li>
+                <li>
+                    <a class="active" href="#info">Информация</a>
+                </li>
+                <li>
+                    <a href="#userPhotos">Снимки</a>
+                </li>
+                <li>
+                    <a href="#pref">Предпочитания</a>
+                </li>
                 <li>Още</li>
             </ul>
         </div>
@@ -46,23 +50,23 @@
                 <span id="ageInput">{{signedUser.age}}</span>
             </p>
             <p>Височина:
-                <span id="heightInput">182см</span>
+                <span id="heightInput">{{signedUser.height}}</span>
             </p>
             <p>Пол:
-                <span id="genderInput">Мъж</span>
+                <span id="genderInput">{{signedUser.gender}}</span>
             </p>
             <button ng-click="saveChanges()">Запази Промените</button>
         </div>
         <div class="userCard" id="userPhotos">
             <h1>Снимки</h1>
             <div id="photos">
-                <div class="photo">
+                <div class="photo" ng-repeat="photo in signedUser.photos">
                     <div class="square-image-cropper">
-                        <img src="http://1.bp.blogspot.com/-DKzHkOGWzRI/VPdpSpkaApI/AAAAAAAAAP8/thGcMVC6qGI/s1600/Jason%2BDavis%2Bheadshot.jpg" alt="photo">
+                        <img src="{{photo}}" alt="photo">
                     </div>
                     <div class="delete">&#10006;</div>
                 </div>
-                <div class="photo">
+                <!-- <div class="photo">
                     <div class="square-image-cropper">
                         <img src="https://ichef-1.bbci.co.uk/news/660/cpsprodpb/180CD/production/_97090589_gettyimages-814600274.jpg" alt="photo">
                     </div>
@@ -99,7 +103,7 @@
                         <img src="https://ichef.bbci.co.uk/news/660/cpsprodpb/39FF/production/_88374841_88374840.jpg" alt="photo">
                     </div>
                     <div class="delete">&#10006;</div>
-                </div>
+                </div> -->
                 <button>Добави</button>
             </div>
         </div>
@@ -121,49 +125,49 @@
 </div>
 
 <script>
-$(document).ready(function () {
-    $(document).on("scroll", onScroll);
-    
-    //smoothscroll
-    $('a[href^="#"]').on('click', function (e) {
-        e.preventDefault();
-        $(document).off("scroll");
-        
-        $('a').each(function () {
-            $(this).removeClass('active');
-        })
-        $(this).addClass('active');
-      
-        var target = this.hash,
-            menu = target;
-        $target = $(target);
-        if($( window ).width()<900){
-            var topDistance = 250;
-        }else{
-            var topDistance = 50;
-        }
-        $('html, body').stop().animate({
-            'scrollTop': $target.offset().top - topDistance
-        }, 500, 'swing', function () {
-            $(document).on("scroll", onScroll);
-        });
-    });
-});
+                   $(document).ready(function () {
+                       $(document).on("scroll", onScroll);
 
-function onScroll(event){
-    var scrollPos = $(document).scrollTop();
-    $('#userOptions a').each(function () {
-        var currLink = $(this);
-        var refElement = $(currLink.attr("href"));
-        if (refElement.position().top <= scrollPos && refElement.position().top + refElement.height() > scrollPos) {
-            $('#userOptions ul li a').removeClass("active");
-            currLink.addClass("active");
-        }
-        else{
-            currLink.removeClass("active");
-        }
-    });
-}
+                       //smoothscroll
+                       $('a[href^="#"]').on('click', function (e) {
+                           e.preventDefault();
+                           $(document).off("scroll");
+
+                           $('a').each(function () {
+                               $(this).removeClass('active');
+                           })
+                           $(this).addClass('active');
+
+                           var target = this.hash,
+                               menu = target;
+                           $target = $(target);
+                           if ($(window).width() < 900) {
+                               var topDistance = 250;
+                           } else {
+                               var topDistance = 50;
+                           }
+                           $('html, body').stop().animate({
+                               'scrollTop': $target.offset().top - topDistance
+                           }, 500, 'swing', function () {
+                               $(document).on("scroll", onScroll);
+                           });
+                       });
+                   });
+
+                   function onScroll(event) {
+                       var scrollPos = $(document).scrollTop();
+                       $('#userOptions a').each(function () {
+                           var currLink = $(this);
+                           var refElement = $(currLink.attr("href"));
+                           if (refElement.position().top <= scrollPos && refElement.position().top + refElement.height() > scrollPos) {
+                               $('#userOptions ul li a').removeClass("active");
+                               currLink.addClass("active");
+                           }
+                           else {
+                               currLink.removeClass("active");
+                           }
+                       });
+                   }
 </script>
 <br>
 <br>

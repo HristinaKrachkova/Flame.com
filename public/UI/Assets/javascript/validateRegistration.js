@@ -7,7 +7,7 @@ button.prop("disabled", true);
 var inputValidation = $("#name").val().length >0 && 
 $("#lastName").val().length >0 && 
 password2.val==password.val &&
-password.val.length>0 &&
+password.val.length>=8 &&
 $("#email").val.length>0;
 
 $("form input").keyup(function () {

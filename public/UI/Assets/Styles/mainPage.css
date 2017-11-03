@@ -8,6 +8,10 @@
     }
 } */
 
+button, input{
+    outline: none;
+}
+
 a{
     text-decoration:none;
     color: inherit
@@ -189,7 +193,7 @@ nav{
     z-index:2;
 }
 
-ul>li{
+ul li{
     list-style: none;
     color:#999;
     font-family:'PT Sans Narrow', sans-serif;
