@@ -1,4 +1,5 @@
 var express = require('express'); // ExperssJS Framework
+var session = require('express-session');
 var app = express(); // Invoke express to variable for use in application
 var port = process.env.PORT || 8080; // Set default port or assign a port in enviornment
 var morgan = require('morgan'); // Import Morgan Package
@@ -8,7 +9,31 @@ var router = express.Router(); // Invoke the Express Router
 var appRoutes = require('./app/api.js')(router); // Import the application end points/API
 var path = require('path'); // Import path module
 var passport = require('passport'); // Express-compatible authentication middleware for Node.js.
+var User = require('./app/models/user.js');
 // var social = require('./app/passport/passport')(app, passport); // Import passport.js End Points/API
+
+// Use express session
+app.use(session({
+    secret: 'trolly-lolly',
+    resave: false,
+    saveUninitialized: true
+}));
+
+// Load the logged in user into the request variable (if logged in)
+app.use(function (req, res, next) {
+    if (req.session.userId) {
+        User.findOne({ _id: req.session.userId }).exec(function (err, user) {
+            if (user) {
+                req.currentUser = user;
+            } else {
+                delete req.session.userId;
+            }
+            next();
+        });
+    } else {
+        next();
+    }
+});
 
 app.use(morgan('dev')); // Morgan Middleware
 app.use(bodyParser.json()); // Body-parser middleware

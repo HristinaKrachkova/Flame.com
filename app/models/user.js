@@ -63,24 +63,27 @@ var passwordValidator = [
 var UserSchema = new Schema({
     firstName: { type: String, required: true, validate: nameValidator },
     lastName: { type: String, required: true, validate: nameValidator },
-    password: { type: String, required: true, validate: passwordValidator, select: true },
+    password: { type: String, required: true},
     email: { type: String, required: true, lowercase: true, unique: true, validate: emailValidator },
     active: { type: Boolean, required: true, default: false },
+    likes: { type: Array, required: false, default: [] },
+    dislikes: { type: Array, required: false, default: [] },
+    matches: { type: Array, required: false, default: [] },
 });
 
 // Middleware to ensure password is encrypted before saving user to database
-UserSchema.pre('save', function(next) {
-    var user = this;
+//UserSchema.pre('save', function(next) {
+//    var user = this;
 
-    if (!user.isModified('password')) return next(); // If password was not changed or is new, ignore middleware
+//    if (!user.isModified('password')) return next(); // If password was not changed or is new, ignore middleware
 
-    // Function to encrypt password 
-    bcrypt.hash(user.password, null, null, function(err, hash) {
-        if (err) return next(err); // Exit if error is found
-        user.password = hash; // Assign the hash to the user's password so it is saved in database encrypted
-        next(); // Exit Bcrypt function
-    });
-});
+//    // Function to encrypt password 
+//    bcrypt.hash(user.password, null, null, function(err, hash) {
+//        if (err) return next(err); // Exit if error is found
+//        user.password = hash; // Assign the hash to the user's password so it is saved in database encrypted
+//        next(); // Exit Bcrypt function
+//    });
+//});
 
 // Mongoose Plugin to change fields to title case after saved to database (ensures consistency)
 UserSchema.plugin(titlize, {
@@ -90,6 +93,11 @@ UserSchema.plugin(titlize, {
 // Method to compare passwords in API (when user logs in) 
 UserSchema.methods.comparePassword = function (password) {
     return bcrypt.compareSync(password, this.password); // Returns true if password matches, false if doesn't
+};
+
+// Method to compare passwords in API (when user logs in) 
+UserSchema.methods.setPassword = function (password) {
+    this.password = bcrypt.hashSync(password);
 };
 
 module.exports = mongoose.model('User', UserSchema); // Export User Model for us in API

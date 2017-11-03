@@ -1,7 +1,7 @@
 <div id='logo' ng-controller="newpeople">
     <p>My matches</p><br><br>
     <img width='400px' src='https://static2.funidelia.com/39603-f4_large/mens-sexy-boy-t-shirt.jpg'></img><br>
-    <p id='name'>Димитър Иванов</p>
+    <p id='name'>{{newPerson.firstName + ' ' + newPerson.lastName + ', ' + newPerson.age}}</p>
     <button id='dislike' ng-click="dislikeUser()">Dislike</button>    
     <button id='like' ng-click="likeUser()">Like</button>
 </div>
@@ -20,4 +20,4 @@
         width: 100px;
         color: black;
     } */
-    </style>
+</style>

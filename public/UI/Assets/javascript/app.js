@@ -64,11 +64,34 @@ app.config(function($routeProvider) {
             userData();
         };
     })
-    .controller('newpeople', function($scope) {
+    .controller('newpeople', function ($scope) {
+        // Stores the latest random user;
+        var newPerson = null;
+
+        // Loads and displays a random person;
+        function getRandomUser() {
+            userDB.getRandomUser(function (data) {
+                if (data.success == true) {
+                    newPerson = data.user;
+                    $scope.newPerson = data.user;
+                    $scope.$apply();
+                }
+            });
+        }
+        getRandomUser();
+        // Function for Like and check if you are a match and show the next random user;
         $scope.likeUser = function () {
-            alert('I like this');
+            userDB.likeUser(newPerson._id, function (data) {
+                if (data.success == true && data.isMatch == true) {
+                    alert('Match!');
+                }
+                getRandomUser();
+            });
         };
+        // Function for Dislike and show the next random user;
         $scope.dislikeUser = function () {
-            alert('I don`t like this');
+            userDB.dislikeUser(newPerson._id, function (data) {
+                getRandomUser();
+            });
         };
     });
