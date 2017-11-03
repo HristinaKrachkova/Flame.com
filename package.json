@@ -22,7 +22,7 @@
     "favicon": "0.0.2",
     "jsonwebtoken": "^7.1.9",
     "mongodb": "^2.2.33",
-    "mongoose": "^4.6.0",
+    "mongoose": "^4.7.1",
     "mongoose-title-case": "0.0.4",
     "mongoose-validator": "^1.2.5",
     "morgan": "^1.7.0",

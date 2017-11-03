@@ -1,65 +1,97 @@
 
-var app = angular.module('myApp', ["ngRoute"]);
+var app = angular.module('myApp', ['ngRoute']);
 
 app.config(function($routeProvider) {
     $routeProvider
-    .when("/", {
-        templateUrl : "mainPage.html"
-    })
-    .when("/login",{
-        templateUrl : "emailLogIn.html"
-    })
-    .when("/user",{
-        templateUrl : "userProfile.html",
-    })
-    .when("/messages",{
-        templateUrl : "userMessages.html"
-    })
+        .when('/', {
+            templateUrl: 'mainPage.html'
+        })
+        .when('/login', {
+            templateUrl: 'emailLogIn.html'
+        })
+        .when('/user', {
+            templateUrl: 'userProfile.html'
+        })
+        .when('/messages', {
+            templateUrl: 'userMessages.html'
+        })
+        .when('/newpeople', {
+            templateUrl: 'newPeople.html'
+        });
 })
-.controller('registrationForm', function($scope, $location) {
-    $scope.registerAUser = function() {
-        var password = $("#password").val();
-        var name = $("#name").val();
-        var lastName = $("#lastName").val();
-        var email = $("#email").val();
-        var finder = userDB.users.find(a=>a.email == email);
+    .controller('registrationForm', function($scope, $location) {
+        $scope.registerAUser = function () {
+            event.preventDefault();
+            var password = $('#password').val();
+            var name = $('#name').val();
+            var lastName = $('#lastName').val();
+            var email = $('#email').val();
 
-        if(!finder){
-            userDB.addUser(name, lastName, password, email);
-            console.log(userDB);
-            alert("You are registered now!");
-            $location.path('/login');
-        }else{
-            alert("We already have this user!");
+            userDB.register(name, lastName, password, email, function (data) {
+                if (data.success) {
+                    alert('You are registered now!');
+                } else {
+                    console.log(data.error);
+                    alert('There was a problem with your registration');
+                }
+            });
+        };
+    })
+    .controller('login', function($scope, $location) {
+        $scope.login = function() {
+            event.preventDefault();
+            var logInPass = $('#logInPass').val();
+            var logInEmail = $('#logInEmail').val();
+
+            userDB.login(logInEmail, logInPass, function (data) {
+                if (data.success == true) {
+                    $('#profileLink').removeClass('disabled');
+                    $('#findLink').removeClass('disabled');
+                    $('#messagesLink').removeClass('disabled');
+                    $location.path('/user');
+                    $scope.$apply();
+                } else {
+                    console.log(data);
+                    alert('Nope!');
+                }
+            });
+        };
+    })
+    .controller('profile', function($scope) {
+        $scope.signedUser = userDB.signedUser;
+        $scope.saveChanges = function() {
+            userDB.signedUser.setUserAge($('#input1').val());
+            userData();
+        };
+    })
+    .controller('newpeople', function ($scope) {
+        // Stores the latest random user;
+        var newPerson = null;
+
+        // Loads and displays a random person;
+        function getRandomUser() {
+            userDB.getRandomUser(function (data) {
+                if (data.success == true) {
+                    newPerson = data.user;
+                    $scope.newPerson = data.user;
+                    $scope.$apply();
+                }
+            });
         }
-    }
-})
-.controller('login', function($scope, $location){
-    $scope.login = function(){
-        event.preventDefault();
-        var logInPass = $("#logInPass");
-        var logInEmail = $("#logInEmail");
-        var finderLog = userDB.users.find(a=>a.email === logInEmail.val());
-        if(finderLog){
-            if(finderLog.password===logInPass.val()){
-                userDB.signedUser = finderLog;
-                $("#profileLink").removeClass("disabled");
-                $("#findLink").removeClass("disabled");
-                $("#messagesLink").removeClass("disabled");
-                $location.path('/user');
-            }else{
-               alert("Wrong password!");
-            }
-        }else{
-            alert("Wrong email");
-        }
-    }
-})
-.controller("profile", function($scope){
-    $scope.signedUser = userDB.signedUser;
-    $scope.saveChanges = function(){
-        userDB.signedUser.setUserAge($("#input1").val());
-        userData();
-        
-    }
-});
+        getRandomUser();
+        // Function for Like and check if you are a match and show the next random user;
+        $scope.likeUser = function () {
+            userDB.likeUser(newPerson._id, function (data) {
+                if (data.success == true && data.isMatch == true) {
+                    alert('Match!');
+                }
+                getRandomUser();
+            });
+        };
+        // Function for Dislike and show the next random user;
+        $scope.dislikeUser = function () {
+            userDB.dislikeUser(newPerson._id, function (data) {
+                getRandomUser();
+            });
+        };
+    });
