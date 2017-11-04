@@ -19,6 +19,11 @@
 <body ng-app="myApp">
     <div id="pageWrapper">
         <header>
+
+            <div id="notification">
+                <p> Някакъв текст вътре </p>
+            </div>
+
             <div id="menu">
                 <img width="38px" src="Assets/Images/Icons and logos/menu.png" alt="">
                 <nav>
@@ -26,7 +31,9 @@
                         <li>Начало</li>
                         <li class="disabled" id="profileLink">Профил</li>
                         <li class="disabled" id="findLink">Открий</li>
-                        <a href="#messages"><li class="disabled" id="messagesLink">Съобщения</li></a>
+                        <a href="#messages">
+                            <li class="disabled" id="messagesLink">Съобщения</li>
+                        </a>
                         <li>За нас</li>
                         <li>Контакти</li>
                         <li>Кариера</li>

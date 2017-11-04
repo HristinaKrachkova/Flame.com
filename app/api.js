@@ -1,15 +1,15 @@
 ﻿var User = require('./models/user.js'); // Import User Model
 var mongoose = require('mongoose'); // HTTP request logger middleware for Node.js
 
-module.exports = function (router) {
+module.exports = function(router) {
     function getUserById(id, callback) {
-        User.findOne({ _id: id }).exec(function (err, user) {
+        User.findOne({ _id: id }).exec(function(err, user) {
             callback(err, user);
         });
     }
 
     function getUserByEmail(email, callback) {
-        User.findOne({ email: email }).exec(function (err, user) {
+        User.findOne({ email: email }).exec(function(err, user) {
             callback(err, user);
         });
     }
@@ -37,7 +37,7 @@ module.exports = function (router) {
         }
 
         // Get the liked/disliked user from the database
-        getUserById(id, function (err, user) {
+        getUserById(id, function(err, user) {
             if (user) {
                 // If the user exists pass it to the function that handles the real thing
                 callback(user);
@@ -47,7 +47,7 @@ module.exports = function (router) {
         });
     }
 
-    router.post('/register', function (req, res) {
+    router.post('/register', function(req, res) {
         var firstName = req.body.firstName;
         var lastName = req.body.lastName;
         var password = req.body.password;
@@ -60,9 +60,8 @@ module.exports = function (router) {
         user.email = email;
         user.setPassword(password);
         user.likes = [];
-        user.dislikes = [];
 
-        user.save(function (err) {
+        user.save(function(err) {
             if (err) {
                 res.json({ success: false, error: err });
             } else {
@@ -71,7 +70,7 @@ module.exports = function (router) {
         });
     });
 
-    router.post('/login', function (req, res) {
+    router.post('/login', function(req, res) {
         var email = req.body.email;
         var password = req.body.password;
 
@@ -88,7 +87,7 @@ module.exports = function (router) {
         });
     });
 
-    router.post('/getUserById', function (req, res) {
+    router.post('/getUserById', function(req, res) {
         var id = req.body.userId;
 
         getUserById(id, function(err, user) {
@@ -100,10 +99,10 @@ module.exports = function (router) {
         });
     });
 
-    router.post('/getUserByEmail', function (req, res) {
+    router.post('/getUserByEmail', function(req, res) {
         var email = req.body.email;
 
-        getUserByEmail(email, function (err, user) {
+        getUserByEmail(email, function(err, user) {
             if (user) {
                 res.json({ success: true, user: user });
             } else {
@@ -112,8 +111,8 @@ module.exports = function (router) {
         });
     });
 
-    router.post('/like', function (req, res) {
-        handleLikeDislike(req, res, function (user) {
+    router.post('/like', function(req, res) {
+        handleLikeDislike(req, res, function(user) {
             // Push the new like
             req.currentUser.likes.push(user._id);
 
@@ -130,27 +129,27 @@ module.exports = function (router) {
             }
 
             // Save the user to the database
-            req.currentUser.save(function (err) {
+            req.currentUser.save(function(err) {
                 console.log(err);
                 res.json({ success: true, isMatch: isMatch });
             });
         });
     });
 
-    router.post('/dislike', function (req, res) {
-        handleLikeDislike(req, res, function (user) {
+    router.post('/dislike', function(req, res) {
+        handleLikeDislike(req, res, function(user) {
             // Push the new dislike
             req.currentUser.dislikes.push(user._id);
 
             // Save the user to the database
-            req.currentUser.save(function (err) {
+            req.currentUser.save(function(err) {
                 console.log(err);
                 res.json({ success: true });
             });
         });
     });
 
-    router.post('/getRandomUser', function (req, res) {
+    router.post('/getRandomUser', function(req, res) {
         // Check if logged in
         if (!req.currentUser) {
             res.json({ success: false, message: 'You are not logged in.' });
@@ -160,11 +159,9 @@ module.exports = function (router) {
 
         // Select a random person from the database, that has not already been liked/disliked
         User.aggregate(
-            [
-                {
+            [{
                     $match: {
-                        '$and': [
-                            {
+                        '$and': [{
                                 '_id': { '$nin': req.currentUser.likes }
                             },
                             {
@@ -189,7 +186,8 @@ module.exports = function (router) {
                         'image': true
                     }
                 }
-            ], function (err, users) {
+            ],
+            function(err, users) {
                 if (err) {
                     console.log(err);
                     res.json({ success: false, message: 'Something went wrong.' });
