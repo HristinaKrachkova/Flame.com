@@ -3,10 +3,10 @@
         <div id="userOptions">
             <h2>Профил</h2>
             <div class="image-cropper" ng-if="!signedUser.profileImage">
-                <img class="profielThumbnailPhoto" src="http://freelanceme.net/Images/default%20profile%20picture.png" alt="photo">
+                <img id="userPhoto" class="profielThumbnailPhoto" src="http://freelanceme.net/Images/default%20profile%20picture.png" alt="photo">
             </div>
             <div class="image-cropper" ng-if="signedUser.profileImage">
-                <img class="profielThumbnailPhoto" src="{{signedUser.profileImage}}" alt="photo">
+                <img id="userPhoto" class="profielThumbnailPhoto" src="{{signedUser.profileImage}}" alt="photo">
             </div>
             <span id="changeProfile">
                 +

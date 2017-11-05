@@ -36,8 +36,8 @@ app.use(function(req, res, next) {
 });
 
 app.use(morgan('dev')); // Morgan Middleware
-app.use(bodyParser.json()); // Body-parser middleware
-app.use(bodyParser.urlencoded({ extended: true })); // For parsing application/x-www-form-urlencoded
+app.use(bodyParser.json({ limit: '5mb' })); // Body-parser middleware
+app.use(bodyParser.urlencoded({ limit: '5mb', extended: true })); // For parsing application/x-www-form-urlencoded
 app.use(express.static(__dirname + '/public/UI')); // Allow front end to access public folder
 app.use('/api', appRoutes); // Assign name to end points (e.g., '/api/management/', '/api/users' ,etc. )
 
