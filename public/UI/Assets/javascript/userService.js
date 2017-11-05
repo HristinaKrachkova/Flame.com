@@ -187,5 +187,17 @@ var userDB = (function() {
         });
     };
 
+    _userDB.prototype.updateUserLocation = function (longitude, latitude, callback) {
+        var self = this;
+
+        $.ajax({
+            url: './api/updateUserLocation',
+            method: 'POST',
+            data: { location: [ longitude, latitude ] }
+        }).done(function (data) {
+            callback(data);
+        });
+    };
+
     return new _userDB();
 }());

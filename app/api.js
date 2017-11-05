@@ -208,7 +208,7 @@ module.exports = function (router) {
                     'age': true,
                     'height': true,
                     'gender': true,
-                    'image': true
+                    'profileImage': true
                 }
             }
             ], function(err, users) {
@@ -280,7 +280,7 @@ module.exports = function (router) {
             if (err) {
                 res.json({ success: false, error: err });
             } else {
-                res.json({ success: true, user: req.currentUser });
+                res.json({ success: true });
             }
         });
     });
@@ -289,12 +289,26 @@ module.exports = function (router) {
         var image = req.body.image;
 
         req.currentUser.profileImage = image;
-        
+
         req.currentUser.save(function (err) {
             if (err) {
                 res.json({ success: false, error: err });
             } else {
-                res.json({ success: true, user: req.currentUser });
+                res.json({ success: true });
+            }
+        });
+    });
+
+    router.post('/updateUserLocation', function (req, res) {
+        var location = req.body.location;
+
+        req.currentUser.location = location;
+
+        req.currentUser.save(function (err) {
+            if (err) {
+                res.json({ success: false, error: err });
+            } else {
+                res.json({ success: true });
             }
         });
     });
