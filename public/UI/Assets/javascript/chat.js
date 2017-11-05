@@ -52,7 +52,7 @@
                 if (event.which === 13 && event.shiftKey == false) {
                     // Emit to server input
                     socket.emit('input', {
-                        name: username.value,
+                        // name: username.value,
                         message: textarea.value
                     });
                     event.preventDefault();

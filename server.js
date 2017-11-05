@@ -41,9 +41,8 @@ app.use(bodyParser.urlencoded({ limit: '5mb', extended: true })); // For parsing
 app.use(express.static(__dirname + '/public/UI')); // Allow front end to access public folder
 app.use('/api', appRoutes); // Assign name to end points (e.g., '/api/management/', '/api/users' ,etc. )
 
-// 
-// <---------- REPLACE WITH YOUR MONGOOSE CONFIGURATION ---------->
-// 
+
+// MONGOOSE CONFIGURATION
 mongoose.connect('mongodb://Test:123456789@ds237475.mlab.com:37475/flame', function(err) {
     if (err) {
         console.log('Not connected to the database: ' + err); // Log to console if unable to connect to database
