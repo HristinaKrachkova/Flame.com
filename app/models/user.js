@@ -68,7 +68,7 @@ var UserSchema = new Schema({
     age: { type: Number, required: false },
     gender: { type: String, required: false },
     height: { type: Number, required: false },
-    location: { type: String, required: false },
+    location: { type: [Number], index: '2d' },
     active: { type: Boolean, required: true, default: false },
     likes: { type: Array, required: false, default: [] },
     dislikes: { type: Array, required: false, default: [] },
@@ -76,16 +76,15 @@ var UserSchema = new Schema({
     facebookId: { type: String, required: false },
     profileImage: { type: String, required: false },
 
-    facebookUrl: { type: String, required: false, default: "http://www.facebook.com" },
+    facebookUrl: { type: String, required: false, default: 'http://www.facebook.com' },
     photos: { type: Array, required: false, default: [] },
     messages: { type: Array, required: false, default: [] },
     preferences: { type: Object, required: false }
 
-
 });
 
 // Middleware to ensure password is encrypted before saving user to database
-//UserSchema.pre('save', function(next) {
+// UserSchema.pre('save', function(next) {
 //    var user = this;
 
 //    if (!user.isModified('password')) return next(); // If password was not changed or is new, ignore middleware
@@ -96,7 +95,7 @@ var UserSchema = new Schema({
 //        user.password = hash; // Assign the hash to the user's password so it is saved in database encrypted
 //        next(); // Exit Bcrypt function
 //    });
-//});
+// });
 
 // Mongoose Plugin to change fields to title case after saved to database (ensures consistency)
 UserSchema.plugin(titlize, {

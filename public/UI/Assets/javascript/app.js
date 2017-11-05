@@ -2,6 +2,7 @@ var app = angular.module('myApp', ['ngRoute']);
 
 function handleLogin(data, $scope, $location) {
     if (data.success == true) {
+        updateUserLocation();
         $('#profileLink').removeClass('disabled');
         $('#findLink').removeClass('disabled');
         $('#messagesLink').removeClass('disabled');
@@ -18,23 +19,23 @@ function handleLogin(data, $scope, $location) {
 }
 
 app.config(function($routeProvider) {
-        $routeProvider
-            .when('/', {
-                templateUrl: 'mainPage.html'
-            })
-            .when('/login', {
-                templateUrl: 'emailLogIn.html'
-            })
-            .when('/user', {
-                templateUrl: 'userProfile.html'
-            })
-            .when('/messages', {
-                templateUrl: 'userMessages.html'
-            })
-            .when('/newpeople', {
-                templateUrl: 'newPeople.html'
-            });
-    })
+    $routeProvider
+        .when('/', {
+            templateUrl: 'mainPage.html'
+        })
+        .when('/login', {
+            templateUrl: 'emailLogIn.html'
+        })
+        .when('/user', {
+            templateUrl: 'userProfile.html'
+        })
+        .when('/messages', {
+            templateUrl: 'userMessages.html'
+        })
+        .when('/newpeople', {
+            templateUrl: 'newPeople.html'
+        });
+})
     .controller('registrationForm', function($scope, $location) {
         $scope.registerAUser = function() {
             // event.preventDefault();
@@ -58,7 +59,6 @@ app.config(function($routeProvider) {
                         $('#notification').fadeOut('400');
                     }, 3000);
                     console.log(data.error);
-
                 }
             });
         };
@@ -66,13 +66,13 @@ app.config(function($routeProvider) {
     .controller('menu', function($scope, $location) {
         $scope.messages = function() {
             $location.path('/messages');
-        }
+        };
         $scope.find = function() {
             $location.path('/newpeople');
-        }
+        };
         $scope.user = function() {
             $location.path('/user');
-        }
+        };
     })
     .controller('login', function($scope, $location) {
         $scope.login = function() {
@@ -94,7 +94,7 @@ app.config(function($routeProvider) {
             $('#profileLink').addClass('disabled');
             $('#findLink').addClass('disabled');
             $('#messagesLink').addClass('disabled');
-        }
+        };
         $scope.saveChanges = function() {
             var age = $('#inputAge').val();
             var height = $('#inputHeight').val();
@@ -119,16 +119,18 @@ app.config(function($routeProvider) {
 
             if (file != null) {
                 var reader = new FileReader();
+
                 reader.readAsDataURL(file);
                 reader.onload = function () {
-                    //var imageWithType = "data:image; base64, ";
+                    // var imageWithType = "data:image; base64, ";
 
                     userDB.updateUserImage(reader.result, function (data) {
                         if (data.success == true) {
                             var thumbnail = $('#userPhoto');
-                            thumbnail.attr("src", reader.result);
+
+                            thumbnail.attr('src', reader.result);
                         } else {
-                            alert("Error uploading image.");
+                            alert('Error uploading image.');
                         }
                     });
                 };
@@ -144,6 +146,7 @@ app.config(function($routeProvider) {
                 console.log(response);
                 if (response.status === 'connected') {
                     var fbId = response.authResponse.userID;
+
                     userDB.checkFbUser(fbId, function(checkData) {
                         if (checkData.success == true && checkData.exists == true) {
                             userDB.loginWithFb(fbId, function (loginData) {
@@ -158,23 +161,26 @@ app.config(function($routeProvider) {
                                             handleLogin(loginData, $scope, $location);
 
                                             FB.api(
-                                                "/" + fbId + "/picture?type=square&width=300&height=300",
+                                                '/' + fbId + '/picture?type=square&width=300&height=300',
                                                 function (picResponse) {
                                                     if (picResponse && !picResponse.error) {
                                                         var url = picResponse.data.url;
                                                         var xhr = new XMLHttpRequest();
+
                                                         xhr.onload = function () {
                                                             var reader = new FileReader();
+
                                                             reader.onloadend = function () {
                                                                 userDB.updateUserImage(reader.result, function (data) {
                                                                     if (data.success == true) {
                                                                         var thumbnail = $('#userPhoto');
-                                                                        thumbnail.attr("src", reader.result);
+
+                                                                        thumbnail.attr('src', reader.result);
                                                                     } else {
-                                                                        alert("Error uploading image.");
+                                                                        alert('Error uploading image.');
                                                                     }
                                                                 });
-                                                            }
+                                                            };
                                                             reader.readAsDataURL(xhr.response);
                                                         };
                                                         xhr.open('GET', url);
@@ -271,3 +277,13 @@ app.config(function($routeProvider) {
             });
         };
     });
+
+function updateUserLocation() {
+    if (userDB.signedUser) {
+        navigator.geolocation.getCurrentPosition(function(location) {
+            userDB.updateUserLocation(location.coords.latitude, location.coords.longitude, function(data) {
+                setTimeout(updateUserLocation, 60000);
+            });
+        });
+    }
+}
