@@ -1,40 +1,32 @@
 {
-  "name": "meantutorial",
-  "version": "1.0.0",
-  "description": "mean stack application",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "keywords": [
-    "MEAN",
-    "stack"
-  ],
-  "author": "David Acosta",
-  "license": "ISC",
-  "dependencies": {
-    "bcrypt-nodejs": "0.0.3",
-    "body-parser": "^1.15.2",
-    "cookie-parser": "^1.4.3",
-    "express": "^4.14.0",
-    "express-session": "^1.14.2",
-    "favicon": "0.0.2",
-    "jsonwebtoken": "^7.1.9",
-    "mongodb": "^2.2.33",
-    "mongoose": "^4.7.1",
-    "mongoose-title-case": "0.0.4",
-    "mongoose-validator": "^1.2.5",
-    "morgan": "^1.7.0",
-    "nodemailer": "^2.7.0",
-    "nodemailer-sendgrid-transport": "^0.2.0",
-    "nodemon": "^1.12.1",
-    "passport": "^0.3.2",
-    "passport-facebook": "^2.1.1",
-    "passport-google-oauth": "^1.0.0",
-    "passport-twitter": "^1.0.4",
-    "path": "^0.12.7",
-    "serve-favicon": "^2.4.5",
-    "socket.io": "^2.0.4"
-  }
+    "name": "flame",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js"
+    },
+    "keywords": [
+        "",
+        ""
+    ],
+    "author": "flame",
+    "license": "ISC",
+    "dependencies": {
+        "bcrypt-nodejs": "0.0.3",
+        "body-parser": "^1.15.2",
+        "express": "^4.14.0",
+        "express-session": "^1.14.2",
+        "mongodb": "^2.2.33",
+        "mongoose": "^4.7.1",
+        "mongoose-title-case": "0.0.4",
+        "mongoose-validator": "^1.2.5",
+        "morgan": "^1.7.0",
+        "nodemon": "^1.12.1",
+        "passport": "^0.3.2",
+        "passport-facebook": "^2.1.1",
+        "path": "^0.12.7",
+        "socket.io": "^2.0.4"
+    }
 }
