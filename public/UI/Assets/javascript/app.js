@@ -86,6 +86,7 @@ app.config(function($routeProvider) {
         };
     })
     .controller('profile', function($scope, $location) {
+        $scope.selectedImages = null;
         $scope.signedUser = userDB.signedUser;
         $scope.logout = function() {
             userDB.signedUser = null;
@@ -112,24 +113,76 @@ app.config(function($routeProvider) {
                 }
             });
         };
+
+        $('#profileImageInput').change(function () {
+            var file = $('#profileImageInput').prop('files')[0];
+
+            if (file != null) {
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function () {
+                    //var imageWithType = "data:image; base64, ";
+
+                    userDB.updateUserImage(reader.result, function (data) {
+                        if (data.success == true) {
+                            var thumbnail = $('#userPhoto');
+                            thumbnail.attr("src", reader.result);
+                        } else {
+                            alert("Error uploading image.");
+                        }
+                    });
+                };
+                reader.onerror = function (error) {
+                    console.log('Error: ', error);
+                };
+            }
+        });
     })
     .controller('fbLogin', function($scope, $location) {
         $scope.fbLogin = function() {
             FB.login(function(response) {
                 console.log(response);
                 if (response.status === 'connected') {
-                    userDB.checkFbUser(response.authResponse.userID, function(checkData) {
+                    var fbId = response.authResponse.userID;
+                    userDB.checkFbUser(fbId, function(checkData) {
                         if (checkData.success == true && checkData.exists == true) {
-                            userDB.loginWithFb(response.authResponse.userID, function(loginData) {
+                            userDB.loginWithFb(fbId, function (loginData) {
                                 handleLogin(loginData, $scope, $location);
                             });
                         } else {
                             FB.api('/me', { fields: 'first_name, last_name, email' }, function(meResponse) {
                                 // I think this password is secure!
-                                userDB.register(meResponse.first_name, meResponse.last_name, '', meResponse.email, response.authResponse.userID, function(data) {
+                                userDB.register(meResponse.first_name, meResponse.last_name, '', meResponse.email, fbId, function (data) {
                                     if (data.success) {
-                                        userDB.loginWithFb(response.authResponse.userID, function(loginData) {
+                                        userDB.loginWithFb(fbId, function (loginData) {
                                             handleLogin(loginData, $scope, $location);
+
+                                            FB.api(
+                                                "/" + fbId + "/picture?type=square&width=300&height=300",
+                                                function (picResponse) {
+                                                    if (picResponse && !picResponse.error) {
+                                                        var url = picResponse.data.url;
+                                                        var xhr = new XMLHttpRequest();
+                                                        xhr.onload = function () {
+                                                            var reader = new FileReader();
+                                                            reader.onloadend = function () {
+                                                                userDB.updateUserImage(reader.result, function (data) {
+                                                                    if (data.success == true) {
+                                                                        var thumbnail = $('#userPhoto');
+                                                                        thumbnail.attr("src", reader.result);
+                                                                    } else {
+                                                                        alert("Error uploading image.");
+                                                                    }
+                                                                });
+                                                            }
+                                                            reader.readAsDataURL(xhr.response);
+                                                        };
+                                                        xhr.open('GET', url);
+                                                        xhr.responseType = 'blob';
+                                                        xhr.send();
+                                                    }
+                                                }
+                                            );
                                         });
                                     } else {
                                         console.log(data);

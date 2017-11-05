@@ -1,7 +1,15 @@
 ﻿var User = require('./models/user.js'); // Import User Model
 var mongoose = require('mongoose'); // HTTP request logger middleware for Node.js
 
-module.exports = function(router) {
+module.exports = function (router) {
+    function empty(obj) {
+        return obj == null || obj == '' || obj == 'undefined';
+    }
+
+    function notEmpty(obj) {
+        return empty(obj) == false;
+    }
+
     function getUserById(id, callback) {
         User.findOne({ _id: id }).exec(function(err, user) {
             callback(err, user);
@@ -65,7 +73,7 @@ module.exports = function(router) {
         user.firstName = firstName;
         user.lastName = lastName;
         user.email = email;
-        if (fbId == null) {
+        if (empty(fbId)) {
             fbId = null;
             user.setPassword(password);
         }
@@ -89,7 +97,7 @@ module.exports = function(router) {
 
         getUserByEmail(email, function(err, user) {
             if (user) {
-                if (user.facebookId === null) {
+                if (empty(user.facebookId)) {
                     if (user.comparePassword(password)) {
                         req.session.userId = user._id;
                         res.json({ success: true, user: user });
@@ -253,21 +261,35 @@ module.exports = function(router) {
 
         console.log(req.body);
 
-        if (req.currentUser.facebookId === null && newPass != null) {
+        if (empty(req.currentUser.facebookId) && notEmpty(newPass)) {
             req.currentUser.setPassword(newPass);
         }
-        if (newEmail != null) {
+        if (notEmpty(newEmail)) {
             req.currentUser.email = newEmail;
         }
-        if (age != null) {
+        if (notEmpty(age)) {
             req.currentUser.age = age;
         }
-        if (height != null) {
+        if (notEmpty(height)) {
             req.currentUser.height = height;
         }
-        if (gender != null) {
+        if (notEmpty(gender)) {
             req.currentUser.gender = gender;
         }
+        req.currentUser.save(function (err) {
+            if (err) {
+                res.json({ success: false, error: err });
+            } else {
+                res.json({ success: true, user: req.currentUser });
+            }
+        });
+    });
+
+    router.post('/updateUserImage', function (req, res) {
+        var image = req.body.image;
+
+        req.currentUser.profileImage = image;
+        
         req.currentUser.save(function (err) {
             if (err) {
                 res.json({ success: false, error: err });

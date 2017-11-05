@@ -74,9 +74,9 @@ var UserSchema = new Schema({
     dislikes: { type: Array, required: false, default: [] },
     matches: { type: Array, required: false, default: [] },
     facebookId: { type: String, required: false },
+    profileImage: { type: String, required: false },
 
     facebookUrl: { type: String, required: false, default: "http://www.facebook.com" },
-    profileImage: { type: String, required: false },
     photos: { type: Array, required: false, default: [] },
     messages: { type: Array, required: false, default: [] },
     preferences: { type: Object, required: false }
