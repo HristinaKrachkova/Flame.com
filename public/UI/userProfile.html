@@ -3,10 +3,10 @@
         <div id="userOptions">
             <h2>Профил</h2>
             <div class="image-cropper" ng-if="!signedUser.profileImage">
-                <img class="profielThumbnailPhoto" src="http://freelanceme.net/Images/default%20profile%20picture.png" alt="photo">
+                <img id="userPhoto" class="profielThumbnailPhoto" src="http://freelanceme.net/Images/default%20profile%20picture.png" alt="photo">
             </div>
             <div class="image-cropper" ng-if="signedUser.profileImage">
-                <img class="profielThumbnailPhoto" src="{{signedUser.profileImage}}" alt="photo">
+                <img id="userPhoto" class="profielThumbnailPhoto" src="{{signedUser.profileImage}}" alt="photo">
             </div>
             <span id="changeProfile">
                 +
@@ -121,20 +121,31 @@
                 <input type="checkBox" id="genderPrefFemale" class="checkbox">
                 <label for="genderPrefFemale">Жена</label>
             </div>
+            <div id="sliderKM">
+                Максимално разстояние: <span id="currentval">1</span>
+            </div>
+            <div id="chooseKM"></div>
+
+            <br>
+
+            <div id="sliderAge">
+                Възрастова граница : <span id="rangeval">20 - 30</span>
+            </div>
+            <div id="chooseAge"></div>
         </div>
     </div>
 </div>
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         $(document).on("scroll", onScroll);
 
         //smoothscroll
-        $('a[href^="#"]').on('click', function (e) {
+        $('a[href^="#"]').on('click', function(e) {
             e.preventDefault();
             $(document).off("scroll");
 
-            $('a').each(function () {
+            $('a').each(function() {
                 $(this).removeClass('active');
             })
             $(this).addClass('active');
@@ -149,7 +160,7 @@
             }
             $('html, body').stop().animate({
                 'scrollTop': $target.offset().top - topDistance
-            }, 500, 'swing', function () {
+            }, 500, 'swing', function() {
                 $(document).on("scroll", onScroll);
             });
         });
@@ -157,14 +168,13 @@
 
     function onScroll(event) {
         var scrollPos = $(document).scrollTop();
-        $('#userOptions a').each(function () {
+        $('#userOptions a').each(function() {
             var currLink = $(this);
             var refElement = $(currLink.attr("href"));
             if (refElement.position().top <= scrollPos && refElement.position().top + refElement.height() > scrollPos) {
                 $('#userOptions ul li a').removeClass("active");
                 currLink.addClass("active");
-            }
-            else {
+            } else {
                 currLink.removeClass("active");
             }
         });
@@ -180,3 +190,4 @@
 <br>
 <script src="Assets/javascript/modifyUserData.js"></script>
 <script src="Assets/javascript/changeProfileImage.js"></script>
+<script src="Assets/javascript/slides.js"></script>

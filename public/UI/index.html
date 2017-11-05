@@ -3,12 +3,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Flame</title>
+
+    <link rel="stylesheet" type="text/css" media="all" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" media="all" href="http://fonts.googleapis.com/css?family=Acme">
+    <link rel="shortcut icon" type="image/png" href="Assets/Images/favicon.png">
     <link rel="stylesheet" href="Assets/Styles/mainPage.css">
     <link rel="stylesheet" href="Assets/Styles/register.css">
     <link rel="stylesheet" href="Assets/Styles/userPage.css">
     <link rel="stylesheet" href="Assets/Styles/userMessages.css">
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
-    </script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"> </script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
     <link rel="stylesheet" href="Assets/Styles/register.css">
     <!-- <script src="Assets/javascript/facebookLogin.js"></script> -->
@@ -29,7 +34,7 @@
                 <nav>
                     <ul>
                         <li>Начало</li>
-                        <li class="disabled"id="profileLink" ng-click="user()">Профил</li>
+                        <li class="disabled" id="profileLink" ng-click="user()">Профил</li>
                         <li class="disabled" id="findLink" ng-click="find()">Открий</li>
                         <li class="disabled" id="messagesLink" ng-click="messages()">Съобщения</li>
                         <li>За нас</li>

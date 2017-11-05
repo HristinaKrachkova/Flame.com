@@ -1,4 +1,3 @@
-
 var app = angular.module('myApp', ['ngRoute']);
 
 function handleLogin(data, $scope, $location) {
@@ -10,28 +9,32 @@ function handleLogin(data, $scope, $location) {
         $scope.$apply();
     } else {
         console.log(data);
-        alert('Nope!');
+        $('#notification p').html('&times; Грешно въведени данни! Моля опитайте отново.');
+        $('#notification').css('background-color', '#e5b85c').fadeIn('400');
+        setTimeout(function() {
+            $('#notification').fadeOut('400');
+        }, 3000);
     }
 }
 
 app.config(function($routeProvider) {
-    $routeProvider
-        .when('/', {
-            templateUrl: 'mainPage.html'
-        })
-        .when('/login', {
-            templateUrl: 'emailLogIn.html'
-        })
-        .when('/user', {
-            templateUrl: 'userProfile.html'
-        })
-        .when('/messages', {
-            templateUrl: 'userMessages.html'
-        })
-        .when('/newpeople', {
-            templateUrl: 'newPeople.html'
-        });
-})
+        $routeProvider
+            .when('/', {
+                templateUrl: 'mainPage.html'
+            })
+            .when('/login', {
+                templateUrl: 'emailLogIn.html'
+            })
+            .when('/user', {
+                templateUrl: 'userProfile.html'
+            })
+            .when('/messages', {
+                templateUrl: 'userMessages.html'
+            })
+            .when('/newpeople', {
+                templateUrl: 'newPeople.html'
+            });
+    })
     .controller('registrationForm', function($scope, $location) {
         $scope.registerAUser = function() {
             // event.preventDefault();
@@ -43,7 +46,6 @@ app.config(function($routeProvider) {
             userDB.register(name, lastName, password, email, '', function(data) {
                 if (data.success) {
                     $location.path('/login');
-
                     $('#notification p').html('&#10003; Успешно се регистрирахте!');
                     $('#notification').css('background-color', '#3399cc').fadeIn('400');
                     setTimeout(function() {
@@ -61,14 +63,14 @@ app.config(function($routeProvider) {
             });
         };
     })
-    .controller('menu', function($scope, $location){
-        $scope.messages=function(){
+    .controller('menu', function($scope, $location) {
+        $scope.messages = function() {
             $location.path('/messages');
         }
-        $scope.find=function(){
+        $scope.find = function() {
             $location.path('/newpeople');
         }
-        $scope.user=function(){
+        $scope.user = function() {
             $location.path('/user');
         }
     })
@@ -84,22 +86,23 @@ app.config(function($routeProvider) {
         };
     })
     .controller('profile', function($scope, $location) {
+        $scope.selectedImages = null;
         $scope.signedUser = userDB.signedUser;
-        $scope.logout = function(){
+        $scope.logout = function() {
             userDB.signedUser = null;
             $location.path('/');
             $('#profileLink').addClass('disabled');
             $('#findLink').addClass('disabled');
             $('#messagesLink').addClass('disabled');
         }
-        $scope.saveChanges = function () {
+        $scope.saveChanges = function() {
             var age = $('#inputAge').val();
             var height = $('#inputHeight').val();
             var gender = $('#inputGender').val();
             var newEmail = $('#userEmailEdit').val();
             var newPass = $('#userPassEdit').val();
 
-            userDB.updateUserData(newEmail, newPass, age, height, gender, function (data) {
+            userDB.updateUserData(newEmail, newPass, age, height, gender, function(data) {
                 if (data.success == true) {
                     $scope.signedUser = userDB.signedUser;
                     $scope.$apply();
@@ -110,35 +113,96 @@ app.config(function($routeProvider) {
                 }
             });
         };
+
+        $('#profileImageInput').change(function () {
+            var file = $('#profileImageInput').prop('files')[0];
+
+            if (file != null) {
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function () {
+                    //var imageWithType = "data:image; base64, ";
+
+                    userDB.updateUserImage(reader.result, function (data) {
+                        if (data.success == true) {
+                            var thumbnail = $('#userPhoto');
+                            thumbnail.attr("src", reader.result);
+                        } else {
+                            alert("Error uploading image.");
+                        }
+                    });
+                };
+                reader.onerror = function (error) {
+                    console.log('Error: ', error);
+                };
+            }
+        });
     })
     .controller('fbLogin', function($scope, $location) {
         $scope.fbLogin = function() {
             FB.login(function(response) {
                 console.log(response);
                 if (response.status === 'connected') {
-                    userDB.checkFbUser(response.authResponse.userID, function(checkData) {
+                    var fbId = response.authResponse.userID;
+                    userDB.checkFbUser(fbId, function(checkData) {
                         if (checkData.success == true && checkData.exists == true) {
-                            userDB.loginWithFb(response.authResponse.userID, function(loginData) {
+                            userDB.loginWithFb(fbId, function (loginData) {
                                 handleLogin(loginData, $scope, $location);
                             });
                         } else {
                             FB.api('/me', { fields: 'first_name, last_name, email' }, function(meResponse) {
                                 // I think this password is secure!
-                                userDB.register(meResponse.first_name, meResponse.last_name, '', meResponse.email, response.authResponse.userID, function(data) {
+                                userDB.register(meResponse.first_name, meResponse.last_name, '', meResponse.email, fbId, function (data) {
                                     if (data.success) {
-                                        userDB.loginWithFb(response.authResponse.userID, function(loginData) {
+                                        userDB.loginWithFb(fbId, function (loginData) {
                                             handleLogin(loginData, $scope, $location);
+
+                                            FB.api(
+                                                "/" + fbId + "/picture?type=square&width=300&height=300",
+                                                function (picResponse) {
+                                                    if (picResponse && !picResponse.error) {
+                                                        var url = picResponse.data.url;
+                                                        var xhr = new XMLHttpRequest();
+                                                        xhr.onload = function () {
+                                                            var reader = new FileReader();
+                                                            reader.onloadend = function () {
+                                                                userDB.updateUserImage(reader.result, function (data) {
+                                                                    if (data.success == true) {
+                                                                        var thumbnail = $('#userPhoto');
+                                                                        thumbnail.attr("src", reader.result);
+                                                                    } else {
+                                                                        alert("Error uploading image.");
+                                                                    }
+                                                                });
+                                                            }
+                                                            reader.readAsDataURL(xhr.response);
+                                                        };
+                                                        xhr.open('GET', url);
+                                                        xhr.responseType = 'blob';
+                                                        xhr.send();
+                                                    }
+                                                }
+                                            );
                                         });
                                     } else {
-                                        console.log(data.error);
-                                        alert('There was a problem with your registration');
+                                        console.log(data);
+                                        $('#notification p').html('&times; Грешно въведени данни! Моля опитайте отново.');
+                                        $('#notification').css('background-color', '#e5b85c').fadeIn('400');
+                                        setTimeout(function() {
+                                            $('#notification').fadeOut('400');
+                                        }, 3000);
                                     }
                                 });
                             });
                         }
                     });
                 } else {
-                    alert('Mi ni staa!');
+                    // alert('Mi ni staa!');
+                    $('#notification p').html('&times; Възникна грешка!.');
+                    $('#notification').css('background-color', '#e5b85c').fadeIn('400');
+                    setTimeout(function() {
+                        $('#notification').fadeOut('400');
+                    }, 3000);
                 }
             }, { scope: 'public_profile, email' });
         };
@@ -165,7 +229,8 @@ app.config(function($routeProvider) {
             var js, fjs = d.getElementsByTagName(s)[0];
 
             if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
+            js = d.createElement(s);
+            js.id = id;
             js.src = '//connect.facebook.net/en_US/sdk.js';
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
@@ -189,7 +254,12 @@ app.config(function($routeProvider) {
         $scope.likeUser = function() {
             userDB.likeUser(newPerson._id, function(data) {
                 if (data.success == true && data.isMatch == true) {
-                    alert('Match!');
+                    // alert('Match!');
+                    $('#notification p').html('&#10003; Имате съвпадение!');
+                    $('#notification').css('background-color', '#3399cc').fadeIn('400');
+                    setTimeout(function() {
+                        $('#notification').fadeOut('400');
+                    }, 3000);
                 }
                 getRandomUser();
             });

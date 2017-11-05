@@ -172,5 +172,20 @@ var userDB = (function() {
         });
     };
 
+    _userDB.prototype.updateUserImage = function (image, callback) {
+        var self = this;
+
+        $.ajax({
+            url: './api/updateUserImage',
+            method: 'POST',
+            data: { image: image }
+        }).done(function (data) {
+            if (data.success == true) {
+
+            }
+            callback(data);
+        });
+    };
+
     return new _userDB();
 }());
