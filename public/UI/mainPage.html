@@ -10,32 +10,59 @@
         <img src="Assets/Images/Icons and logos/facebook-logo.png" alt="">
         <span class="facebook">Вход с Facebook</span>
     </button>
-    <a href="#!login"><button>Вход c Имейл</button></a>
+    <a href="#!login">
+        <button>Вход c Имейл</button>
+    </a>
 </div>
-<p>Ако си готов да запалиш своя пламък и да разгориш страстите, регистрирай се.</p>
-<form method="POST" ng-controller="registrationForm">
-    <label for="name">Име</label>
-    <br>
-    <input type="text" id="name">
-    <label for="lastName">Фамилия</label>
-    <br>
-    <input type="text" id="lastName">
-    <label for="password">Парола</label>
-    <br>
-    <input type="password" id="password">
-    <div class="hint">* Паролата трябва да е повече от 8 символа!</div>
-    <label for="confirmPassword">Подтвърди паролата</label>
-    <br>
-    <input type="password" id="confirmPassword">
-    <div class="hint">* Паролите трябва да съвпадата!</div>
-    <label for="email">Имейл</label>
-    <br>
-    <input type="email" id="email">
-    <br>
-    <button id="submitRegisterForm" ng-click="registerAUser()">Регистрирай се</button>
-</form>
+<div id="description">
+    <p class="description">Запознай се с нови и интересни хора близо до теб!</p>
+    <p class="description">Бъди сигурен, че човека срещу теб те харесва.</p>
+    <p class="description">Ти избираш! Регистрирай се сега.</p>
+</div>
+
+<div id="registerSection">
+
+    <form method="POST" ng-controller="registrationForm" id="registrationForm">
+        <label for="name">Име</label>
+        <br>
+        <input type="text" id="name">
+        <label for="lastName">Фамилия</label>
+        <br>
+        <input type="text" id="lastName">
+        <label for="password">Парола</label>
+        <br>
+        <input type="password" id="password">
+        <div class="hint">* Паролата трябва да е повече от 8 символа!</div>
+        <label for="confirmPassword">Подтвърди паролата</label>
+        <br>
+        <input type="password" id="confirmPassword">
+        <div class="hint">* Паролите трябва да съвпадата!</div>
+        <label for="email">Имейл</label>
+        <br>
+        <input type="email" id="email">
+        <br>
+        <button id="submitRegisterForm" ng-click="registerAUser()">Регистрирай се</button>
+        <a href="#!login">Log In</a>
+    </form>
+    <div id="descriptionSection">
+        <div class="profileCard">
+            <h1> Десислава Благоева 22 г.</h1>
+            <div class="matchProfileCropper">
+                <img width="100%" src="Assets/Images/GettyImages-138564290.jpg" alt="">
+            </div>
+            <span class="emojiBut">
+                <img width="50px" src="Assets/Images/love.png" alt="">
+            </span>
+            <span class="emojiBut">
+                <img width="50px" src="Assets/Images/thinking.png" alt="">
+            </span>
+            <span class="emojiBut">
+                <img width="50px" src="Assets/Images/dislike.png" alt="">
+            </span>
+        </div>
+    </div>
+</div>
 <br>
-<a href="#!login">Log In</a>
 
 
 <script src="Assets/javascript/validateRegistration.js"></script>

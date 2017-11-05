@@ -1,23 +1,25 @@
-<div id='logo' ng-controller="newpeople">
+<!-- <div ng-controller="newpeople">
     <p>My matches</p><br><br>
     <img width='400px' src='https://static2.funidelia.com/39603-f4_large/mens-sexy-boy-t-shirt.jpg'></img><br>
     <p id='name'>{{newPerson.firstName + ' ' + newPerson.lastName + ', ' + newPerson.age}}</p>
     <button id='dislike' ng-click="dislikeUser()">Dislike</button>    
     <button id='like' ng-click="likeUser()">Like</button>
-</div>
-<div id="banner">
-    <div id="overlay"></div>
+</div> -->
+
+<div class="profileCard" ng-controller="newpeople">
+        <h1> {{newPerson.firstName + ' ' + newPerson.lastName + ', ' + newPerson.age}} г.</h1>
+        <div class="matchProfileCropper">
+            <img width="100%" src="Assets/Images/GettyImages-138564290.jpg" alt="">
+        </div>
+        <span class="emojiBut" ng-click="likeUser()" id='like'>
+            <img width="50px" src="Assets/Images/love.png" alt="">
+        </span>
+        <span class="emojiBut" >
+            <img width="50px" src="Assets/Images/thinking.png" alt="">
+        </span>
+        <span class="emojiBut" ng-click="dislikeUser()" id='dislike'>
+            <img width="50px" src="Assets/Images/dislike.png" alt="">
+        </span>
+    </div>
 </div>
 
-<style>
-    #dislike {
-        background-color: red;
-    }
-    #like {
-        background-color: blue;
-    }
-    /* #name{
-        width: 100px;
-        color: black;
-    } */
-</style>

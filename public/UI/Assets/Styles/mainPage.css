@@ -257,13 +257,17 @@ main {
 }
 
 footer {
-    display: none;
-    background-color: #eee;
-    height: 510px;
+    background-color: #666;
     width: 100%;
     z-index: 1;
-    margin-top: -180px;
-    clip-path: polygon(0 35%, 100% 0, 100% 100%, 0% 100%);
+    padding:20px 80px;
+    margin-bottom:0px;
+}
+
+footer p, footer span{
+    margin:0px;
+    color:white;
+
 }
 
 #banner {
@@ -310,6 +314,93 @@ footer {
 }
 
 
+#description{
+    margin-top: 300px;
+    position: relative;
+    text-align: center;
+    display: inline-block;
+    width: 50%;
+    background-color: lightcoral;
+    padding: 3% 6%;
+    margin-bottom: 0px;
+    border-radius: 10px;
+    min-width: 565px;
+}
+.profileCard{
+    width:25%;
+    margin:auto;
+    min-width:250px;
+    max-width:350px;
+    position:relative;
+    background-color: #eee;
+    border-radius:10px;
+    -moz-box-shadow: 0px 39px 120px -44px rgba(0,0,0,0.5);
+    box-shadow: 0px 39px 120px -44px rgba(0,0,0,0.5);
+}
+
+.matchProfileCropper{
+    width:100%;
+    overflow: hidden;
+    position:relative;
+}
+
+.emojiBut{
+    padding:4px;
+    cursor: pointer;
+    margin:6px;
+}
+
+.emojiBut img{
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
+
+/* #description{
+    position:relative;
+    top:200px
+} */
+
+#registerSection{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-left:50px;
+    margin-right:50px;
+    margin-bottom:100px;
+}
+
+.description{
+    /* position:relative;
+    margin-left:20%;
+    margin-right:20%; */
+    color:white;
+    font-size:1.40em;
+    font-family: 'PT Sans Narrow', sans-serif;
+    text-align: left;
+    margin-bottom:0px;
+}
+
+#registrationForm{
+    margin:0;
+    box-shadow: none;
+}
+
+#descriptionSection{
+    padding:40px 10px;
+    background-color:lightblue;
+    max-width: 700px;
+    width: 30%;
+    min-width: 300px;
+    border-radius:10px;
+}
+
+@media (max-width: 760px) { 
+    #description{
+        width:262px;
+        min-width:262px;
+    }
+}
 /* header{
     position:absolute;
     top:0px;
