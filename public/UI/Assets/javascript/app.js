@@ -61,6 +61,17 @@ app.config(function($routeProvider) {
             });
         };
     })
+    .controller('menu', function($scope, $location){
+        $scope.messages=function(){
+            $location.path('/messages');
+        }
+        $scope.find=function(){
+            $location.path('/newpeople');
+        }
+        $scope.user=function(){
+            $location.path('/user');
+        }
+    })
     .controller('login', function($scope, $location) {
         $scope.login = function() {
             event.preventDefault();
@@ -72,9 +83,15 @@ app.config(function($routeProvider) {
             });
         };
     })
-    .controller('profile', function($scope) {
+    .controller('profile', function($scope, $location) {
         $scope.signedUser = userDB.signedUser;
-
+        $scope.logout = function(){
+            userDB.signedUser = null;
+            $location.path('/');
+            $('#profileLink').addClass('disabled');
+            $('#findLink').addClass('disabled');
+            $('#messagesLink').addClass('disabled');
+        }
         $scope.saveChanges = function () {
             var age = $('#inputAge').val();
             var height = $('#inputHeight').val();
@@ -88,6 +105,7 @@ app.config(function($routeProvider) {
                     $scope.$apply();
                     userData();
                 } else {
+                    console.log(data.error);
                     // error updating user data
                 }
             });

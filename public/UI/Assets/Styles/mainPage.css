@@ -232,12 +232,9 @@ nav>ul {
 
 .disabled {
     color: #ddd;
+    pointer-events:none;
 }
 
-.disabled:hover {
-    color: #ddd;
-    cursor: default;
-}
 
 main {
     text-align: center;

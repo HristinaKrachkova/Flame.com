@@ -24,16 +24,14 @@
                 <p> Някакъв текст вътре </p>
             </div>
 
-            <div id="menu">
+            <div id="menu" ng-controller="menu">
                 <img width="38px" src="Assets/Images/Icons and logos/menu.png" alt="">
                 <nav>
                     <ul>
                         <li>Начало</li>
-                        <li class="disabled" id="profileLink">Профил</li>
-                        <li class="disabled" id="findLink">Открий</li>
-                        <a href="#messages">
-                            <li class="disabled" id="messagesLink">Съобщения</li>
-                        </a>
+                        <li class="disabled"id="profileLink" ng-click="user()">Профил</li>
+                        <li class="disabled" id="findLink" ng-click="find()">Открий</li>
+                        <li class="disabled" id="messagesLink" ng-click="messages()">Съобщения</li>
                         <li>За нас</li>
                         <li>Контакти</li>
                         <li>Кариера</li>

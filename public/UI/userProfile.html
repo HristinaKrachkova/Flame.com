@@ -10,7 +10,7 @@
             </div>
             <span id="changeProfile">
                 +
-                <input type="file"  id="profileImageInput" accept=".jpg, .jpeg, .png">
+                <input type="file" id="profileImageInput" accept=".jpg, .jpeg, .png">
             </span>
 
 
@@ -26,6 +26,7 @@
                     <a href="#pref">Предпочитания</a>
                 </li>
                 <li>Още</li>
+                <li ng-click="logout()">Изход</li>
             </ul>
         </div>
     </div>
@@ -125,49 +126,49 @@
 </div>
 
 <script>
-                   $(document).ready(function () {
-                       $(document).on("scroll", onScroll);
+    $(document).ready(function () {
+        $(document).on("scroll", onScroll);
 
-                       //smoothscroll
-                       $('a[href^="#"]').on('click', function (e) {
-                           e.preventDefault();
-                           $(document).off("scroll");
+        //smoothscroll
+        $('a[href^="#"]').on('click', function (e) {
+            e.preventDefault();
+            $(document).off("scroll");
 
-                           $('a').each(function () {
-                               $(this).removeClass('active');
-                           })
-                           $(this).addClass('active');
+            $('a').each(function () {
+                $(this).removeClass('active');
+            })
+            $(this).addClass('active');
 
-                           var target = this.hash,
-                               menu = target;
-                           $target = $(target);
-                           if ($(window).width() < 900) {
-                               var topDistance = 250;
-                           } else {
-                               var topDistance = 50;
-                           }
-                           $('html, body').stop().animate({
-                               'scrollTop': $target.offset().top - topDistance
-                           }, 500, 'swing', function () {
-                               $(document).on("scroll", onScroll);
-                           });
-                       });
-                   });
+            var target = this.hash,
+                menu = target;
+            $target = $(target);
+            if ($(window).width() < 900) {
+                var topDistance = 250;
+            } else {
+                var topDistance = 50;
+            }
+            $('html, body').stop().animate({
+                'scrollTop': $target.offset().top - topDistance
+            }, 500, 'swing', function () {
+                $(document).on("scroll", onScroll);
+            });
+        });
+    });
 
-                   function onScroll(event) {
-                       var scrollPos = $(document).scrollTop();
-                       $('#userOptions a').each(function () {
-                           var currLink = $(this);
-                           var refElement = $(currLink.attr("href"));
-                           if (refElement.position().top <= scrollPos && refElement.position().top + refElement.height() > scrollPos) {
-                               $('#userOptions ul li a').removeClass("active");
-                               currLink.addClass("active");
-                           }
-                           else {
-                               currLink.removeClass("active");
-                           }
-                       });
-                   }
+    function onScroll(event) {
+        var scrollPos = $(document).scrollTop();
+        $('#userOptions a').each(function () {
+            var currLink = $(this);
+            var refElement = $(currLink.attr("href"));
+            if (refElement.position().top <= scrollPos && refElement.position().top + refElement.height() > scrollPos) {
+                $('#userOptions ul li a').removeClass("active");
+                currLink.addClass("active");
+            }
+            else {
+                currLink.removeClass("active");
+            }
+        });
+    }
 </script>
 <br>
 <br>
