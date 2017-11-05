@@ -67,7 +67,7 @@ mongoose.connect('mongodb://Test:123456789@ds237475.mlab.com:37475/flame', funct
                 // Create function to send status
                 sendStatus = function(s) {
                     socket.emit('status', s);
-                }
+                };
 
                 // Get chats from mongo collection
                 chat.find().limit(100).sort({ _id: 1 }).toArray(function(err, res) {
@@ -112,9 +112,6 @@ mongoose.connect('mongodb://Test:123456789@ds237475.mlab.com:37475/flame', funct
                 });
             });
         });
-
-
-
     }
 });
 

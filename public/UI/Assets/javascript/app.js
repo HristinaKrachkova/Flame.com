@@ -74,15 +74,23 @@ app.config(function($routeProvider) {
     })
     .controller('profile', function($scope) {
         $scope.signedUser = userDB.signedUser;
-        $scope.saveChanges = function() {
-            if ($('#inputAge').val())
-                {userDB.signedUser.age = $('#inputAge').val();}
-            if ($('#inputHeight').val())
-                {userDB.signedUser.height = $('#inputHeight').val();}
-            if ($('#inputGender').val())
-                {userDB.signedUser.gender = $('#inputGender').val();}
-            $scope.signedUser = userDB.signedUser;
-            userData();
+
+        $scope.saveChanges = function () {
+            var age = $('#inputAge').val();
+            var height = $('#inputHeight').val();
+            var gender = $('#inputGender').val();
+            var newEmail = $('#userEmailEdit').val();
+            var newPass = $('#userPassEdit').val();
+
+            userDB.updateUserData(newEmail, newPass, age, height, gender, function (data) {
+                if (data.success == true) {
+                    $scope.signedUser = userDB.signedUser;
+                    $scope.$apply();
+                    userData();
+                } else {
+                    // error updating user data
+                }
+            });
         };
     })
     .controller('fbLogin', function($scope, $location) {

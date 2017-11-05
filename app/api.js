@@ -65,12 +65,13 @@ module.exports = function(router) {
         user.firstName = firstName;
         user.lastName = lastName;
         user.email = email;
-        if (fbId === '') {
+        if (fbId == null) {
             fbId = null;
             user.setPassword(password);
         }
         user.likes = [];
         user.dislikes = [];
+        user.matches = [];
         user.facebookId = fbId;
 
         user.save(function(err) {
@@ -197,6 +198,8 @@ module.exports = function(router) {
                     'firstName': true,
                     'lastName': true,
                     'age': true,
+                    'height': true,
+                    'gender': true,
                     'image': true
                 }
             }
@@ -237,6 +240,40 @@ module.exports = function(router) {
                 return;
             }
             res.json({ success: false, message: 'Something went wrong.' });
+        });
+    });
+
+    // This is unsecure, but we'll improve it later
+    router.post('/updateUserData', function(req, res) {
+        var newEmail = req.body.newEmail;
+        var newPass = req.body.newPass;
+        var age = req.body.age;
+        var height = req.body.height;
+        var gender = req.body.gender;
+
+        console.log(req.body);
+
+        if (req.currentUser.facebookId === null && newPass != null) {
+            req.currentUser.setPassword(newPass);
+        }
+        if (newEmail != null) {
+            req.currentUser.email = newEmail;
+        }
+        if (age != null) {
+            req.currentUser.age = age;
+        }
+        if (height != null) {
+            req.currentUser.height = height;
+        }
+        if (gender != null) {
+            req.currentUser.gender = gender;
+        }
+        req.currentUser.save(function (err) {
+            if (err) {
+                res.json({ success: false, error: err });
+            } else {
+                res.json({ success: true, user: req.currentUser });
+            }
         });
     });
 

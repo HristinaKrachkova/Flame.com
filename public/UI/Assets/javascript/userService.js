@@ -10,7 +10,7 @@ var userDB = (function() {
         this.email = email;
 
         this.profileImage = '';
-        this.photos = ["https://ichef-1.bbci.co.uk/news/660/cpsprodpb/180CD/production/_97090589_gettyimages-814600274.jpg"];
+        this.photos = ['https://ichef-1.bbci.co.uk/news/660/cpsprodpb/180CD/production/_97090589_gettyimages-814600274.jpg'];
         this.likedPersons = [];
         this.messages = [];
 
@@ -57,18 +57,15 @@ var userDB = (function() {
     };
 
     _user.prototype.setUserGender = function(gender) {
-        if (this.gender == undefined)
-            {this.gender = gender;}
+        if (this.gender == undefined) { this.gender = gender; }
     };
 
     _user.prototype.setUserHeight = function(height) {
-        if (height > 50)
-            {this.height = height;}
+        if (height > 50) { this.height = height; }
     };
 
     _user.prototype.setUserWeight = function(weight) {
-        if (weight > 30 && weight < 250)
-            {this.weight = weight;}
+        if (weight > 30 && weight < 250) { this.weight = weight; }
     };
 
     _userDB.prototype.register = function(firstName, lastName, password, email, facebookId, callback) {
@@ -152,6 +149,21 @@ var userDB = (function() {
             url: './api/loginWithFb',
             method: 'POST',
             data: { id: id }
+        }).done(function (data) {
+            if (data.success == true) {
+                self.signedUser = data.user;
+            }
+            callback(data);
+        });
+    };
+
+    _userDB.prototype.updateUserData = function (newEmail, newPass, age, height, gender, callback) {
+        var self = this;
+
+        $.ajax({
+            url: './api/updateUserData',
+            method: 'POST',
+            data: { newEmail: newEmail, newPass: newPass, age: age, height: height, gender: gender }
         }).done(function (data) {
             if (data.success == true) {
                 self.signedUser = data.user;
