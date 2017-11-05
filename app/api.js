@@ -14,6 +14,12 @@ module.exports = function(router) {
         });
     }
 
+    function getUserByFbId(id, callback) {
+        User.findOne({ facebookId: id }).exec(function(err, user) {
+            callback(err, user);
+        });
+    }
+
     // Function that processes like/dislike input and handles common errors
     function handleLikeDislike(req, res, callback) {
         // Get the id of the liked/disliked user
@@ -52,14 +58,20 @@ module.exports = function(router) {
         var lastName = req.body.lastName;
         var password = req.body.password;
         var email = req.body.email;
+        var fbId = req.body.fbId;
 
         var user = new User();
 
         user.firstName = firstName;
         user.lastName = lastName;
         user.email = email;
-        user.setPassword(password);
+        if (fbId === '') {
+            fbId = null;
+            user.setPassword(password);
+        }
         user.likes = [];
+        user.dislikes = [];
+        user.facebookId = fbId;
 
         user.save(function(err) {
             if (err) {
@@ -76,11 +88,13 @@ module.exports = function(router) {
 
         getUserByEmail(email, function(err, user) {
             if (user) {
-                if (user.comparePassword(password)) {
-                    req.session.userId = user._id;
-                    res.json({ success: true, user: user });
+                if (user.facebookId === null) {
+                    if (user.comparePassword(password)) {
+                        req.session.userId = user._id;
+                        res.json({ success: true, user: user });
 
-                    return;
+                        return;
+                    }
                 }
             }
             res.json({ success: false, message: 'Something went wrong.' });
@@ -160,34 +174,33 @@ module.exports = function(router) {
         // Select a random person from the database, that has not already been liked/disliked
         User.aggregate(
             [{
-                    $match: {
-                        '$and': [{
-                                '_id': { '$nin': req.currentUser.likes }
-                            },
-                            {
-                                '_id': { '$nin': req.currentUser.dislikes }
-                            },
-                            {
-                                '_id': { '$ne': req.currentUser._id }
-                            }
-                        ]
+                $match: {
+                    '$and': [{
+                        '_id': { '$nin': req.currentUser.likes }
+                    },
+                    {
+                        '_id': { '$nin': req.currentUser.dislikes }
+                    },
+                    {
+                        '_id': { '$ne': req.currentUser._id }
                     }
-                },
-                {
-                    $sample: {
-                        size: 1
-                    }
-                },
-                {
-                    $project: {
-                        'firstName': true,
-                        'lastName': true,
-                        'age': true,
-                        'image': true
-                    }
+                    ]
                 }
-            ],
-            function(err, users) {
+            },
+            {
+                $sample: {
+                    size: 1
+                }
+            },
+            {
+                $project: {
+                    'firstName': true,
+                    'lastName': true,
+                    'age': true,
+                    'image': true
+                }
+            }
+            ], function(err, users) {
                 if (err) {
                     console.log(err);
                     res.json({ success: false, message: 'Something went wrong.' });
@@ -197,10 +210,34 @@ module.exports = function(router) {
                 }
             }
         );
-        // User.aggregate().select('firstName lastName age _id').sample(1).exec(function (err, users) {
-        //    console.log(err);
-        //    console.log(users);
-        // });
+    });
+
+    router.post('/checkFbUser', function(req, res) {
+        var id = req.body.id;
+
+        console.log(id);
+        getUserByFbId(id, function(err, user) {
+            if (user) {
+                res.json({ success: true, exists: true });
+            } else {
+                res.json({ success: true, exists: false });
+            }
+        });
+    });
+
+    // This is unsecure, but we'll improve it later
+    router.post('/loginWithFB', function(req, res) {
+        var id = req.body.id;
+
+        getUserByFbId(id, function(err, user) {
+            if (user) {
+                req.session.userId = user._id;
+                res.json({ success: true, user: user });
+
+                return;
+            }
+            res.json({ success: false, message: 'Something went wrong.' });
+        });
     });
 
     return router;

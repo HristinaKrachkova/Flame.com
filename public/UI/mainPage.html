@@ -5,8 +5,8 @@
 <div id="banner">
     <div id="overlay"></div>
 </div>
-<div class="register_and_login">
-    <button class="facebookLogIn button">
+<div class="register_and_login" ng-controller="fbLogin">
+    <button class="facebookLogIn button" id="fbLoginButton" ng-click="fbLogin()">
         <img src="Assets/Images/Icons and logos/facebook-logo.png" alt="">
         <span class="facebook">Вход с Facebook</span>
     </button>

@@ -71,11 +71,11 @@ var userDB = (function() {
             {this.weight = weight;}
     };
 
-    _userDB.prototype.register = function(firstName, lastName, password, email, callback) {
+    _userDB.prototype.register = function(firstName, lastName, password, email, facebookId, callback) {
         $.ajax({
             url: './api/register',
             method: 'POST',
-            data: { firstName: firstName, lastName: lastName, email: email, password: password }
+            data: { firstName: firstName, lastName: lastName, email: email, password: password, fbId: facebookId }
         }).done(function (data) {
             callback(data);
         });
@@ -131,6 +131,31 @@ var userDB = (function() {
             url: './api/getRandomUser',
             method: 'POST'
         }).done(function (data) {
+            callback(data);
+        });
+    };
+
+    _userDB.prototype.checkFbUser = function (id, callback) {
+        $.ajax({
+            url: './api/checkFbUser',
+            method: 'POST',
+            data: { id: id }
+        }).done(function (data) {
+            callback(data);
+        });
+    };
+
+    _userDB.prototype.loginWithFb = function (id, callback) {
+        var self = this;
+
+        $.ajax({
+            url: './api/loginWithFb',
+            method: 'POST',
+            data: { id: id }
+        }).done(function (data) {
+            if (data.success == true) {
+                self.signedUser = data.user;
+            }
             callback(data);
         });
     };

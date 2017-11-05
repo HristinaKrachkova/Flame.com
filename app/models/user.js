@@ -63,7 +63,7 @@ var passwordValidator = [
 var UserSchema = new Schema({
     firstName: { type: String, required: true, validate: nameValidator },
     lastName: { type: String, required: true, validate: nameValidator },
-    password: { type: String, required: true },
+    password: { type: String, required: false },
     email: { type: String, required: true, lowercase: true, unique: true, validate: emailValidator },
     age: { type: Number, required: false },
     gender: { type: String, required: false },
@@ -73,6 +73,8 @@ var UserSchema = new Schema({
     likes: { type: Array, required: false, default: [] },
     dislikes: { type: Array, required: false, default: [] },
     matches: { type: Array, required: false, default: [] },
+    facebookId: { type: String, required: false },
+
     facebookUrl: { type: String, required: false, default: "http://www.facebook.com" },
     profileImage: { type: String, required: false },
     photos: { type: Array, required: false, default: [] },
