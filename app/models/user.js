@@ -75,14 +75,16 @@ var UserSchema = new Schema({
     matches: { type: Array, required: false, default: [] },
     facebookId: { type: String, required: false },
     profileImage: { type: String, required: false },
-
+    moreInfo: { type: String, required: false },
     facebookUrl: { type: String, required: false, default: 'http://www.facebook.com' },
     photos: { type: Array, required: false, default: [] },
     messages: { type: Array, required: false, default: [] },
-    preferences: { type: Object, required: false }
-
+    preferences: { type: Object, required: false },
+    searchGender: { type: String, required: false },
+    searchMaxDistance: { type: String, required: false },
+    searchMminAge: { type: String, required: false },
+    searchMmaxAge: { type: String, required: false },
 });
-
 // Middleware to ensure password is encrypted before saving user to database
 // UserSchema.pre('save', function(next) {
 //    var user = this;

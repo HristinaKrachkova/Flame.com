@@ -157,13 +157,13 @@ var userDB = (function() {
         });
     };
 
-    _userDB.prototype.updateUserData = function(newEmail, newPass, age, height, gender, callback) {
+    _userDB.prototype.updateUserData = function(newEmail, newPass, age, height, gender, moreInfo, callback) {
         var self = this;
 
         $.ajax({
             url: './api/updateUserData',
             method: 'POST',
-            data: { newEmail: newEmail, newPass: newPass, age: age, height: height, gender: gender }
+            data: { newEmail: newEmail, newPass: newPass, age: age, height: height, gender: gender, moreInfo: moreInfo }
         }).done(function(data) {
             if (data.success == true) {
                 self.signedUser = data.user;
