@@ -27,7 +27,7 @@
         console.log('Connected to socket...');
         // Handle Output
         socket.on('output', function(data) {
-            // console.log(data);
+            console.log(data);
             if (data.length) {
                 for (var x = 0; x < data.length; x++) {
                     // Build out message div

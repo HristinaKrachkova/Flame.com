@@ -3,9 +3,9 @@ var Schema = mongoose.Schema; // Assign Mongoose Schema function to variable
 
 // Message Mongoose Schema
 var MessageSchema = new Schema({
-    senderId: { type: ObjectId, required: true },
-    receiverId: { type: ObjectId, required: true },
-    newMessage: { type: newMessage, required: true },
+    senderName: { type: String, required: true },
+    receiverName: { type: String, required: true },
+    newMessage: { type: String, required: true }
 });
 
 
