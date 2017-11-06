@@ -62,7 +62,7 @@ app.config(function($routeProvider) {
             }
         };
     })
-    .controller('messages', function($scope, socket) {
+    .controller('messages', function($scope, $timeout, socket) {
         $scope.currentUser = userDB.signedUser;
         $scope.messages = [];
 
@@ -72,9 +72,9 @@ app.config(function($routeProvider) {
             // Set status
             $scope.status = s;
             if (s !== statusDefault) {
-                var delay = setTimeout(function() {
+                var delay = $timeout(function() {
                     setStatus(statusDefault);
-                }, 4000);
+                }, 2000);
             }
         };
 
@@ -175,8 +175,9 @@ app.config(function($routeProvider) {
             var gender = $('#inputGender').val();
             var newEmail = $('#userEmailEdit').val();
             var newPass = $('#userPassEdit').val();
+            var newInfo = $('#moreInfo').val();
 
-            userDB.updateUserData(newEmail, newPass, age, height, gender, function(data) {
+            userDB.updateUserData(newEmail, newPass, age, height, gender, newInfo, function(data) {
                 if (data.success == true) {
                     $scope.signedUser = userDB.signedUser;
                     $scope.$apply();

@@ -268,6 +268,7 @@ module.exports = function(router) {
         var age = req.body.age;
         var height = req.body.height;
         var gender = req.body.gender;
+        var moreInfo = req.body.moreInfo;
 
         console.log(req.body);
 
@@ -285,6 +286,9 @@ module.exports = function(router) {
         }
         if (notEmpty(gender)) {
             req.currentUser.gender = gender;
+        }
+        if (notEmpty(moreInfo)) {
+            req.currentUser.moreInfo = moreInfo;
         }
         req.currentUser.save(function(err) {
             if (err) {
