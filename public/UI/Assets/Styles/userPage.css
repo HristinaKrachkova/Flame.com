@@ -1,4 +1,4 @@
-#userOptions{
+#userOptions, #messageMenu{
     width:310px;
     height:100%;
     background: linear-gradient(135deg, rgba(221,70,135,0.82) 0%, rgba(255,139,66,0.60) 100%);
@@ -108,6 +108,7 @@
 }
 
 #editUserContainer h1{
+    width:100%;
     background:linear-gradient(135deg, rgba(221,70,135,0.82) 0%, rgba(255,139,66,0.60) 100%);
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
