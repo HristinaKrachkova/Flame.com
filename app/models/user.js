@@ -61,8 +61,8 @@ var passwordValidator = [
 
 // User Mongoose Schema
 var UserSchema = new Schema({
-    firstName: { type: String, required: true, validate: nameValidator },
-    lastName: { type: String, required: true, validate: nameValidator },
+    firstName: { type: String, required: true},
+    lastName: { type: String, required: true},
     password: { type: String, required: false },
     email: { type: String, required: true, lowercase: true, unique: true, validate: emailValidator },
     age: { type: Number, required: false },
