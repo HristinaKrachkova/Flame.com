@@ -1,4 +1,5 @@
 ﻿var User = require('./models/user.js'); // Import User Model
+var Message = require('./models/message.js'); // Import Message Model
 var mongoose = require('mongoose'); // HTTP request logger middleware for Node.js
 
 module.exports = function(router) {
@@ -60,6 +61,15 @@ module.exports = function(router) {
             }
         });
     }
+
+    router.post('/newMessage', function(req, res) {
+
+        var senderId = req.body.senderId;
+        var receiverId = req.body.receiverId;
+        var newMessage = req.body.newMessage;
+
+        var chatMessage = new Message();
+    })
 
     router.post('/register', function(req, res) {
         var firstName = req.body.firstName;
