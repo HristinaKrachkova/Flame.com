@@ -20,23 +20,23 @@ function handleLogin(data, $scope, $location) {
 }
 
 app.config(function($routeProvider) {
-    $routeProvider
-        .when('/', {
-            templateUrl: 'mainPage.html'
-        })
-        .when('/login', {
-            templateUrl: 'emailLogIn.html'
-        })
-        .when('/user', {
-            templateUrl: 'userProfile.html'
-        })
-        .when('/messages', {
-            templateUrl: 'userMessages.html'
-        })
-        .when('/newpeople', {
-            templateUrl: 'newPeople.html'
-        });
-})
+        $routeProvider
+            .when('/', {
+                templateUrl: 'mainPage.html'
+            })
+            .when('/login', {
+                templateUrl: 'emailLogIn.html'
+            })
+            .when('/user', {
+                templateUrl: 'userProfile.html'
+            })
+            .when('/messages', {
+                templateUrl: 'userMessages.html'
+            })
+            .when('/newpeople', {
+                templateUrl: 'newPeople.html'
+            });
+    })
     .factory('socket', function($rootScope) {
         var socket = io.connect('http://127.0.0.1:4000');
 
@@ -357,8 +357,8 @@ app.config(function($routeProvider) {
         }(document, 'script', 'facebook-jssdk'));
     })
 
-    .controller('newpeople', function($scope) {
-    // Stores the latest random user;
+.controller('newpeople', function($scope) {
+        // Stores the latest random user;
         var newPerson = null;
 
         // Loads and displays a random person;
@@ -376,7 +376,7 @@ app.config(function($routeProvider) {
         $scope.likeUser = function() {
             userDB.likeUser(newPerson._id, function(data) {
                 if (data.success == true && data.isMatch == true) {
-                // alert('Match!');
+                    // alert('Match!');
                     $('#notification p').html('&#10003; Имате съвпадение!');
                     $('#notification').css('background-color', '#3399cc').fadeIn('400');
                     setTimeout(function() {
@@ -392,6 +392,14 @@ app.config(function($routeProvider) {
                 getRandomUser();
             });
         };
+    })
+    .controller('matches', function($scope, $location) {
+        userDB.getMatchedUsers(function(data) {
+            if (data.success === true) {
+                $scope.matches = data.users;
+                $scope.$apply();
+            }
+        });
     });
 
 function updateUserLocation() {

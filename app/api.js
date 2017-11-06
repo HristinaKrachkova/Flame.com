@@ -192,34 +192,34 @@ module.exports = function(router) {
         // Select a random person from the database, that has not already been liked/disliked
         User.aggregate(
             [{
-                $match: {
-                    '$and': [{
-                        '_id': { '$nin': req.currentUser.likes }
-                    },
-                    {
-                        '_id': { '$nin': req.currentUser.dislikes }
-                    },
-                    {
-                        '_id': { '$ne': req.currentUser._id }
+                    $match: {
+                        '$and': [{
+                                '_id': { '$nin': req.currentUser.likes }
+                            },
+                            {
+                                '_id': { '$nin': req.currentUser.dislikes }
+                            },
+                            {
+                                '_id': { '$ne': req.currentUser._id }
+                            }
+                        ]
                     }
-                    ]
+                },
+                {
+                    $sample: {
+                        size: 1
+                    }
+                },
+                {
+                    $project: {
+                        'firstName': true,
+                        'lastName': true,
+                        'age': true,
+                        'height': true,
+                        'gender': true,
+                        'profileImage': true
+                    }
                 }
-            },
-            {
-                $sample: {
-                    size: 1
-                }
-            },
-            {
-                $project: {
-                    'firstName': true,
-                    'lastName': true,
-                    'age': true,
-                    'height': true,
-                    'gender': true,
-                    'profileImage': true
-                }
-            }
             ],
             function(err, users) {
                 if (err) {
@@ -352,6 +352,44 @@ module.exports = function(router) {
     router.post('/logout', function(req, res) {
         delete req.session.userId;
         res.json({ success: true });
+    });
+
+    router.post('/getMatchedUsers', function(req, res) {
+        // Check if logged in
+        if (!req.currentUser) {
+            res.json({ success: false, message: 'You are not logged in.' });
+
+            return;
+        }
+
+        // Select a random person from the database, that has not already been liked/disliked
+        User.aggregate(
+            [{
+                    $match: {
+                        '_id': { '$in': req.currentUser.matches }
+                    },
+                },
+                {
+                    $project: {
+                        'firstName': true,
+                        'lastName': true,
+                        'age': true,
+                        'height': true,
+                        'gender': true,
+                        'profileImage': true
+                    }
+                }
+            ],
+            function(err, users) {
+                if (err) {
+                    console.log(err);
+                    res.json({ success: false, message: 'Something went wrong.', error: err });
+                } else {
+                    console.log(users);
+                    res.json({ success: true, users: users });
+                }
+            }
+        );
     });
 
     return router;

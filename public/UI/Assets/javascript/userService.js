@@ -227,5 +227,16 @@ var userDB = (function() {
         });
     };
 
+    _userDB.prototype.getMatchedUsers = function(callback) {
+        var self = this;
+
+        $.ajax({
+            url: './api/getMatchedUsers',
+            method: 'POST'
+        }).done(function(data) {
+            callback(data);
+        });
+    };
+
     return new _userDB();
 }());
