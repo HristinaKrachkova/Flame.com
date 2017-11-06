@@ -237,6 +237,7 @@ nav>ul {
 
 
 main {
+    min-height:100%;
     text-align: center;
     padding-top: 100px;
     background-image: url('https://www.toptal.com/designers/subtlepatterns/patterns/swirl_pattern.png');
