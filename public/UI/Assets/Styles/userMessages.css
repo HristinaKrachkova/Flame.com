@@ -1,5 +1,6 @@
-#matchedPeople{
+#matchedPeople, #chatHistory{
     width:65%;
+    min-width:350px;
     background-color:#fafafa;
    min-height:140px;
     margin:auto;
@@ -106,4 +107,44 @@ cursor: pointer;
     height:20px;
     font-size:10px;
     width:initial;
+}
+
+#chatHistory .image-cropper{
+    height:100px;
+    width:100px;
+    margin:0;
+    float:left;
+}
+
+#chatHistory .messageDescription{
+    margin-top:25px;
+    margin-left:125px;
+}
+
+#chatHistory h2, #chatHistory p{
+    margin:0;
+}
+
+#chatHistory li{
+    margin:20px;
+    padding:10px;
+    border-radius:10px;
+    background-color:#eee;
+}
+
+#chatHistory ul{
+    display:flex;
+    flex-direction: column;
+}
+
+#messageMenu{
+    overflow: scroll;
+}
+
+#matchedPeopleWrapper{
+    margin-bottom:50px;
+}
+
+main{
+    padding-bottom:50px;
 }
