@@ -2,7 +2,7 @@
     width:65%;
     background-color:#fafafa;
    min-height:140px;
-    margin-left:340px;
+    margin:auto;
     text-align: left;
     padding:15px;
     box-sizing: border-box;
@@ -20,8 +20,8 @@
 }
 
 main h1{
-    /* margin-left:340px; */
-    /* width:65%; */
+    width:65%;
+    margin:auto;
     margin-bottom:0px;
     background:linear-gradient(135deg, rgba(221,70,135,0.82) 0%, rgba(255,139,66,0.60) 100%);
     border-top-left-radius: 10px;
@@ -74,26 +74,32 @@ cursor: pointer;
     display:inline-block;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    overflow: scroll;
+}
 
+.messagesContainer h1{
+    width:100%;
 }
 
 #textarea{
-    width:90%;
+    width:96%;
     background-color:white;
-    position:absolute;
-    bottom:20px;
     border-radius:10px;
     border:none;
-    margin-left:-134px;
     height:50px;
+    margin-top:8px;
 }
 
 #chat{
     height:250px;
     width:90%;
+    margin-top:8px;
     background-color:white;
     border-radius:10px;
     margin:auto;
+    overflow: scroll;
+    padding:10px;
+    text-align: left;
 }
 
 #clear{
