@@ -16,7 +16,7 @@ mongo.connect('mongodb://127.0.0.1/mongochat', function(err, db) {
         // Create function to send status
         sendStatus = function(s) {
             socket.emit('status', s);
-        }
+        };
 
         // Get chats from mongo collection
         chat.find().limit(100).sort({ _id: 1 }).toArray(function(err, res) {

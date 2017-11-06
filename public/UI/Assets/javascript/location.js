@@ -13,7 +13,7 @@ $('#login').click = function() {
         var output = document.getElementById('out');
 
         if (!navigator.geolocation) {
-            output.innerHTML = '<p>Geolocation is not supported by your browser</p>';
+            output.innerHTML = '<p>За съжаление твоят браузър не поддържа локация.</p>';
 
             return;
         }
@@ -32,10 +32,10 @@ $('#login').click = function() {
         }
 
         function error() {
-            output.innerHTML = 'Unable to retrieve your location';
+            output.innerHTML = 'Локацията не може да бъде установена.';
         }
 
-        output.innerHTML = '<p>Locating…</p>';
+        output.innerHTML = '<p>Локализиране...</p>';
 
         navigator.geolocation.getCurrentPosition(success, error);
     }

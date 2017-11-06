@@ -214,6 +214,5 @@ var userDB = (function() {
         });
     };
 
-
     return new _userDB();
 }());
