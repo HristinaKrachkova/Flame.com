@@ -414,6 +414,23 @@ footer p, footer span{
         min-width:262px;
     }
 }
+
+#sliderKM, #sliderAge{
+    font-size:1.4em;
+    font-family: 'PT Sans Narrow', sans-serif;
+    color:#555;
+    text-align: left;
+    margin-bottom:8px;
+    margin:0px 50px;
+}
+
+#chooseKM a, #chooseAge a{
+    margin-left:0px !important;
+}
+
+#chooseKM, #chooseAge{
+    margin:10px 30px;
+}
 /* header{
     position:absolute;
     top:0px;

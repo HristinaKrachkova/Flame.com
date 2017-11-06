@@ -56,8 +56,10 @@
             <p>Пол:
                 <span id="genderInput">{{signedUser.gender}}</span>
             </p>
-            <textarea id="moreInfo" rows="4" cols="70">{{signedUser.moreInfo}}</textarea>
-            <br>
+            <p>
+                <textarea id="moreInfo" placeholder="Повече информация" rows="4" cols="70">{{signedUser.moreInfo}}</textarea>
+            </p>
+
             <button ng-click="saveChanges()">Запази Промените</button>
         </div>
         <div class="userCard" id="userPhotos">
@@ -124,14 +126,16 @@
                 <label for="genderPrefFemale">Жена</label>
             </div>
             <div id="sliderKM">
-                Максимално разстояние: <span id="currentval">1</span>
+                Максимално разстояние:
+                <span id="currentval">1</span>
             </div>
             <div id="chooseKM"></div>
 
             <br>
 
             <div id="sliderAge">
-                Възрастова граница : <span id="rangeval">20 - 30</span>
+                Възрастова граница :
+                <span id="rangeval">20 - 30</span>
             </div>
             <div id="chooseAge"></div>
             <button ng-click="savePreferences()">Запази промените</button>
@@ -140,15 +144,15 @@
 </div>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $(document).on("scroll", onScroll);
 
         //smoothscroll
-        $('a[href^="#"]').on('click', function(e) {
+        $('a[href^="#"]').on('click', function (e) {
             e.preventDefault();
             $(document).off("scroll");
 
-            $('a').each(function() {
+            $('a').each(function () {
                 $(this).removeClass('active');
             })
             $(this).addClass('active');
@@ -163,7 +167,7 @@
             }
             $('html, body').stop().animate({
                 'scrollTop': $target.offset().top - topDistance
-            }, 500, 'swing', function() {
+            }, 500, 'swing', function () {
                 $(document).on("scroll", onScroll);
             });
         });
@@ -171,7 +175,7 @@
 
     function onScroll(event) {
         var scrollPos = $(document).scrollTop();
-        $('#userOptions a').each(function() {
+        $('#userOptions a').each(function () {
             var currLink = $(this);
             var refElement = $(currLink.attr("href"));
             if (refElement.position().top <= scrollPos && refElement.position().top + refElement.height() > scrollPos) {
