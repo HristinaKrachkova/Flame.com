@@ -244,6 +244,7 @@ app.config(function($routeProvider) {
     .controller('newpeople', function($scope) {
         // Stores the latest random user;
         var newPerson = null;
+        var picture = null;
 
         // Loads and displays a random person;
         function getRandomUser() {
@@ -252,6 +253,11 @@ app.config(function($routeProvider) {
                     newPerson = data.user;
                     $scope.newPerson = data.user;
                     $scope.$apply();
+                }
+                if (data.success === true) {
+                    if (data.user === null) {
+                        picture = '<img src="Assets/Images/comeBackLater.jpg" src="Come Back Later"></img>';
+                    }
                 }
             });
         }
