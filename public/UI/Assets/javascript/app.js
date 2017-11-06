@@ -19,23 +19,94 @@ function handleLogin(data, $scope, $location) {
 }
 
 app.config(function($routeProvider) {
-    $routeProvider
-        .when('/', {
-            templateUrl: 'mainPage.html'
-        })
-        .when('/login', {
-            templateUrl: 'emailLogIn.html'
-        })
-        .when('/user', {
-            templateUrl: 'userProfile.html'
-        })
-        .when('/messages', {
-            templateUrl: 'userMessages.html'
-        })
-        .when('/newpeople', {
-            templateUrl: 'newPeople.html'
+        $routeProvider
+            .when('/', {
+                templateUrl: 'mainPage.html'
+            })
+            .when('/login', {
+                templateUrl: 'emailLogIn.html'
+            })
+            .when('/user', {
+                templateUrl: 'userProfile.html'
+            })
+            .when('/messages', {
+                templateUrl: 'userMessages.html'
+            })
+            .when('/newpeople', {
+                templateUrl: 'newPeople.html'
+            });
+    })
+    .factory('socket', function($rootScope) {
+        var socket = io.connect('http://127.0.0.1:4000');
+        return {
+            on: function(eventName, callback) {
+                socket.on(eventName, function() {
+                    var args = arguments;
+                    $rootScope.$apply(function() {
+                        callback.apply(socket, args);
+                    });
+                });
+            },
+            emit: function(eventName, data, callback) {
+                socket.emit(eventName, data, function() {
+                    var args = arguments;
+                    $rootScope.$apply(function() {
+                        if (callback) {
+                            callback.apply(socket, args);
+                        }
+                    });
+                })
+            }
+        };
+    })
+    .controller('messages', function($scope, socket) {
+        $scope.currentUser = userDB.signedUser;
+        $scope.messages = [];
+
+        // Set default status
+        var statusDefault = '';
+        var setStatus = function(s) {
+            // Set status
+            $scope.status = s;
+            if (s !== statusDefault) {
+                var delay = setTimeout(function() {
+                    setStatus(statusDefault);
+                }, 4000);
+            }
+        }
+
+        socket.on('output', function(data) {
+            $scope.messages = $scope.messages.concat(data);
         });
-})
+        // Get Status From Server
+        socket.on('status', function(data) {
+            // get message status
+            setStatus((typeof data === 'object') ? data.message : data);
+            // If status is clear, clear text
+            if (data.clear) {
+                $scope.newMessage = '';
+            }
+        });
+
+        $scope.sendMessage = function(event) {
+            if (event.keyCode === 13) {
+                socket.emit('input', {
+                    name: $scope.currentUser.firstName || '',
+                    message: textarea.value
+                });
+            }
+        };
+
+        // Handle Chat Clear
+        $scope.clearMessages = function() {
+            socket.emit('clear');
+        };
+
+        // Clear Message
+        socket.on('cleared', function() {
+            messages.textContent = '';
+        });
+    })
     .controller('registrationForm', function($scope, $location) {
         $scope.registerAUser = function() {
             // event.preventDefault();
@@ -114,17 +185,48 @@ app.config(function($routeProvider) {
             });
         };
 
-        $('#profileImageInput').change(function () {
+        $scope.savePreferences = function() {
+            if ($('#genderPrefMale').prop('checked', true)) {
+                var searchGender = $('#genderPrefMale').val();
+            } else {
+                if ($('#genderPrefFemale').prop('checked', true)) {
+                    searchGender = $('#genderPrefFemale').val();
+                }
+            }
+
+            // if (($('#genderPrefMale').prop('checked', true)) && ($('#genderPrefFemale').prop('checked', true))) {
+            //     searchGender = $('#genderPrefMale').val() + ' ' + $('#genderPrefFemale').val();
+            // }
+            var searchMaxDistance = $('#currentval').val();
+            $('#rangeval').html().charAt(0)
+            var searchMminAge = $('#rangeval').html().charAt(0) + $('#rangeval').html().charAt(1);
+            var searchMmaxAge = $('#rangeval').html().charAt(5) + $('#rangeval').html().charAt(6);
+
+            userDB.updatePreferences(searchGender, searchMaxDistance, searchMminAge, searchMmaxAge, function(data) {
+                console.log(data)
+                if (data.success == true) {
+                    $scope.signedUser = userDB.signedUser;
+                    console.log($scope.signedUser)
+                    $scope.$apply();
+                    userData();
+                } else {
+                    console.log(data.error);
+                    // error updating user data
+                }
+            });
+        };
+
+        $('#profileImageInput').change(function() {
             var file = $('#profileImageInput').prop('files')[0];
 
             if (file != null) {
                 var reader = new FileReader();
 
                 reader.readAsDataURL(file);
-                reader.onload = function () {
+                reader.onload = function() {
                     // var imageWithType = "data:image; base64, ";
 
-                    userDB.updateUserImage(reader.result, function (data) {
+                    userDB.updateUserImage(reader.result, function(data) {
                         if (data.success == true) {
                             var thumbnail = $('#userPhoto');
 
@@ -134,7 +236,7 @@ app.config(function($routeProvider) {
                         }
                     });
                 };
-                reader.onerror = function (error) {
+                reader.onerror = function(error) {
                     console.log('Error: ', error);
                 };
             }
@@ -149,29 +251,29 @@ app.config(function($routeProvider) {
 
                     userDB.checkFbUser(fbId, function(checkData) {
                         if (checkData.success == true && checkData.exists == true) {
-                            userDB.loginWithFb(fbId, function (loginData) {
+                            userDB.loginWithFb(fbId, function(loginData) {
                                 handleLogin(loginData, $scope, $location);
                             });
                         } else {
                             FB.api('/me', { fields: 'first_name, last_name, email' }, function(meResponse) {
                                 // I think this password is secure!
-                                userDB.register(meResponse.first_name, meResponse.last_name, '', meResponse.email, fbId, function (data) {
+                                userDB.register(meResponse.first_name, meResponse.last_name, '', meResponse.email, fbId, function(data) {
                                     if (data.success) {
-                                        userDB.loginWithFb(fbId, function (loginData) {
+                                        userDB.loginWithFb(fbId, function(loginData) {
                                             handleLogin(loginData, $scope, $location);
 
                                             FB.api(
                                                 '/' + fbId + '/picture?type=square&width=300&height=300',
-                                                function (picResponse) {
+                                                function(picResponse) {
                                                     if (picResponse && !picResponse.error) {
                                                         var url = picResponse.data.url;
                                                         var xhr = new XMLHttpRequest();
 
-                                                        xhr.onload = function () {
+                                                        xhr.onload = function() {
                                                             var reader = new FileReader();
 
-                                                            reader.onloadend = function () {
-                                                                userDB.updateUserImage(reader.result, function (data) {
+                                                            reader.onloadend = function() {
+                                                                userDB.updateUserImage(reader.result, function(data) {
                                                                     if (data.success == true) {
                                                                         var thumbnail = $('#userPhoto');
 
@@ -241,48 +343,49 @@ app.config(function($routeProvider) {
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
     })
-    .controller('newpeople', function($scope) {
-        // Stores the latest random user;
-        var newPerson = null;
-        var picture = null;
 
-        // Loads and displays a random person;
-        function getRandomUser() {
-            userDB.getRandomUser(function(data) {
-                if (data.success == true) {
-                    newPerson = data.user;
-                    $scope.newPerson = data.user;
-                    $scope.$apply();
+.controller('newpeople', function($scope) {
+    // Stores the latest random user;
+    var newPerson = null;
+    var picture = null;
+
+    // Loads and displays a random person;
+    function getRandomUser() {
+        userDB.getRandomUser(function(data) {
+            if (data.success == true) {
+                newPerson = data.user;
+                $scope.newPerson = data.user;
+                $scope.$apply();
+            }
+            if (data.success === true) {
+                if (data.user === null) {
+                    picture = '<img src="Assets/Images/comeBackLater.jpg" src="Come Back Later"></img>';
                 }
-                if (data.success === true) {
-                    if (data.user === null) {
-                        picture = '<img src="Assets/Images/comeBackLater.jpg" src="Come Back Later"></img>';
-                    }
-                }
-            });
-        }
-        getRandomUser();
-        // Function for Like and check if you are a match and show the next random user;
-        $scope.likeUser = function() {
-            userDB.likeUser(newPerson._id, function(data) {
-                if (data.success == true && data.isMatch == true) {
-                    // alert('Match!');
-                    $('#notification p').html('&#10003; Имате съвпадение!');
-                    $('#notification').css('background-color', '#3399cc').fadeIn('400');
-                    setTimeout(function() {
-                        $('#notification').fadeOut('400');
-                    }, 3000);
-                }
-                getRandomUser();
-            });
-        };
-        // Function for Dislike and show the next random user;
-        $scope.dislikeUser = function() {
-            userDB.dislikeUser(newPerson._id, function(data) {
-                getRandomUser();
-            });
-        };
-    });
+            }
+        });
+    }
+    getRandomUser();
+    // Function for Like and check if you are a match and show the next random user;
+    $scope.likeUser = function() {
+        userDB.likeUser(newPerson._id, function(data) {
+            if (data.success == true && data.isMatch == true) {
+                // alert('Match!');
+                $('#notification p').html('&#10003; Имате съвпадение!');
+                $('#notification').css('background-color', '#3399cc').fadeIn('400');
+                setTimeout(function() {
+                    $('#notification').fadeOut('400');
+                }, 3000);
+            }
+            getRandomUser();
+        });
+    };
+    // Function for Dislike and show the next random user;
+    $scope.dislikeUser = function() {
+        userDB.dislikeUser(newPerson._id, function(data) {
+            getRandomUser();
+        });
+    };
+});
 
 function updateUserLocation() {
     if (userDB.signedUser) {

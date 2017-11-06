@@ -115,9 +115,9 @@
             </div>
             <div class="check">
                 <span id="targetGender">Търся: </span>
-                <input type="checkBox" id="genderPrefMale" class="checkbox">
+                <input type="checkBox" id="genderPrefMale" class="checkbox" value="Мъж">
                 <label for="genderPrefMale">Мъж</label>
-                <input type="checkBox" id="genderPrefFemale" class="checkbox">
+                <input type="checkBox" id="genderPrefFemale" class="checkbox" value="Жена">
                 <label for="genderPrefFemale">Жена</label>
             </div>
             <div id="sliderKM">
@@ -131,6 +131,7 @@
                 Възрастова граница : <span id="rangeval">20 - 30</span>
             </div>
             <div id="chooseAge"></div>
+            <button ng-click="savePreferences()">Запази Промените</button>
         </div>
     </div>
 </div>

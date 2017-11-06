@@ -6,6 +6,7 @@
          slide: function(e, ui) {
              var maxDistance = ui.value;
              $('#currentval').html(maxDistance);
+             $('#currentval').val(maxDistance);
          }
      });
 
@@ -18,6 +19,8 @@
              var minAge = ui.values[0];
              var maxAge = ui.values[1];
              $('#rangeval').html(minAge + " - " + maxAge);
+             $('#rageval').attr('min', minAge);
+             $('#rageval').attr('max', maxAge);
          }
      });
  });

@@ -296,6 +296,23 @@ module.exports = function(router) {
         });
     });
 
+    router.post('/updatePreferences', function(req, res) {
+        var searchGender = req.body.searchGender;
+        var searchMaxDistance = req.body.searchMaxDistance;
+        var searchMminAge = req.body.searchMminAge;
+        var searchMmaxAge = req.body.searchMmaxAge;
+
+        console.log(req.body);
+
+        req.currentUser.save(function(err) {
+            if (err) {
+                res.json({ success: false, error: err });
+            } else {
+                res.json({ success: true });
+            }
+        });
+    });
+
     router.post('/updateUserImage', function(req, res) {
         var image = req.body.image;
 

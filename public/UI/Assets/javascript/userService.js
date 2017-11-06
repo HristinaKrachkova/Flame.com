@@ -172,6 +172,21 @@ var userDB = (function() {
         });
     };
 
+    _userDB.prototype.updatePreferences = function(searchGender, searchMaxDistance, searchMminAge, searchMmaxAge, callback) {
+        var self = this;
+
+        $.ajax({
+            url: './api/updatePreferences',
+            method: 'POST',
+            data: { searchGender: searchGender, searchMaxDistance: searchMaxDistance, searchMminAge: searchMminAge, searchMmaxAge: searchMmaxAge }
+        }).done(function(data) {
+            // if (data.success == true) {
+            //     self.signedUser = data.user;
+            // }
+            callback(data);
+        });
+    };
+
     _userDB.prototype.updateUserImage = function(image, callback) {
         var self = this;
 
