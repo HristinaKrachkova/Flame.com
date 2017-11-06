@@ -1,6 +1,6 @@
 $(function() {
     $('#chooseKM').slider({
-        max: 5000,
+        max: 200,
         min: 1,
         value: 1,
         slide: function(e, ui) {
@@ -14,7 +14,7 @@ $(function() {
     $('#chooseAge').slider({
         range: true,
         min: 18,
-        max: 90,
+        max: 70,
         values: [20, 30],
         slide: function(event, ui) {
             var minAge = ui.values[0];
