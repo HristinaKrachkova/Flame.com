@@ -348,3 +348,14 @@
     border-radius: 12px;
     border: none;
 }
+
+.changeInput{
+    height:40px !important;
+}
+
+#moreInfo{
+    padding:12px;
+    display:block;
+    width:95%;
+    font-size:1em;
+}
