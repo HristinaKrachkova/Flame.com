@@ -1,7 +1,7 @@
 ﻿var User = require('./models/user.js'); // Import User Model
 var mongoose = require('mongoose'); // HTTP request logger middleware for Node.js
 
-module.exports = function (router) {
+module.exports = function(router) {
     function empty(obj) {
         return obj == null || obj == '' || obj == 'undefined';
     }
@@ -183,35 +183,36 @@ module.exports = function (router) {
         // Select a random person from the database, that has not already been liked/disliked
         User.aggregate(
             [{
-                $match: {
-                    '$and': [{
-                        '_id': { '$nin': req.currentUser.likes }
-                    },
-                    {
-                        '_id': { '$nin': req.currentUser.dislikes }
-                    },
-                    {
-                        '_id': { '$ne': req.currentUser._id }
+                    $match: {
+                        '$and': [{
+                                '_id': { '$nin': req.currentUser.likes }
+                            },
+                            {
+                                '_id': { '$nin': req.currentUser.dislikes }
+                            },
+                            {
+                                '_id': { '$ne': req.currentUser._id }
+                            }
+                        ]
                     }
-                    ]
+                },
+                {
+                    $sample: {
+                        size: 1
+                    }
+                },
+                {
+                    $project: {
+                        'firstName': true,
+                        'lastName': true,
+                        'age': true,
+                        'height': true,
+                        'gender': true,
+                        'profileImage': true
+                    }
                 }
-            },
-            {
-                $sample: {
-                    size: 1
-                }
-            },
-            {
-                $project: {
-                    'firstName': true,
-                    'lastName': true,
-                    'age': true,
-                    'height': true,
-                    'gender': true,
-                    'profileImage': true
-                }
-            }
-            ], function(err, users) {
+            ],
+            function(err, users) {
                 if (err) {
                     console.log(err);
                     res.json({ success: false, message: 'Something went wrong.' });
@@ -276,7 +277,7 @@ module.exports = function (router) {
         if (notEmpty(gender)) {
             req.currentUser.gender = gender;
         }
-        req.currentUser.save(function (err) {
+        req.currentUser.save(function(err) {
             if (err) {
                 res.json({ success: false, error: err });
             } else {
@@ -285,12 +286,12 @@ module.exports = function (router) {
         });
     });
 
-    router.post('/updateUserImage', function (req, res) {
+    router.post('/updateUserImage', function(req, res) {
         var image = req.body.image;
 
         req.currentUser.profileImage = image;
 
-        req.currentUser.save(function (err) {
+        req.currentUser.save(function(err) {
             if (err) {
                 res.json({ success: false, error: err });
             } else {
@@ -299,12 +300,12 @@ module.exports = function (router) {
         });
     });
 
-    router.post('/updateUserLocation', function (req, res) {
+    router.post('/updateUserLocation', function(req, res) {
         var location = req.body.location;
 
         req.currentUser.location = location;
 
-        req.currentUser.save(function (err) {
+        req.currentUser.save(function(err) {
             if (err) {
                 res.json({ success: false, error: err });
             } else {

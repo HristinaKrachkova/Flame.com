@@ -9,7 +9,7 @@
 <div class="profileCard" ng-controller="newpeople" ng-if="data.user">
         <h1> {{newPerson.firstName + ' ' + newPerson.lastName + ', ' + newPerson.age}} г.</h1>
         <div class="matchProfileCropper">
-            <img width="100%" src="{{ newPerson.profileImage }}" alt="">
+            <img src="{{ newPerson.profileImage }}" alt="">
         </div>
         <span class="emojiBut" ng-click="likeUser()" id='like'>
             <img width="50px" src="Assets/Images/love.png" alt="">

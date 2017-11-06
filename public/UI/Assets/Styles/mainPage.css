@@ -237,6 +237,7 @@ nav>ul {
 
 
 main {
+    min-height:100%;
     text-align: center;
     padding-top: 100px;
     background-image: url('https://www.toptal.com/designers/subtlepatterns/patterns/swirl_pattern.png');
@@ -329,8 +330,8 @@ footer p, footer span{
 .profileCard{
     width:25%;
     margin:auto;
-    min-width:250px;
-    max-width:350px;
+    min-width:280px;
+    max-width:300px;
     position:relative;
     background-color: #eee;
     border-radius:10px;
@@ -340,8 +341,16 @@ footer p, footer span{
 
 .matchProfileCropper{
     width:100%;
+    height:42%;
+    max-height:350px;
     overflow: hidden;
     position:relative;
+}
+
+.matchProfileCropper img{
+    height:60%;
+    min-height:390px;
+    min-width:350px;
 }
 
 .emojiBut{
