@@ -73,19 +73,19 @@ var userDB = (function() {
             url: './api/register',
             method: 'POST',
             data: { firstName: firstName, lastName: lastName, email: email, password: password, fbId: facebookId }
-        }).done(function (data) {
+        }).done(function(data) {
             callback(data);
         });
     };
 
-    _userDB.prototype.login = function (email, password, callback) {
+    _userDB.prototype.login = function(email, password, callback) {
         var self = this;
 
         $.ajax({
             url: './api/login',
             method: 'POST',
             data: { email: email, password: password }
-        }).done(function (data) {
+        }).done(function(data) {
             if (data.success == true) {
                 self.signedUser = data.user;
             }
@@ -93,63 +93,63 @@ var userDB = (function() {
         });
     };
 
-    _userDB.prototype.getUser = function (email, callback) {
+    _userDB.prototype.getUser = function(email, callback) {
         $.ajax({
             url: './api/getUser',
             method: 'POST',
             data: { email: email }
-        }).done(function (data) {
+        }).done(function(data) {
             callback(data);
         });
     };
 
-    _userDB.prototype.likeUser = function (id, callback) {
+    _userDB.prototype.likeUser = function(id, callback) {
         $.ajax({
             url: './api/like',
             method: 'POST',
             data: { id: id }
-        }).done(function (data) {
+        }).done(function(data) {
             callback(data);
         });
     };
 
-    _userDB.prototype.dislikeUser = function (id, callback) {
+    _userDB.prototype.dislikeUser = function(id, callback) {
         $.ajax({
             url: './api/dislike',
             method: 'POST',
             data: { id: id }
-        }).done(function (data) {
+        }).done(function(data) {
             callback(data);
         });
     };
 
-    _userDB.prototype.getRandomUser = function (callback) {
+    _userDB.prototype.getRandomUser = function(callback) {
         $.ajax({
             url: './api/getRandomUser',
             method: 'POST'
-        }).done(function (data) {
+        }).done(function(data) {
             callback(data);
         });
     };
 
-    _userDB.prototype.checkFbUser = function (id, callback) {
+    _userDB.prototype.checkFbUser = function(id, callback) {
         $.ajax({
             url: './api/checkFbUser',
             method: 'POST',
             data: { id: id }
-        }).done(function (data) {
+        }).done(function(data) {
             callback(data);
         });
     };
 
-    _userDB.prototype.loginWithFb = function (id, callback) {
+    _userDB.prototype.loginWithFb = function(id, callback) {
         var self = this;
 
         $.ajax({
             url: './api/loginWithFb',
             method: 'POST',
             data: { id: id }
-        }).done(function (data) {
+        }).done(function(data) {
             if (data.success == true) {
                 self.signedUser = data.user;
             }
@@ -157,14 +157,14 @@ var userDB = (function() {
         });
     };
 
-    _userDB.prototype.updateUserData = function (newEmail, newPass, age, height, gender, callback) {
+    _userDB.prototype.updateUserData = function(newEmail, newPass, age, height, gender, callback) {
         var self = this;
 
         $.ajax({
             url: './api/updateUserData',
             method: 'POST',
             data: { newEmail: newEmail, newPass: newPass, age: age, height: height, gender: gender }
-        }).done(function (data) {
+        }).done(function(data) {
             if (data.success == true) {
                 self.signedUser = data.user;
             }
@@ -172,14 +172,14 @@ var userDB = (function() {
         });
     };
 
-    _userDB.prototype.updateUserImage = function (image, callback) {
+    _userDB.prototype.updateUserImage = function(image, callback) {
         var self = this;
 
         $.ajax({
             url: './api/updateUserImage',
             method: 'POST',
             data: { image: image }
-        }).done(function (data) {
+        }).done(function(data) {
             if (data.success == true) {
 
             }
@@ -187,17 +187,18 @@ var userDB = (function() {
         });
     };
 
-    _userDB.prototype.updateUserLocation = function (longitude, latitude, callback) {
+    _userDB.prototype.updateUserLocation = function(longitude, latitude, callback) {
         var self = this;
 
         $.ajax({
             url: './api/updateUserLocation',
             method: 'POST',
-            data: { location: [ longitude, latitude ] }
-        }).done(function (data) {
+            data: { location: [longitude, latitude] }
+        }).done(function(data) {
             callback(data);
         });
     };
+
 
     return new _userDB();
 }());
