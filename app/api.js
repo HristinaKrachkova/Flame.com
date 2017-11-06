@@ -306,6 +306,11 @@ module.exports = function(router) {
         var searchMminAge = req.body.searchMminAge;
         var searchMmaxAge = req.body.searchMmaxAge;
 
+        req.currentUser.searchGender = searchGender;
+        req.currentUser.searchMaxDistance = searchMaxDistance;
+        req.currentUser.searchMminAge = searchMminAge;
+        req.currentUser.searchMmaxAge = searchMmaxAge;
+
         console.log(req.body);
 
         req.currentUser.save(function(err) {
