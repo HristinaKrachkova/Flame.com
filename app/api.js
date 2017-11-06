@@ -63,13 +63,12 @@ module.exports = function(router) {
     }
 
     router.post('/newMessage', function(req, res) {
-
         var senderId = req.body.senderId;
         var receiverId = req.body.receiverId;
         var newMessage = req.body.newMessage;
 
         var chatMessage = new Message();
-    })
+    });
 
     router.post('/register', function(req, res) {
         var firstName = req.body.firstName;
@@ -193,34 +192,34 @@ module.exports = function(router) {
         // Select a random person from the database, that has not already been liked/disliked
         User.aggregate(
             [{
-                    $match: {
-                        '$and': [{
-                                '_id': { '$nin': req.currentUser.likes }
-                            },
-                            {
-                                '_id': { '$nin': req.currentUser.dislikes }
-                            },
-                            {
-                                '_id': { '$ne': req.currentUser._id }
-                            }
-                        ]
+                $match: {
+                    '$and': [{
+                        '_id': { '$nin': req.currentUser.likes }
+                    },
+                    {
+                        '_id': { '$nin': req.currentUser.dislikes }
+                    },
+                    {
+                        '_id': { '$ne': req.currentUser._id }
                     }
-                },
-                {
-                    $sample: {
-                        size: 1
-                    }
-                },
-                {
-                    $project: {
-                        'firstName': true,
-                        'lastName': true,
-                        'age': true,
-                        'height': true,
-                        'gender': true,
-                        'profileImage': true
-                    }
+                    ]
                 }
+            },
+            {
+                $sample: {
+                    size: 1
+                }
+            },
+            {
+                $project: {
+                    'firstName': true,
+                    'lastName': true,
+                    'age': true,
+                    'height': true,
+                    'gender': true,
+                    'profileImage': true
+                }
+            }
             ],
             function(err, users) {
                 if (err) {
@@ -348,6 +347,11 @@ module.exports = function(router) {
                 res.json({ success: true });
             }
         });
+    });
+
+    router.post('/logout', function(req, res) {
+        delete req.session.userId;
+        res.json({ success: true });
     });
 
     return router;

@@ -145,6 +145,11 @@ cursor: pointer;
     margin-bottom:50px;
 }
 
+#matchedPeople, #chatHistory{
+    -moz-box-shadow: 0px 39px 120px -44px rgba(0,0,0,0.5);
+    box-shadow: 0px 39px 120px -44px rgba(0,0,0,0.5);
+}
+
 main{
     padding-bottom:50px;
 }

@@ -2,6 +2,7 @@ var app = angular.module('myApp', ['ngRoute']);
 
 function handleLogin(data, $scope, $location) {
     if (data.success == true) {
+        localStorage.removeItem('doNotAutoLogin');
         updateUserLocation();
         $('#profileLink').removeClass('disabled');
         $('#findLink').removeClass('disabled');
@@ -19,29 +20,31 @@ function handleLogin(data, $scope, $location) {
 }
 
 app.config(function($routeProvider) {
-        $routeProvider
-            .when('/', {
-                templateUrl: 'mainPage.html'
-            })
-            .when('/login', {
-                templateUrl: 'emailLogIn.html'
-            })
-            .when('/user', {
-                templateUrl: 'userProfile.html'
-            })
-            .when('/messages', {
-                templateUrl: 'userMessages.html'
-            })
-            .when('/newpeople', {
-                templateUrl: 'newPeople.html'
-            });
-    })
+    $routeProvider
+        .when('/', {
+            templateUrl: 'mainPage.html'
+        })
+        .when('/login', {
+            templateUrl: 'emailLogIn.html'
+        })
+        .when('/user', {
+            templateUrl: 'userProfile.html'
+        })
+        .when('/messages', {
+            templateUrl: 'userMessages.html'
+        })
+        .when('/newpeople', {
+            templateUrl: 'newPeople.html'
+        });
+})
     .factory('socket', function($rootScope) {
         var socket = io.connect('http://127.0.0.1:4000');
+
         return {
             on: function(eventName, callback) {
                 socket.on(eventName, function() {
                     var args = arguments;
+
                     $rootScope.$apply(function() {
                         callback.apply(socket, args);
                     });
@@ -50,12 +53,13 @@ app.config(function($routeProvider) {
             emit: function(eventName, data, callback) {
                 socket.emit(eventName, data, function() {
                     var args = arguments;
+
                     $rootScope.$apply(function() {
                         if (callback) {
                             callback.apply(socket, args);
                         }
                     });
-                })
+                });
             }
         };
     })
@@ -73,7 +77,7 @@ app.config(function($routeProvider) {
                     setStatus(statusDefault);
                 }, 2000);
             }
-        }
+        };
 
         socket.on('output', function(data) {
             $scope.messages = $scope.messages.concat(data);
@@ -160,11 +164,16 @@ app.config(function($routeProvider) {
         $scope.selectedImages = null;
         $scope.signedUser = userDB.signedUser;
         $scope.logout = function() {
-            userDB.signedUser = null;
-            $location.path('/');
-            $('#profileLink').addClass('disabled');
-            $('#findLink').addClass('disabled');
-            $('#messagesLink').addClass('disabled');
+            if (userDB.signedUser.facebookId != null) {
+                FB.logout();
+            }
+            userDB.logout(function() {
+                $location.path('/');
+                $scope.$apply();
+                $('#profileLink').addClass('disabled');
+                $('#findLink').addClass('disabled');
+                $('#messagesLink').addClass('disabled');
+            });
         };
         $scope.saveChanges = function() {
             var age = $('#inputAge').val();
@@ -199,15 +208,16 @@ app.config(function($routeProvider) {
             //     searchGender = $('#genderPrefMale').val() + ' ' + $('#genderPrefFemale').val();
             // }
             var searchMaxDistance = $('#currentval').val();
-            $('#rangeval').html().charAt(0)
+
+            $('#rangeval').html().charAt(0);
             var searchMminAge = $('#rangeval').html().charAt(0) + $('#rangeval').html().charAt(1);
             var searchMmaxAge = $('#rangeval').html().charAt(5) + $('#rangeval').html().charAt(6);
 
             userDB.updatePreferences(searchGender, searchMaxDistance, searchMminAge, searchMmaxAge, function(data) {
-                console.log(data)
+                console.log(data);
                 if (data.success == true) {
                     $scope.signedUser = userDB.signedUser;
-                    console.log($scope.signedUser)
+                    console.log($scope.signedUser);
                     $scope.$apply();
                     userData();
                 } else {
@@ -295,7 +305,7 @@ app.config(function($routeProvider) {
                                         });
                                     } else {
                                         console.log(data);
-                                        $('#notification p').html('&times; Грешно въведени данни! Моля опитайте отново.');
+                                        $('#notification p').html('&times; Грешно въведени данни. Моля, опитайте отново!');
                                         $('#notification').css('background-color', '#e5b85c').fadeIn('400');
                                         setTimeout(function() {
                                             $('#notification').fadeOut('400');
@@ -307,7 +317,7 @@ app.config(function($routeProvider) {
                     });
                 } else {
                     // alert('Mi ni staa!');
-                    $('#notification p').html('&times; Възникна грешка!.');
+                    $('#notification p').html('&times; Възникна грешка!');
                     $('#notification').css('background-color', '#e5b85c').fadeIn('400');
                     setTimeout(function() {
                         $('#notification').fadeOut('400');
@@ -325,13 +335,15 @@ app.config(function($routeProvider) {
                 version: 'v2.8' // use graph api version 2.8
             });
 
-            FB.getLoginStatus(function(response) {
-                if (response.status == 'connected') {
-                    userDB.loginWithFb(response.authResponse.userID, function(loginData) {
-                        handleLogin(loginData, $scope, $location);
-                    });
-                }
-            });
+            if (!localStorage.getItem('doNotAutoLogin')) {
+                FB.getLoginStatus(function(response) {
+                    if (response.status == 'connected') {
+                        userDB.loginWithFb(response.authResponse.userID, function(loginData) {
+                            handleLogin(loginData, $scope, $location);
+                        });
+                    }
+                });
+            }
         };
 
         (function(d, s, id) {
@@ -345,48 +357,42 @@ app.config(function($routeProvider) {
         }(document, 'script', 'facebook-jssdk'));
     })
 
-.controller('newpeople', function($scope) {
+    .controller('newpeople', function($scope) {
     // Stores the latest random user;
-    var newPerson = null;
-    var picture = null;
+        var newPerson = null;
 
-    // Loads and displays a random person;
-    function getRandomUser() {
-        userDB.getRandomUser(function(data) {
-            if (data.success == true) {
-                newPerson = data.user;
-                $scope.newPerson = data.user;
-                $scope.$apply();
-            }
-            if (data.success === true) {
-                if (data.user === null) {
-                    picture = '<img src="Assets/Images/comeBackLater.jpg" src="Come Back Later"></img>';
+        // Loads and displays a random person;
+        function getRandomUser() {
+            userDB.getRandomUser(function(data) {
+                if (data.success == true) {
+                    newPerson = data.user;
+                    $scope.newPerson = data.user;
+                    $scope.$apply();
                 }
-            }
-        });
-    }
-    getRandomUser();
-    // Function for Like and check if you are a match and show the next random user;
-    $scope.likeUser = function() {
-        userDB.likeUser(newPerson._id, function(data) {
-            if (data.success == true && data.isMatch == true) {
+            });
+        }
+        getRandomUser();
+        // Function for Like and check if you are a match and show the next random user;
+        $scope.likeUser = function() {
+            userDB.likeUser(newPerson._id, function(data) {
+                if (data.success == true && data.isMatch == true) {
                 // alert('Match!');
-                $('#notification p').html('&#10003; Имате съвпадение!');
-                $('#notification').css('background-color', '#3399cc').fadeIn('400');
-                setTimeout(function() {
-                    $('#notification').fadeOut('400');
-                }, 3000);
-            }
-            getRandomUser();
-        });
-    };
-    // Function for Dislike and show the next random user;
-    $scope.dislikeUser = function() {
-        userDB.dislikeUser(newPerson._id, function(data) {
-            getRandomUser();
-        });
-    };
-});
+                    $('#notification p').html('&#10003; Имате съвпадение!');
+                    $('#notification').css('background-color', '#3399cc').fadeIn('400');
+                    setTimeout(function() {
+                        $('#notification').fadeOut('400');
+                    }, 3000);
+                }
+                getRandomUser();
+            });
+        };
+        // Function for Dislike and show the next random user;
+        $scope.dislikeUser = function() {
+            userDB.dislikeUser(newPerson._id, function(data) {
+                getRandomUser();
+            });
+        };
+    });
 
 function updateUserLocation() {
     if (userDB.signedUser) {
