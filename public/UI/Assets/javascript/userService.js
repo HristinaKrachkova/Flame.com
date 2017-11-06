@@ -157,17 +157,32 @@ var userDB = (function() {
         });
     };
 
-    _userDB.prototype.updateUserData = function(newEmail, newPass, age, height, gender, callback) {
+    _userDB.prototype.updateUserData = function(newEmail, newPass, age, height, gender, moreInfo, callback) {
         var self = this;
 
         $.ajax({
             url: './api/updateUserData',
             method: 'POST',
-            data: { newEmail: newEmail, newPass: newPass, age: age, height: height, gender: gender }
+            data: { newEmail: newEmail, newPass: newPass, age: age, height: height, gender: gender, moreInfo: moreInfo }
         }).done(function(data) {
             if (data.success == true) {
                 self.signedUser = data.user;
             }
+            callback(data);
+        });
+    };
+
+    _userDB.prototype.updatePreferences = function(searchGender, searchMaxDistance, searchMminAge, searchMmaxAge, callback) {
+        var self = this;
+
+        $.ajax({
+            url: './api/updatePreferences',
+            method: 'POST',
+            data: { searchGender: searchGender, searchMaxDistance: searchMaxDistance, searchMminAge: searchMminAge, searchMmaxAge: searchMmaxAge }
+        }).done(function(data) {
+            // if (data.success == true) {
+            //     self.signedUser = data.user;
+            // }
             callback(data);
         });
     };
@@ -199,6 +214,18 @@ var userDB = (function() {
         });
     };
 
+    _userDB.prototype.logout = function(callback) {
+        var self = this;
+
+        $.ajax({
+            url: './api/logout',
+            method: 'POST'
+        }).done(function(data) {
+            self.signedUser = null;
+            localStorage.setItem('doNotAutoLogin', true);
+            callback(data);
+        });
+    };
 
     return new _userDB();
 }());

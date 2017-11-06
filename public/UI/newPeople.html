@@ -6,7 +6,8 @@
     <button id='like' ng-click="likeUser()">Like</button>
 </div> -->
 
-<div class="profileCard" ng-controller="newpeople" ng-if="data.user">
+<div class="profileCard" ng-controller="newpeople">
+    <div ng-if="newPerson">
         <h1> {{newPerson.firstName + ' ' + newPerson.lastName + ', ' + newPerson.age}} г.</h1>
         <div class="matchProfileCropper">
             <img src="{{ newPerson.profileImage }}" alt="">
@@ -21,8 +22,7 @@
             <img width="50px" src="Assets/Images/dislike.png" alt="">
         </span>
     </div>
-    <div ng-if="!data.user">
-        <img width='30%' src='Assets/Images/comeBackLater.jpg' alt='Come Back Later'></img>
+    <div ng-if="!newPerson">
+        <img width='100%' src='Assets/Images/comeBackLater.jpg' alt='Come Back Later'></img>
     </div>
 </div>
-

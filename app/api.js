@@ -1,4 +1,5 @@
 ﻿var User = require('./models/user.js'); // Import User Model
+var Message = require('./models/message.js'); // Import Message Model
 var mongoose = require('mongoose'); // HTTP request logger middleware for Node.js
 
 module.exports = function(router) {
@@ -60,6 +61,14 @@ module.exports = function(router) {
             }
         });
     }
+
+    router.post('/newMessage', function(req, res) {
+        var senderId = req.body.senderId;
+        var receiverId = req.body.receiverId;
+        var newMessage = req.body.newMessage;
+
+        var chatMessage = new Message();
+    });
 
     router.post('/register', function(req, res) {
         var firstName = req.body.firstName;
@@ -183,34 +192,34 @@ module.exports = function(router) {
         // Select a random person from the database, that has not already been liked/disliked
         User.aggregate(
             [{
-                    $match: {
-                        '$and': [{
-                                '_id': { '$nin': req.currentUser.likes }
-                            },
-                            {
-                                '_id': { '$nin': req.currentUser.dislikes }
-                            },
-                            {
-                                '_id': { '$ne': req.currentUser._id }
-                            }
-                        ]
+                $match: {
+                    '$and': [{
+                        '_id': { '$nin': req.currentUser.likes }
+                    },
+                    {
+                        '_id': { '$nin': req.currentUser.dislikes }
+                    },
+                    {
+                        '_id': { '$ne': req.currentUser._id }
                     }
-                },
-                {
-                    $sample: {
-                        size: 1
-                    }
-                },
-                {
-                    $project: {
-                        'firstName': true,
-                        'lastName': true,
-                        'age': true,
-                        'height': true,
-                        'gender': true,
-                        'profileImage': true
-                    }
+                    ]
                 }
+            },
+            {
+                $sample: {
+                    size: 1
+                }
+            },
+            {
+                $project: {
+                    'firstName': true,
+                    'lastName': true,
+                    'age': true,
+                    'height': true,
+                    'gender': true,
+                    'profileImage': true
+                }
+            }
             ],
             function(err, users) {
                 if (err) {
@@ -259,6 +268,7 @@ module.exports = function(router) {
         var age = req.body.age;
         var height = req.body.height;
         var gender = req.body.gender;
+        var moreInfo = req.body.moreInfo;
 
         console.log(req.body);
 
@@ -277,6 +287,26 @@ module.exports = function(router) {
         if (notEmpty(gender)) {
             req.currentUser.gender = gender;
         }
+        if (notEmpty(moreInfo)) {
+            req.currentUser.moreInfo = moreInfo;
+        }
+        req.currentUser.save(function(err) {
+            if (err) {
+                res.json({ success: false, error: err });
+            } else {
+                res.json({ success: true });
+            }
+        });
+    });
+
+    router.post('/updatePreferences', function(req, res) {
+        var searchGender = req.body.searchGender;
+        var searchMaxDistance = req.body.searchMaxDistance;
+        var searchMminAge = req.body.searchMminAge;
+        var searchMmaxAge = req.body.searchMmaxAge;
+
+        console.log(req.body);
+
         req.currentUser.save(function(err) {
             if (err) {
                 res.json({ success: false, error: err });
@@ -312,6 +342,11 @@ module.exports = function(router) {
                 res.json({ success: true });
             }
         });
+    });
+
+    router.post('/logout', function(req, res) {
+        delete req.session.userId;
+        res.json({ success: true });
     });
 
     return router;

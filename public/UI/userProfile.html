@@ -9,6 +9,7 @@
                 <img id="userPhoto" class="profielThumbnailPhoto" src="{{signedUser.profileImage}}" alt="photo">
             </div>
             <span id="changeProfile">
+                +
                 <input type="file" id="profileImageInput" accept=".jpg, .jpeg, .png">
             </span>
 
@@ -55,6 +56,8 @@
             <p>Пол:
                 <span id="genderInput">{{signedUser.gender}}</span>
             </p>
+            <textarea id="moreInfo" rows="4" cols="70">{{signedUser.moreInfo}}</textarea>
+            <br>
             <button ng-click="saveChanges()">Запази Промените</button>
         </div>
         <div class="userCard" id="userPhotos">
@@ -115,9 +118,9 @@
             </div>
             <div class="check">
                 <span id="targetGender">Търся: </span>
-                <input type="checkBox" id="genderPrefMale" class="checkbox">
+                <input type="checkBox" id="genderPrefMale" class="checkbox" value="Мъж">
                 <label for="genderPrefMale">Мъж</label>
-                <input type="checkBox" id="genderPrefFemale" class="checkbox">
+                <input type="checkBox" id="genderPrefFemale" class="checkbox" value="Жена">
                 <label for="genderPrefFemale">Жена</label>
             </div>
             <div id="sliderKM">
@@ -131,6 +134,7 @@
                 Възрастова граница : <span id="rangeval">20 - 30</span>
             </div>
             <div id="chooseAge"></div>
+            <button ng-click="savePreferences()">Запази промените</button>
         </div>
     </div>
 </div>
