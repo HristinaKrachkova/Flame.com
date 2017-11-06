@@ -214,5 +214,18 @@ var userDB = (function() {
         });
     };
 
+    _userDB.prototype.logout = function(callback) {
+        var self = this;
+
+        $.ajax({
+            url: './api/logout',
+            method: 'POST'
+        }).done(function(data) {
+            self.signedUser = null;
+            localStorage.setItem('doNotAutoLogin', true);
+            callback(data);
+        });
+    };
+
     return new _userDB();
 }());

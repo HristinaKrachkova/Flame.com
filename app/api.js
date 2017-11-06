@@ -344,5 +344,10 @@ module.exports = function(router) {
         });
     });
 
+    router.post('/logout', function(req, res) {
+        delete req.session.userId;
+        res.json({ success: true });
+    });
+
     return router;
 };

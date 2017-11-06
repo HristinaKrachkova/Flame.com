@@ -2,6 +2,7 @@ var app = angular.module('myApp', ['ngRoute']);
 
 function handleLogin(data, $scope, $location) {
     if (data.success == true) {
+        localStorage.removeItem('doNotAutoLogin');
         updateUserLocation();
         $('#profileLink').removeClass('disabled');
         $('#findLink').removeClass('disabled');
@@ -163,11 +164,16 @@ app.config(function($routeProvider) {
         $scope.selectedImages = null;
         $scope.signedUser = userDB.signedUser;
         $scope.logout = function() {
-            userDB.signedUser = null;
-            $location.path('/');
-            $('#profileLink').addClass('disabled');
-            $('#findLink').addClass('disabled');
-            $('#messagesLink').addClass('disabled');
+            if (userDB.signedUser.facebookId != null) {
+                FB.logout();
+            }
+            userDB.logout(function() {
+                $location.path('/');
+                $scope.$apply();
+                $('#profileLink').addClass('disabled');
+                $('#findLink').addClass('disabled');
+                $('#messagesLink').addClass('disabled');
+            });
         };
         $scope.saveChanges = function() {
             var age = $('#inputAge').val();
@@ -329,13 +335,15 @@ app.config(function($routeProvider) {
                 version: 'v2.8' // use graph api version 2.8
             });
 
-            FB.getLoginStatus(function(response) {
-                if (response.status == 'connected') {
-                    userDB.loginWithFb(response.authResponse.userID, function(loginData) {
-                        handleLogin(loginData, $scope, $location);
-                    });
-                }
-            });
+            if (!localStorage.getItem('doNotAutoLogin')) {
+                FB.getLoginStatus(function(response) {
+                    if (response.status == 'connected') {
+                        userDB.loginWithFb(response.authResponse.userID, function(loginData) {
+                            handleLogin(loginData, $scope, $location);
+                        });
+                    }
+                });
+            }
         };
 
         (function(d, s, id) {
@@ -352,7 +360,6 @@ app.config(function($routeProvider) {
     .controller('newpeople', function($scope) {
     // Stores the latest random user;
         var newPerson = null;
-        var picture = null;
 
         // Loads and displays a random person;
         function getRandomUser() {
