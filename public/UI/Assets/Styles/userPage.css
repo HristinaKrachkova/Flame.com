@@ -202,7 +202,8 @@
 .checkbox {
     width: 10px !important;
     height:10px !important;
-    transform: scale(2, 2)
+    transform: scale(2, 2);
+    margin-top:15px !important;
 }
 
 .checkbox+label {
@@ -220,6 +221,7 @@
     float: left;
     margin: 0% 5%;
     width: 100%;
+    margin-bottom:15px;
 }
 
 #targetGender {
@@ -337,11 +339,15 @@
         color: white;
         font-family: 'PT Sans Narrow', sans-serif;
         text-align: center;
-        margin-top: -35px;
+        margin-top: -68px;
         font-size: 1.4em;
     }
     #editUserContainer {
         margin-top: 150px;
+    }
+
+    #changeProfile{
+        top:82px;
     }
 }
 

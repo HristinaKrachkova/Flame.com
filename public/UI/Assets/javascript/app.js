@@ -72,6 +72,7 @@ app.config(function($routeProvider) {
         $scope.hideBackground = function() {
             $("#blackBackground").fadeOut("400");
             $(".container").fadeOut("400");
+            $("body").css("overflow", "visible");
         }
     })
     .controller('messages', function($scope, $timeout, socket) {
@@ -243,12 +244,17 @@ app.config(function($routeProvider) {
             });
         };
 
+<<<<<<< HEAD
         $scope.savePreferences = function() {
             if ($('#genderPrefMale').prop('checked', true)) {
+=======
+        $scope.savePreferences = function () {
+            if ($('#genderPrefMale').prop('checked')==true) {
+>>>>>>> a9092b7162a31e61eae810fe8f3d85d863e14b56
                 var searchGender = $('#genderPrefMale').val();
             } else {
-                if ($('#genderPrefFemale').prop('checked', true)) {
-                    searchGender = $('#genderPrefFemale').val();
+                if ($('#genderPrefFemale').prop('checked')==true) {
+                var searchGender = $('#genderPrefFemale').val();
                 }
             }
 

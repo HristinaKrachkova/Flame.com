@@ -35,6 +35,10 @@ main h1{
     box-shadow: 0px 11px 27px -15px rgba(0,0,0,0.75);
 }
 
+.classMessagesH1{
+    min-width:350px;
+}
+
 .overlay{
     position:relative;
     top:-104px;
@@ -172,4 +176,10 @@ cursor: pointer;
 
 main{
     padding-bottom:50px;
+}
+
+@media (max-width: 900px){
+    .responsive{
+        top:0;
+    } 
 }
