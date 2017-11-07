@@ -1,9 +1,9 @@
 var express = require('express'); // ExperssJS Framework
 var session = require('express-session');
 var app = express(); // Invoke express to variable for use in application
-var port = process.env.PORT || "https://young-crag-36367.herokuapp.com/"; // Set default port or assign a port in enviornment
+// var port = process.env.PORT || "https://young-crag-36367.herokuapp.com/"; // Set default port or assign a port in enviornment
 
-// var port = process.env.PORT || 8080; // Set default port or assign a port in enviornment
+var port = process.env.PORT || 8080; // Set default port or assign a port in enviornment
 var morgan = require('morgan'); // Import Morgan Package
 var mongoose = require('mongoose'); // HTTP request logger middleware for Node.js
 var bodyParser = require('body-parser'); // Node.js body parsing middleware. Parses incoming request bodies in a middleware before your handlers, available under req.body.
@@ -44,7 +44,6 @@ app.use(bodyParser.urlencoded({ limit: '5mb', extended: true })); // For parsing
 app.use(express.static(__dirname + '/public/UI')); // Allow front end to access public folder
 app.use('/api', appRoutes); // Assign name to end points (e.g., '/api/management/', '/api/users' ,etc. )
 
-
 // MONGOOSE CONFIGURATION
 mongoose.connect('mongodb://Test:123456789@ds237475.mlab.com:37475/flame', function(err) {
     if (err) {
@@ -74,6 +73,7 @@ mongoose.connect('mongodb://Test:123456789@ds237475.mlab.com:37475/flame', funct
 
             socket.on('identify', function(data) {
                 var id = data.id;
+
                 connections[id] = socket;
             });
 
@@ -91,6 +91,7 @@ mongoose.connect('mongodb://Test:123456789@ds237475.mlab.com:37475/flame', funct
                 } else {
                     // Insert message
                     var msg = new Message();
+
                     msg.sender = sender;
                     msg.receiver = receiver;
                     msg.message = message;
@@ -98,11 +99,12 @@ mongoose.connect('mongodb://Test:123456789@ds237475.mlab.com:37475/flame', funct
 
                     msg.save(function(err) {
                         var receiverSocket = connections[receiver];
+
                         if (receiverSocket != null) {
                             User.findById(sender, function(err, senderUser) {
-                                data.name = senderUser.firstName + " " + senderUser.lastName;
+                                data.name = senderUser.firstName + ' ' + senderUser.lastName;
 
-                                //receiverSocket.emit('output', [data]);
+                                // receiverSocket.emit('output', [data]);
                                 receiverSocket.emit('output', [data]);
                             });
                         }

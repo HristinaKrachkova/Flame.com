@@ -19,31 +19,32 @@ function handleLogin(data, $scope, $location) {
 }
 
 app.config(function($routeProvider) {
-        $routeProvider
-            .when('/', {
-                templateUrl: 'mainPage.html'
-            })
-            .when('/login', {
-                templateUrl: 'emailLogIn.html'
-            })
-            .when('/user', {
-                templateUrl: 'userProfile.html'
-            })
-            .when('/messages', {
-                templateUrl: 'userMessages.html'
-            })
-            .when('/newpeople', {
-                templateUrl: 'newPeople.html'
-            })
-            .when('/aboutUs', {
-                templateUrl: 'aboutUs.html'
-            })
-            .when('/contacts', {
-                templateUrl: 'contacts.html'
-            });
-    })
+    $routeProvider
+        .when('/', {
+            templateUrl: 'mainPage.html'
+        })
+        .when('/login', {
+            templateUrl: 'emailLogIn.html'
+        })
+        .when('/user', {
+            templateUrl: 'userProfile.html'
+        })
+        .when('/messages', {
+            templateUrl: 'userMessages.html'
+        })
+        .when('/newpeople', {
+            templateUrl: 'newPeople.html'
+        })
+        .when('/aboutUs', {
+            templateUrl: 'aboutUs.html'
+        })
+        .when('/contacts', {
+            templateUrl: 'contacts.html'
+        });
+})
     .factory('socket', function($rootScope) {
-        var socket = io.connect('https://young-crag-36367.herokuapp.com');
+        // var socket = io.connect('https://young-crag-36367.herokuapp.com');
+        var socket = io.connect('http://127.0.0.1:4000');
 
         return {
             on: function(eventName, callback) {
