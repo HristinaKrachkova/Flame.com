@@ -22,6 +22,7 @@
 
 main h1{
     width:65%;
+    min-width:350px;
     margin:auto;
     margin-bottom:0px;
     background:linear-gradient(135deg, rgba(221,70,135,0.82) 0%, rgba(255,139,66,0.60) 100%);
@@ -176,6 +177,6 @@ main{
 
 @media (max-width: 900px){
     .responsive{
-        top:0 !important;
+        top:0;
     } 
 }
