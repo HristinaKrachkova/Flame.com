@@ -337,11 +337,15 @@
         color: white;
         font-family: 'PT Sans Narrow', sans-serif;
         text-align: center;
-        margin-top: -35px;
+        margin-top: -68px;
         font-size: 1.4em;
     }
     #editUserContainer {
         margin-top: 150px;
+    }
+
+    #changeProfile{
+        top:82px;
     }
 }
 

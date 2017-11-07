@@ -67,6 +67,7 @@ app.config(function ($routeProvider) {
         $scope.hideBackground = function () {
             $("#blackBackground").fadeOut("400");
             $(".container").fadeOut("400");
+            $("body").css("overflow", "visible");
         }
     })
     .controller('messages', function ($scope, $timeout, socket) {
@@ -233,11 +234,11 @@ app.config(function ($routeProvider) {
         };
 
         $scope.savePreferences = function () {
-            if ($('#genderPrefMale').prop('checked', true)) {
+            if ($('#genderPrefMale').prop('checked')==true) {
                 var searchGender = $('#genderPrefMale').val();
             } else {
-                if ($('#genderPrefFemale').prop('checked', true)) {
-                    searchGender = $('#genderPrefFemale').val();
+                if ($('#genderPrefFemale').prop('checked')==true) {
+                var searchGender = $('#genderPrefFemale').val();
                 }
             }
 

@@ -173,3 +173,9 @@ cursor: pointer;
 main{
     padding-bottom:50px;
 }
+
+@media (max-width: 900px){
+    .responsive{
+        top:0 !important;
+    } 
+}
