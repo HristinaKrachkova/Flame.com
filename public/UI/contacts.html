@@ -1,67 +1,58 @@
 <div ng-controller="contacts">
-
-
-    <div id="ChatHistoryWrapper">
-        <h1>История</h1>
-        <div id="chatHistory">
-            <ul>
-                <li>
-                    <div class="image-cropper">
-                        <img id="userPhoto" class="profielThumbnailPhoto" src="https://assets.entrepreneur.com/content/3x2/1300/20150406145944-dos-donts-taking-perfect-linkedin-profile-picture-selfie-mobile-camera-2.jpeg" alt="photo">
-                    </div>
-                    <div class="messageDescription">
-                        <h2>Даниела Гутева</h2>
-                        <p>Здравей!</p>
-                    </div>
-
-                </li>
-                <li>
-                    <div class="image-cropper">
-                        <img id="userPhoto" class="profielThumbnailPhoto" src="https://assets.entrepreneur.com/content/3x2/1300/20150406145944-dos-donts-taking-perfect-linkedin-profile-picture-selfie-mobile-camera-2.jpeg" alt="photo">
-                    </div>
-                    <div class="messageDescription">
-                        <h2>Иванина Ботева</h2>
-                        <p>Искаш ли да се видим?</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="image-cropper">
-                        <img id="userPhoto" class="profielThumbnailPhoto" src="https://assets.entrepreneur.com/content/3x2/1300/20150406145944-dos-donts-taking-perfect-linkedin-profile-picture-selfie-mobile-camera-2.jpeg" alt="photo">
-                    </div>
-                    <div class="messageDescription">
-                        <h2>Златка Стоева</h2>
-                        <p>Как си?</p>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="row">
-            <div class="messagesContainer">
-                <!-- <h1>
-                    Flame chat
-                    <button id="clear" ng-click='clearMessages()'>Clear</button>
-                </h1> -->
-                <div id="chat">
-                    <br>
-                    <div class="card">
-                        <div id="messages">
-                            <p class='chat-message' ng-repeat='message in messages' , ng-if='messages.length > 0'>{{message.time}} {{message.name}} : {{message.message}}
-                            </p>
-                        </div>
-                    </div>
-                    <!-- <div id="status" , ng-if='status'>
-                        <p>{{status}}</p>
-                    </div> -->
-                    <br>
+            <div id="ChatHistoryWrapper">
+                <h1 class="classMessagesH1">Контакти:</h1>
+                <div id="chatHistory">
+                    <ul>
+                        <li>
+                            <div class="responsive image-cropper">
+                                <img id="userPhoto" class="profielThumbnailPhoto" src="Assets/Images/hristo.jpg" alt="photo">
+                            </div>
+                            <div class="messageDescription">
+                                <h2>Христо Събев</h2>
+                                <p>тел. 0885/54-63-02</p>
+                            </div>
+        
+                        </li>
+                        <li>
+                            <div class="responsive image-cropper">
+                                <img id="userPhoto" class="profielThumbnailPhoto" src="Assets/Images/hrisi.jpg" alt="photo">
+                            </div>
+                            <div class="messageDescription">
+                                <h2>Христина Крачкова</h2>
+                                <p>тел. 0887/69-00-12</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="responsive image-cropper">
+                                <img id="userPhoto" class="profielThumbnailPhoto" src="Assets/Images/ralitsa.jpg" alt="photo">
+                            </div>
+                            <div class="messageDescription">
+                                <h2>Ралица Солакова</h2>
+                                <p>тел. 0898/50-97-34</p>
+                            </div>
+                        </li>
+                        <li>
+                                <div class="messageDescription">
+                                      <p>  <div id="map"></div>
+                                        <script>
+                                          function initMap() {
+                                            var uluru = {lat: 42.664721, lng: 23.288281};
+                                            var map = new google.maps.Map(document.getElementById('map'), {
+                                              zoom: 4,
+                                              center: uluru
+                                            });
+                                            var marker = new google.maps.Marker({
+                                              position: uluru,
+                                              map: map
+                                            });
+                                          }
+                                        </script>
+                                        <script async defer
+                                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCymZe5zR2bSMB5cJbaMrI0qua_hzyfQKc&callback=initMap">
+                                        </script></p>
+                                    </div>
+                        </li>
+                    </ul>
                 </div>
-                <textarea id="textarea" placeholder="Enter message..." , ng-keyup='sendMessage($event)' , ng-model='newMessage'></textarea>
             </div>
-            <div id="mapContainer">
-                <img src="https://maps.google.com/maps/api/staticmap?center=37.7803,-122.4167&zoom=15&size=360x480&markers=color:red|37.7833,-122.4167" alt="">
-            </div>
-        </div>
-    </div>
 </div>

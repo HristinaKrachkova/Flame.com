@@ -231,7 +231,8 @@ module.exports = function(router) {
                         'age': true,
                         'height': true,
                         'gender': true,
-                        'profileImage': true
+                        'profileImage': true,
+                        'location': true
                     }
                 }
             ],
@@ -388,7 +389,8 @@ module.exports = function(router) {
                     'age': true,
                     'height': true,
                     'gender': true,
-                    'profileImage': true
+                    'profileImage': true,
+                    'location': true
                 }
             }
             ],
