@@ -63,11 +63,11 @@ app.config(function ($routeProvider) {
             }
         };
     })
-    .controller("blackBackground", function ($scope) {
+    .controller('blackBackground', function ($scope) {
         $scope.hideBackground = function () {
-            $("#blackBackground").fadeOut("400");
-            $(".container").fadeOut("400");
-        }
+            $('#blackBackground').fadeOut('400');
+            $('.container').fadeOut('400');
+        };
     })
     .controller('messages', function ($scope, $timeout, socket) {
         $scope.currentUser = userDB.signedUser;
@@ -90,6 +90,9 @@ app.config(function ($routeProvider) {
         };
 
         socket.on('output', function (data) {
+            data.forEach(function(msg) {
+                msg.time = new Date(msg.time);
+            });
             $scope.messages = $scope.messages.concat(data);
         });
         // Get Status From Server
@@ -104,15 +107,16 @@ app.config(function ($routeProvider) {
 
         $scope.sendMessage = function (event) {
             if (event.keyCode === 13) {
-                if ($("#textarea").val().length > 0) {
+                if ($('#textarea').val().length > 0) {
                     var message = {
                         sender: userDB.signedUser._id,
                         receiver: userDB.chatUser._id,
                         message: textarea.value,
                         time: new Date()
                     };
+
                     socket.emit('input', message);
-                    message.name = userDB.signedUser.firstName + " " + userDB.signedUser.lastName;
+                    message.name = userDB.signedUser.firstName + ' ' + userDB.signedUser.lastName;
                     $scope.messages = $scope.messages.concat([message]);
                     textarea.value = '';
                 }
@@ -138,15 +142,16 @@ app.config(function ($routeProvider) {
 
         $scope.chatWith = function (user) {
             userDB.chatUser = user;
+            $scope.location = user.location;
             $scope.messages = [];
-            $(".container").fadeIn("400");
-            $("#blackBackground").fadeIn("400");
-            $("body").css("overflow", "hidden");
+            $('.container').fadeIn('400');
+            $('#blackBackground').fadeIn('400');
+            $('body').css('overflow', 'hidden');
             userDB.getPreviousMessages(user, function (messages) {
                 $scope.messages = messages;
                 $scope.$apply();
             });
-        }
+        };
     })
     .controller('registrationForm', function ($scope, $location) {
         $scope.registerAUser = function () {
@@ -428,6 +433,9 @@ app.config(function ($routeProvider) {
             userDB.dislikeUser(newPerson._id, function (data) {
                 getRandomUser();
             });
+        };
+        $scope.nextUser = function() {
+            getRandomUser();
         };
     });
 

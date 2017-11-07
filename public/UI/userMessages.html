@@ -61,7 +61,7 @@
                     <br>
                     <div class="card">
                         <div id="messages">
-                            <p class='chat-message' ng-repeat='message in messages' , ng-if='messages.length > 0'>{{message.time}} {{message.name}} : {{message.message}}
+                            <p class='chat-message' ng-repeat='message in messages' , ng-if='messages.length > 0'>{{message.time.toLocaleTimeString()}} {{message.name}} : {{message.message}}
                             </p>
                         </div>
                     </div>
@@ -73,7 +73,7 @@
                 <textarea id="textarea" placeholder="Enter message..." , ng-keyup='sendMessage($event)' , ng-model='newMessage'></textarea>
             </div>
             <div id="mapContainer">
-                <img src="https://maps.google.com/maps/api/staticmap?center=37.7803,-122.4167&zoom=15&size=360x480&markers=color:red|37.7833,-122.4167" alt="">
+                <img src="https://maps.google.com/maps/api/staticmap?center={{location[0]}},{{location[1]}}&zoom=15&size=360x480&markers=color:red|{{location[0]}},{{location[1]}}" alt="">
             </div>
         </div>
     </div>
