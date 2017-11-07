@@ -43,7 +43,7 @@ app.config(function($routeProvider) {
             });
     })
     .factory('socket', function($rootScope) {
-        var socket = io.connect('http://127.0.0.1:4000');
+        var socket = io.connect('https://young-crag-36367.herokuapp.com');
 
         return {
             on: function(eventName, callback) {
