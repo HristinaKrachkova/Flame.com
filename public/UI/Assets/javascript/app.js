@@ -241,7 +241,6 @@ app.config(function($routeProvider) {
                 if (data.success == true) {
                     $scope.signedUser = userDB.signedUser;
                     $scope.$apply();
-                    userData();
                 } else {
                     console.log(data.error);
                     // error updating user data
@@ -278,7 +277,6 @@ app.config(function($routeProvider) {
                     $scope.signedUser = userDB.signedUser;
                     console.log($scope.signedUser);
                     $scope.$apply();
-                    userData();
                 } else {
                     console.log(data.error);
                     // error updating user data
