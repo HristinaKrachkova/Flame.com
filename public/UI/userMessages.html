@@ -13,49 +13,9 @@
         </div>
     </div>
 
-    <div id="ChatHistoryWrapper">
-        <h1 class="classMessagesH1">История</h1>
-        <div id="chatHistory">
-            <ul>
-                <li>
-                    <div class="responsive image-cropper">
-                        <img id="userPhoto" class="profielThumbnailPhoto" src="https://assets.entrepreneur.com/content/3x2/1300/20150406145944-dos-donts-taking-perfect-linkedin-profile-picture-selfie-mobile-camera-2.jpeg" alt="photo">
-                    </div>
-                    <div class="messageDescription">
-                        <h2>Даниела Гутева</h2>
-                        <p>Здравей!</p>
-                    </div>
-
-                </li>
-                <li>
-                    <div class="responsive image-cropper">
-                        <img id="userPhoto" class="profielThumbnailPhoto" src="https://assets.entrepreneur.com/content/3x2/1300/20150406145944-dos-donts-taking-perfect-linkedin-profile-picture-selfie-mobile-camera-2.jpeg" alt="photo">
-                    </div>
-                    <div class="messageDescription">
-                        <h2>Иванина Ботева</h2>
-                        <p>Искаш ли да се видим?</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="responsive image-cropper">
-                        <img id="userPhoto" class="profielThumbnailPhoto" src="https://assets.entrepreneur.com/content/3x2/1300/20150406145944-dos-donts-taking-perfect-linkedin-profile-picture-selfie-mobile-camera-2.jpeg" alt="photo">
-                    </div>
-                    <div class="messageDescription">
-                        <h2>Златка Стоева</h2>
-                        <p>Как си?</p>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-
     <div class="container">
         <div class="row">
             <div class="messagesContainer">
-                <!-- <h1>
-                    Flame chat
-                    <button id="clear" ng-click='clearMessages()'>Clear</button>
-                </h1> -->
                 <div id="chat">
                     <br>
                     <div class="card">
@@ -64,9 +24,6 @@
                             </p>
                         </div>
                     </div>
-                    <!-- <div id="status" , ng-if='status'>
-                        <p>{{status}}</p>
-                    </div> -->
                     <br>
                 </div>
                 <textarea id="textarea" placeholder="Enter message..." , ng-keyup='sendMessage($event)' , ng-model='newMessage'></textarea>

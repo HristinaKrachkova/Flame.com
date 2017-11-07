@@ -1,9 +1,8 @@
 var express = require('express'); // ExperssJS Framework
 var session = require('express-session');
 var app = express(); // Invoke express to variable for use in application
-var port = process.env.PORT || "https://young-crag-36367.herokuapp.com/"; // Set default port or assign a port in enviornment
-
-// var port = process.env.PORT || 8080; // Set default port or assign a port in enviornment
+// var port = process.env.PORT || "https://young-crag-36367.herokuapp.com/"; // Set default port or assign a port in enviornment
+var port = process.env.PORT || 8080; // Set default port or assign a port in enviornment
 var morgan = require('morgan'); // Import Morgan Package
 var mongoose = require('mongoose'); // HTTP request logger middleware for Node.js
 var bodyParser = require('body-parser'); // Node.js body parsing middleware. Parses incoming request bodies in a middleware before your handlers, available under req.body.
@@ -62,16 +61,6 @@ mongoose.connect('mongodb://Test:123456789@ds237475.mlab.com:37475/flame', funct
                 socket.emit('status', s);
             };
 
-            // // Get chats from mongo collection
-            // chat.find().limit(100).sort({ _id: 1 }).toArray(function(err, res) {
-            //     if (err) {
-            //         throw err;
-            //     }
-
-            //     // Emit the messages
-            //     socket.emit('output', res);
-            // });
-
             socket.on('identify', function(data) {
                 var id = data.id;
                 connections[id] = socket;
@@ -115,15 +104,6 @@ mongoose.connect('mongodb://Test:123456789@ds237475.mlab.com:37475/flame', funct
                     });
                 }
             });
-
-            // // Handle clear
-            // socket.on('clear', function(data) {
-            //     // Remove all chats from collection
-            //     chat.remove({}, function() {
-            //         // Emit cleared
-            //         socket.emit('cleared');
-            //     });
-            // });
         });
     }
 });

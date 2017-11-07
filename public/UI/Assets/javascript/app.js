@@ -43,7 +43,7 @@ app.config(function($routeProvider) {
             });
     })
     .factory('socket', function($rootScope) {
-        var socket = io.connect('https://young-crag-36367.herokuapp.com');
+        var socket = io.connect('http://127.0.0.1:4000');
 
         return {
             on: function(eventName, callback) {
@@ -161,7 +161,6 @@ app.config(function($routeProvider) {
     })
     .controller('registrationForm', function($scope, $location) {
         $scope.registerAUser = function() {
-            // event.preventDefault();
             var password = $('#password').val();
             var name = $('#name').val();
             var lastName = $('#lastName').val();
@@ -262,9 +261,6 @@ app.config(function($routeProvider) {
                 }
             }
 
-            // if (($('#genderPrefMale').prop('checked', true)) && ($('#genderPrefFemale').prop('checked', true))) {
-            //     searchGender = $('#genderPrefMale').val() + ' ' + $('#genderPrefFemale').val();
-            // }
             var searchMaxDistance = $('#currentval').val();
 
             $('#rangeval').html().charAt(0);
@@ -272,10 +268,8 @@ app.config(function($routeProvider) {
             var searchMmaxAge = $('#rangeval').html().charAt(5) + $('#rangeval').html().charAt(6);
 
             userDB.updatePreferences(searchGender, searchMaxDistance, searchMminAge, searchMmaxAge, function(data) {
-                console.log(data);
                 if (data.success == true) {
                     $scope.signedUser = userDB.signedUser;
-                    console.log($scope.signedUser);
                     $scope.$apply();
                 } else {
                     console.log(data.error);
@@ -377,7 +371,6 @@ app.config(function($routeProvider) {
                         }
                     });
                 } else {
-                    // alert('Mi ni staa!');
                     $('#notification p').html('&times; Възникна грешка!');
                     $('#notification').css('background-color', '#e5b85c').fadeIn('400');
                     setTimeout(function() {
@@ -436,7 +429,6 @@ app.config(function($routeProvider) {
         $scope.likeUser = function() {
             userDB.likeUser(newPerson._id, function(data) {
                 if (data.success == true && data.isMatch == true) {
-                    // alert('Match!');
                     $('#notification p').html('&#10003; Имате съвпадение!');
                     $('#notification').css('background-color', '#3399cc').fadeIn('400');
                     setTimeout(function() {

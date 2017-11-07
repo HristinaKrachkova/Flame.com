@@ -162,7 +162,6 @@ module.exports = function(router) {
 
             // Save the user to the database
             req.currentUser.save(function(err) {
-                console.log(err);
                 res.json({ success: true, isMatch: isMatch });
             });
         });
@@ -175,7 +174,6 @@ module.exports = function(router) {
 
             // Save the user to the database
             req.currentUser.save(function(err) {
-                console.log(err);
                 res.json({ success: true });
             });
         });
@@ -202,20 +200,20 @@ module.exports = function(router) {
                 {
                     $match: {
                         '$and': [{
-                            '_id': { '$nin': req.currentUser.likes }
-                        },
-                        {
-                            '_id': { '$nin': req.currentUser.dislikes }
-                        },
-                        {
-                            '_id': { '$ne': req.currentUser._id }
-                        },
-                        {
-                            'age': { '$gt': req.currentUser.searchMminAge, '$lt': req.currentUser.searchMmaxAge }
-                        },
-                        {
-                            'gender': { '$eq': req.currentUser.searchGender }
-                        }
+                                '_id': { '$nin': req.currentUser.likes }
+                            },
+                            {
+                                '_id': { '$nin': req.currentUser.dislikes }
+                            },
+                            {
+                                '_id': { '$ne': req.currentUser._id }
+                            },
+                            {
+                                'age': { '$gt': req.currentUser.searchMminAge, '$lt': req.currentUser.searchMmaxAge }
+                            },
+                            {
+                                'gender': { '$eq': req.currentUser.searchGender }
+                            }
                         ]
                     }
                 },
@@ -237,10 +235,8 @@ module.exports = function(router) {
             ],
             function(err, users) {
                 if (err) {
-                    console.log(err);
                     res.json({ success: false, message: 'Something went wrong.' });
                 } else {
-                    console.log(users);
                     res.json({ success: true, user: users[0] });
                 }
             }
@@ -250,7 +246,6 @@ module.exports = function(router) {
     router.post('/checkFbUser', function(req, res) {
         var id = req.body.id;
 
-        console.log(id);
         getUserByFbId(id, function(err, user) {
             if (user) {
                 res.json({ success: true, exists: true });
@@ -283,8 +278,6 @@ module.exports = function(router) {
         var height = req.body.height;
         var gender = req.body.gender;
         var moreInfo = req.body.moreInfo;
-
-        console.log(req.body);
 
         if (empty(req.currentUser.facebookId) && notEmpty(newPass)) {
             req.currentUser.setPassword(newPass);
@@ -377,27 +370,25 @@ module.exports = function(router) {
         // Select a random person from the database, that has not already been liked/disliked
         User.aggregate(
             [{
-                $match: {
-                    '_id': { '$in': req.currentUser.matches }
+                    $match: {
+                        '_id': { '$in': req.currentUser.matches }
+                    }
+                },
+                {
+                    $project: {
+                        'firstName': true,
+                        'lastName': true,
+                        'age': true,
+                        'height': true,
+                        'gender': true,
+                        'profileImage': true
+                    }
                 }
-            },
-            {
-                $project: {
-                    'firstName': true,
-                    'lastName': true,
-                    'age': true,
-                    'height': true,
-                    'gender': true,
-                    'profileImage': true
-                }
-            }
             ],
             function(err, users) {
                 if (err) {
-                    console.log(err);
                     res.json({ success: false, message: 'Something went wrong.', error: err });
                 } else {
-                    console.log(users);
                     res.json({ success: true, users: users });
                 }
             }
@@ -415,8 +406,6 @@ module.exports = function(router) {
         var id1 = req.body.id;
         var id2 = req.currentUser._id;
 
-        console.log(id1);
-        console.log(id2);
         id1 = mongoose.Types.ObjectId(id1);
         id2 = mongoose.Types.ObjectId(id2);
         // Select a random person from the database, that has not already been liked/disliked
@@ -424,13 +413,13 @@ module.exports = function(router) {
             [{
                 $match: {
                     '$or': [{
-                        'sender': id1,
-                        'receiver': id2
-                    },
-                    {
-                        'sender': id2,
-                        'receiver': id1
-                    }
+                            'sender': id1,
+                            'receiver': id2
+                        },
+                        {
+                            'sender': id2,
+                            'receiver': id1
+                        }
                     ]
                 }
             }],

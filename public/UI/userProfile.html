@@ -20,12 +20,8 @@
                     <a class="active" href="#info">Информация</a>
                 </li>
                 <li>
-                    <a href="#userPhotos">Снимки</a>
-                </li>
-                <li>
                     <a href="#pref">Предпочитания</a>
                 </li>
-                <li>Още</li>
                 <li ng-click="logout()">Изход</li>
             </ul>
         </div>
@@ -33,9 +29,6 @@
     <div id="editUserContainer">
         <div class="userCard" id="info">
             <h1>Информация</h1>
-            <p>Фейсбук профил:
-                <a href="https://www.facebook.com/">https://www.facebook.com/</a>
-            </p>
             <p id="nameP">Име:
                 <span>{{signedUser.firstName + " " + signedUser.lastName}}</span>
             </p>
@@ -68,67 +61,13 @@
 
             <button ng-click="saveChanges()">Запази Промените</button>
         </div>
-        <div class="userCard" id="userPhotos">
-            <h1>Снимки</h1>
-            <div id="photos">
-                <div class="photo" ng-repeat="photo in signedUser.photos">
-                    <div class="square-image-cropper">
-                        <img src="{{photo}}" alt="photo">
-                    </div>
-                    <div class="delete">&#10006;</div>
-                </div>
-                <!-- <div class="photo">
-                    <div class="square-image-cropper">
-                        <img src="https://ichef-1.bbci.co.uk/news/660/cpsprodpb/180CD/production/_97090589_gettyimages-814600274.jpg" alt="photo">
-                    </div>
-                    <div class="delete">&#10006;</div>
-                </div>
-                <div class="photo">
-                    <div class="square-image-cropper">
-                        <img src="https://media.licdn.com/media-proxy/ext?w=800&h=800&hash=U3mM6WTNoQoB6pohRpXkraWml3U%3D&ora=1%2CaFBCTXdkRmpGL2lvQUFBPQ%2CxAVta5g-0R6nlh8Tw1It6a2FowGz60oISIfYC2G8G2f1spyfNT-tdoDSfrKhsgUbfCoFhlI_IfnwEXO5H-7eUN2xAZgi4eCRfpSHVx0IeyUd3Tln7oYIGFx3kdKpF-qtMWsc8e1-TwyJC73iVV8vLQll8fq4GKH6GWxUi3WUbO71GJlCE-dQppdS23dtv_vsH5MV0rh4mGkwnEmw2Yr1ewwq5p-gKUG7VkZgCF_uH-5Vvayj1DeKp1zPkW_gjreYI7CBGPUyhzr4xu7vfzTahmlsqldA8ys_18ZbMiXRn_IY0BO_AfEBUBeBvunhGkK5oIAx_XQMrM6eOBahVn5dgyNkCa_5vEoeEKvZmgvlpzA1WsV5TgB2o8unGvGM9GeeY24wflWIRg9Ps4jKnJq7NNw_T_hQh8JCbddqZj4jYNMOLA_y1OsPFzd7pJkUHwM"
-                            alt="photo">
-                    </div>
-                    <div class="delete">&#10006;</div>
-                </div>
-                <div class="photo">
-                    <div class="square-image-cropper">
-                        <img src="http://media2.intoday.in/indiatoday/images/stories/profile-ashutosh-aug8-1_647_072816123837.jpg" alt="photo">
-                    </div>
-                    <div class="delete">&#10006;</div>
-                </div>
-                <div class="photo">
-                    <div class="square-image-cropper">
-                        <img src="https://www.skadate.com/blog/wp-content/uploads/2011/07/harry-potter-magic-wand.jpg" alt="photo">
-                    </div>
-                    <div class="delete">&#10006;</div>
-                </div>
-                <div class="photo">
-                    <div class="square-image-cropper">
-                        <img src="https://d27xe58b9ijigq.cloudfront.net/c=sq/s=w320,pd1/o=85/https://images.nationaltrust.org.uk/images/icons/1431759384041-jenny---profile---chartwell-volunteer-c-james-dobson.jpg"
-                            alt="photo">
-                    </div>
-                    <div class="delete">&#10006;</div>
-                </div>
-                <div class="photo">
-                    <div class="square-image-cropper">
-                        <img src="https://ichef.bbci.co.uk/news/660/cpsprodpb/39FF/production/_88374841_88374840.jpg" alt="photo">
-                    </div>
-                    <div class="delete">&#10006;</div>
-                </div> -->
-                <button>Добави</button>
-            </div>
-        </div>
         <div class="userCard" id="pref">
             <h1>Предпочитания</h1>
             <div class="check">
-                <input type="checkBox" id="showMe" class="checkbox">
-                <label for="showMe">Направи ме видим</label>
-            </div>
-            <div class="check">
                 <span id="targetGender">Търся: </span>
-                <input type="checkBox" id="genderPrefMale" class="checkbox" value="мъж">
+                <input type="radio" name="gender" id="genderPrefMale" class="checkbox" value="мъж">
                 <label for="genderPrefMale">Мъж</label>
-                <input type="checkBox" id="genderPrefFemale" class="checkbox" value="жена">
+                <input type="radio" name="gender" id="genderPrefFemale" class="checkbox" value="жена">
                 <label for="genderPrefFemale">Жена</label>
             </div>
             <div id="sliderKM">
@@ -149,50 +88,7 @@
     </div>
 </div>
 
-<script>
-    $(document).ready(function() {
-        $(document).on("scroll", onScroll);
 
-        //smoothscroll
-        $('a[href^="#"]').on('click', function(e) {
-            e.preventDefault();
-            $(document).off("scroll");
-
-            $('a').each(function() {
-                $(this).removeClass('active');
-            })
-            $(this).addClass('active');
-
-            var target = this.hash,
-                menu = target;
-            $target = $(target);
-            if ($(window).width() < 900) {
-                var topDistance = 250;
-            } else {
-                var topDistance = 50;
-            }
-            $('html, body').stop().animate({
-                'scrollTop': $target.offset().top - topDistance
-            }, 500, 'swing', function() {
-                $(document).on("scroll", onScroll);
-            });
-        });
-    });
-
-    function onScroll(event) {
-        var scrollPos = $(document).scrollTop();
-        $('#userOptions a').each(function() {
-            var currLink = $(this);
-            var refElement = $(currLink.attr("href"));
-            if (refElement.position().top <= scrollPos && refElement.position().top + refElement.height() > scrollPos) {
-                $('#userOptions ul li a').removeClass("active");
-                currLink.addClass("active");
-            } else {
-                currLink.removeClass("active");
-            }
-        });
-    }
-</script>
 <br>
 <br>
 <br>
@@ -202,4 +98,4 @@
 <br>
 <br>
 <script src="Assets/javascript/changeProfileImage.js"></script>
-<script src="Assets/javascript/slides.js"></script>
+<script src="Assets/javascript/userProfilSliders.js"></script>
