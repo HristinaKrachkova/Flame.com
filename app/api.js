@@ -229,7 +229,8 @@ module.exports = function(router) {
                         'age': true,
                         'height': true,
                         'gender': true,
-                        'profileImage': true
+                        'profileImage': true,
+                        'location': true
                     }
                 }
             ],
@@ -370,6 +371,7 @@ module.exports = function(router) {
         // Select a random person from the database, that has not already been liked/disliked
         User.aggregate(
             [{
+<<<<<<< HEAD
                     $match: {
                         '_id': { '$in': req.currentUser.matches }
                     }
@@ -383,6 +385,21 @@ module.exports = function(router) {
                         'gender': true,
                         'profileImage': true
                     }
+=======
+                $match: {
+                    '_id': { '$in': req.currentUser.matches }
+                }
+            },
+            {
+                $project: {
+                    'firstName': true,
+                    'lastName': true,
+                    'age': true,
+                    'height': true,
+                    'gender': true,
+                    'profileImage': true,
+                    'location': true
+>>>>>>> fe88a7546976f56cc7888739c8e7a434dd13c09a
                 }
             ],
             function(err, users) {
