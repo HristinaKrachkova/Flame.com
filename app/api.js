@@ -392,5 +392,45 @@ module.exports = function(router) {
         );
     });
 
+
+    router.post('/getPreviousMessages', function(req, res) {
+        // Check if logged in
+        if (!req.currentUser) {
+            res.json({ success: false, message: 'You are not logged in.' });
+
+            return;
+        }
+
+        var id1 = req.body.id;
+        var id2 = req.currentUser._id;
+        console.log(id1);
+        console.log(id2);
+        id1 = mongoose.Types.ObjectId(id1);
+        id2 = mongoose.Types.ObjectId(id2);
+        // Select a random person from the database, that has not already been liked/disliked
+        Message.aggregate(
+            [{
+                $match: {
+                    '$or': [{
+                            'sender': id1,
+                            'receiver': id2
+                        },
+                        {
+                            'sender': id2,
+                            'receiver': id1
+                        }
+                    ]
+                }
+            }],
+            function(err, messages) {
+                if (err) {
+                    res.json({ success: false, message: 'Something went wrong.' });
+                } else {
+                    res.json({ success: true, messages: messages });
+                }
+            }
+        );
+    });
+
     return router;
 };

@@ -67,6 +67,10 @@ app.config(function($routeProvider) {
         $scope.currentUser = userDB.signedUser;
         $scope.messages = [];
 
+        socket.emit('identify', {
+            id: userDB.signedUser._id
+        });
+
         // Set default status
         var statusDefault = '';
         var setStatus = function(s) {
@@ -94,10 +98,16 @@ app.config(function($routeProvider) {
 
         $scope.sendMessage = function(event) {
             if (event.keyCode === 13) {
-                socket.emit('input', {
-                    name: $scope.currentUser.firstName || '',
-                    message: textarea.value
-                });
+                var message = {
+                    sender: userDB.signedUser._id,
+                    receiver: userDB.chatUser._id,
+                    message: textarea.value,
+                    time: new Date()
+                };
+                socket.emit('input', message);
+                message.name = userDB.signedUser.firstName + " " + userDB.signedUser.lastName;
+                $scope.messages = $scope.messages.concat([message]);
+                textarea.value = '';
             }
         };
 
@@ -110,6 +120,23 @@ app.config(function($routeProvider) {
         socket.on('cleared', function() {
             messages.textContent = '';
         });
+
+        userDB.getMatchedUsers(function(data) {
+            if (data.success === true) {
+                $scope.matches = data.users;
+                $scope.$apply();
+            }
+        });
+
+        $scope.chatWith = function(user) {
+            userDB.chatUser = user;
+            $scope.messages = [];
+
+            userDB.getPreviousMessages(user, function(messages) {
+                $scope.messages = messages;
+                $scope.$apply();
+            });
+        }
     })
     .controller('registrationForm', function($scope, $location) {
         $scope.registerAUser = function() {
@@ -358,49 +385,41 @@ app.config(function($routeProvider) {
     })
 
 .controller('newpeople', function($scope) {
-        // Stores the latest random user;
-        var newPerson = null;
+    // Stores the latest random user;
+    var newPerson = null;
 
-        // Loads and displays a random person;
-        function getRandomUser() {
-            userDB.getRandomUser(function(data) {
-                if (data.success == true) {
-                    newPerson = data.user;
-                    $scope.newPerson = data.user;
-                    $scope.$apply();
-                }
-            });
-        }
-        getRandomUser();
-        // Function for Like and check if you are a match and show the next random user;
-        $scope.likeUser = function() {
-            userDB.likeUser(newPerson._id, function(data) {
-                if (data.success == true && data.isMatch == true) {
-                    // alert('Match!');
-                    $('#notification p').html('&#10003; Имате съвпадение!');
-                    $('#notification').css('background-color', '#3399cc').fadeIn('400');
-                    setTimeout(function() {
-                        $('#notification').fadeOut('400');
-                    }, 3000);
-                }
-                getRandomUser();
-            });
-        };
-        // Function for Dislike and show the next random user;
-        $scope.dislikeUser = function() {
-            userDB.dislikeUser(newPerson._id, function(data) {
-                getRandomUser();
-            });
-        };
-    })
-    .controller('matches', function($scope, $location) {
-        userDB.getMatchedUsers(function(data) {
-            if (data.success === true) {
-                $scope.matches = data.users;
+    // Loads and displays a random person;
+    function getRandomUser() {
+        userDB.getRandomUser(function(data) {
+            if (data.success == true) {
+                newPerson = data.user;
+                $scope.newPerson = data.user;
                 $scope.$apply();
             }
         });
-    });
+    }
+    getRandomUser();
+    // Function for Like and check if you are a match and show the next random user;
+    $scope.likeUser = function() {
+        userDB.likeUser(newPerson._id, function(data) {
+            if (data.success == true && data.isMatch == true) {
+                // alert('Match!');
+                $('#notification p').html('&#10003; Имате съвпадение!');
+                $('#notification').css('background-color', '#3399cc').fadeIn('400');
+                setTimeout(function() {
+                    $('#notification').fadeOut('400');
+                }, 3000);
+            }
+            getRandomUser();
+        });
+    };
+    // Function for Dislike and show the next random user;
+    $scope.dislikeUser = function() {
+        userDB.dislikeUser(newPerson._id, function(data) {
+            getRandomUser();
+        });
+    };
+});
 
 function updateUserLocation() {
     if (userDB.signedUser) {

@@ -238,5 +238,26 @@ var userDB = (function() {
         });
     };
 
+    _userDB.prototype.getPreviousMessages = function(user, callback) {
+        var self = this;
+
+        $.ajax({
+            url: './api/getPreviousMessages',
+            method: 'POST',
+            data: { id: user._id }
+        }).done(function(data) {
+            var msgs = data.messages;
+            msgs.forEach(function(msg) {
+                if (msg.sender == self.signedUser._id) {
+                    msg.name = self.signedUser.firstName + " " + self.signedUser.lastName;
+                } else {
+                    msg.name = self.chatUser.firstName + " " + self.chatUser.lastName;
+                }
+            });
+
+            callback(msgs);
+        });
+    };
+
     return new _userDB();
 }());
