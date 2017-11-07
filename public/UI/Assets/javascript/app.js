@@ -10,7 +10,6 @@ function handleLogin(data, $scope, $location) {
         $location.path('/user');
         $scope.$apply();
     } else {
-        console.log(data);
         $('#notification p').html('&times; Грешно въведени данни! Моля опитайте отново.');
         $('#notification').css('background-color', '#e5b85c').fadeIn('400');
         setTimeout(function() {
@@ -241,7 +240,6 @@ app.config(function($routeProvider) {
             var searchMmaxAge = $('#rangeval').html().charAt(5) + $('#rangeval').html().charAt(6);
 
             userDB.updatePreferences(searchGender, searchMaxDistance, searchMminAge, searchMmaxAge, function(data) {
-                console.log(data);
                 if (data.success == true) {
                     $scope.signedUser = userDB.signedUser;
                     console.log($scope.signedUser);
@@ -331,7 +329,6 @@ app.config(function($routeProvider) {
                                             );
                                         });
                                     } else {
-                                        console.log(data);
                                         $('#notification p').html('&times; Грешно въведени данни. Моля, опитайте отново!');
                                         $('#notification').css('background-color', '#e5b85c').fadeIn('400');
                                         setTimeout(function() {

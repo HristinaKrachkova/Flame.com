@@ -324,8 +324,6 @@ module.exports = function(router) {
         req.currentUser.searchMminAge = searchMminAge;
         req.currentUser.searchMmaxAge = searchMmaxAge;
 
-        console.log(req.body);
-
         req.currentUser.save(function(err) {
             if (err) {
                 res.json({ success: false, error: err });
