@@ -12,48 +12,54 @@ function handleLogin(data, $scope, $location) {
     } else {
         $('#notification p').html('&times; Грешно въведени данни! Моля опитайте отново.');
         $('#notification').css('background-color', '#e5b85c').fadeIn('400');
-        setTimeout(function () {
+        setTimeout(function() {
             $('#notification').fadeOut('400');
         }, 3000);
     }
 }
 
-app.config(function ($routeProvider) {
-    $routeProvider
-        .when('/', {
-            templateUrl: 'mainPage.html'
-        })
-        .when('/login', {
-            templateUrl: 'emailLogIn.html'
-        })
-        .when('/user', {
-            templateUrl: 'userProfile.html'
-        })
-        .when('/messages', {
-            templateUrl: 'userMessages.html'
-        })
-        .when('/newpeople', {
-            templateUrl: 'newPeople.html'
-        });
-})
-    .factory('socket', function ($rootScope) {
+app.config(function($routeProvider) {
+        $routeProvider
+            .when('/', {
+                templateUrl: 'mainPage.html'
+            })
+            .when('/login', {
+                templateUrl: 'emailLogIn.html'
+            })
+            .when('/user', {
+                templateUrl: 'userProfile.html'
+            })
+            .when('/messages', {
+                templateUrl: 'userMessages.html'
+            })
+            .when('/newpeople', {
+                templateUrl: 'newPeople.html'
+            })
+            .when('/aboutUs', {
+                templateUrl: 'aboutUs.html'
+            })
+            .when('/contacts', {
+                templateUrl: 'contacts.html'
+            });
+    })
+    .factory('socket', function($rootScope) {
         var socket = io.connect('http://127.0.0.1:4000');
 
         return {
-            on: function (eventName, callback) {
-                socket.on(eventName, function () {
+            on: function(eventName, callback) {
+                socket.on(eventName, function() {
                     var args = arguments;
 
-                    $rootScope.$apply(function () {
+                    $rootScope.$apply(function() {
                         callback.apply(socket, args);
                     });
                 });
             },
-            emit: function (eventName, data, callback) {
-                socket.emit(eventName, data, function () {
+            emit: function(eventName, data, callback) {
+                socket.emit(eventName, data, function() {
                     var args = arguments;
 
-                    $rootScope.$apply(function () {
+                    $rootScope.$apply(function() {
                         if (callback) {
                             callback.apply(socket, args);
                         }
@@ -62,13 +68,13 @@ app.config(function ($routeProvider) {
             }
         };
     })
-    .controller("blackBackground", function ($scope) {
-        $scope.hideBackground = function () {
+    .controller("blackBackground", function($scope) {
+        $scope.hideBackground = function() {
             $("#blackBackground").fadeOut("400");
             $(".container").fadeOut("400");
         }
     })
-    .controller('messages', function ($scope, $timeout, socket) {
+    .controller('messages', function($scope, $timeout, socket) {
         $scope.currentUser = userDB.signedUser;
         $scope.messages = [];
 
@@ -78,21 +84,21 @@ app.config(function ($routeProvider) {
 
         // Set default status
         var statusDefault = '';
-        var setStatus = function (s) {
+        var setStatus = function(s) {
             // Set status
             $scope.status = s;
             if (s !== statusDefault) {
-                var delay = $timeout(function () {
+                var delay = $timeout(function() {
                     setStatus(statusDefault);
                 }, 2000);
             }
         };
 
-        socket.on('output', function (data) {
+        socket.on('output', function(data) {
             $scope.messages = $scope.messages.concat(data);
         });
         // Get Status From Server
-        socket.on('status', function (data) {
+        socket.on('status', function(data) {
             // get message status
             setStatus((typeof data === 'object') ? data.message : data);
             // If status is clear, clear text
@@ -101,7 +107,7 @@ app.config(function ($routeProvider) {
             }
         });
 
-        $scope.sendMessage = function (event) {
+        $scope.sendMessage = function(event) {
             if (event.keyCode === 13) {
                 if ($("#textarea").val().length > 0) {
                     var message = {
@@ -119,54 +125,54 @@ app.config(function ($routeProvider) {
         };
 
         // Handle Chat Clear
-        $scope.clearMessages = function () {
+        $scope.clearMessages = function() {
             socket.emit('clear');
         };
 
         // Clear Message
-        socket.on('cleared', function () {
+        socket.on('cleared', function() {
             messages.textContent = '';
         });
 
-        userDB.getMatchedUsers(function (data) {
+        userDB.getMatchedUsers(function(data) {
             if (data.success === true) {
                 $scope.matches = data.users;
                 $scope.$apply();
             }
         });
 
-        $scope.chatWith = function (user) {
+        $scope.chatWith = function(user) {
             userDB.chatUser = user;
             $scope.messages = [];
             $(".container").fadeIn("400");
             $("#blackBackground").fadeIn("400");
             $("body").css("overflow", "hidden");
-            userDB.getPreviousMessages(user, function (messages) {
+            userDB.getPreviousMessages(user, function(messages) {
                 $scope.messages = messages;
                 $scope.$apply();
             });
         }
     })
-    .controller('registrationForm', function ($scope, $location) {
-        $scope.registerAUser = function () {
+    .controller('registrationForm', function($scope, $location) {
+        $scope.registerAUser = function() {
             // event.preventDefault();
             var password = $('#password').val();
             var name = $('#name').val();
             var lastName = $('#lastName').val();
             var email = $('#email').val();
 
-            userDB.register(name, lastName, password, email, '', function (data) {
+            userDB.register(name, lastName, password, email, '', function(data) {
                 if (data.success) {
                     $location.path('/login');
                     $('#notification p').html('&#10003; Успешно се регистрирахте!');
                     $('#notification').css('background-color', '#3399cc').fadeIn('400');
-                    setTimeout(function () {
+                    setTimeout(function() {
                         $('#notification').fadeOut('400');
                     }, 3000);
                 } else {
                     $('#notification p').html('&times; Грешно въведени данни! Моля опитайте отново.');
                     $('#notification').css('background-color', '#e5b85c').fadeIn('400');
-                    setTimeout(function () {
+                    setTimeout(function() {
                         $('#notification').fadeOut('400');
                     }, 3000);
                     console.log(data.error);
@@ -174,36 +180,42 @@ app.config(function ($routeProvider) {
             });
         };
     })
-    .controller('menu', function ($scope, $location) {
-        $scope.messages = function () {
+    .controller('menu', function($scope, $location) {
+        $scope.messages = function() {
             $location.path('/messages');
         };
-        $scope.find = function () {
+        $scope.find = function() {
             $location.path('/newpeople');
         };
-        $scope.user = function () {
+        $scope.user = function() {
             $location.path('/user');
         };
+        $scope.aboutUs = function() {
+            $location.path('/aboutUs');
+        };
+        $scope.contacts = function() {
+            $location.path('/contacts');
+        };
     })
-    .controller('login', function ($scope, $location) {
-        $scope.login = function () {
+    .controller('login', function($scope, $location) {
+        $scope.login = function() {
             event.preventDefault();
             var logInPass = $('#logInPass').val();
             var logInEmail = $('#logInEmail').val();
 
-            userDB.login(logInEmail, logInPass, function (data) {
+            userDB.login(logInEmail, logInPass, function(data) {
                 handleLogin(data, $scope, $location);
             });
         };
     })
-    .controller('profile', function ($scope, $location) {
+    .controller('profile', function($scope, $location) {
         $scope.selectedImages = null;
         $scope.signedUser = userDB.signedUser;
-        $scope.logout = function () {
+        $scope.logout = function() {
             if (userDB.signedUser.facebookId != null) {
                 FB.logout();
             }
-            userDB.logout(function () {
+            userDB.logout(function() {
                 $location.path('/');
                 $scope.$apply();
                 $('#profileLink').addClass('disabled');
@@ -211,7 +223,7 @@ app.config(function ($routeProvider) {
                 $('#messagesLink').addClass('disabled');
             });
         };
-        $scope.saveChanges = function () {
+        $scope.saveChanges = function() {
             var age = $('#inputAge').val();
             var height = $('#inputHeight').val();
             var gender = $('#inputGender').val();
@@ -219,7 +231,7 @@ app.config(function ($routeProvider) {
             var newPass = $('#userPassEdit').val();
             var newInfo = $('#moreInfo').val();
 
-            userDB.updateUserData(newEmail, newPass, age, height, gender, newInfo, function (data) {
+            userDB.updateUserData(newEmail, newPass, age, height, gender, newInfo, function(data) {
                 if (data.success == true) {
                     $scope.signedUser = userDB.signedUser;
                     $scope.$apply();
@@ -231,7 +243,7 @@ app.config(function ($routeProvider) {
             });
         };
 
-        $scope.savePreferences = function () {
+        $scope.savePreferences = function() {
             if ($('#genderPrefMale').prop('checked', true)) {
                 var searchGender = $('#genderPrefMale').val();
             } else {
@@ -249,12 +261,8 @@ app.config(function ($routeProvider) {
             var searchMminAge = $('#rangeval').html().charAt(0) + $('#rangeval').html().charAt(1);
             var searchMmaxAge = $('#rangeval').html().charAt(5) + $('#rangeval').html().charAt(6);
 
-<<<<<<< HEAD
             userDB.updatePreferences(searchGender, searchMaxDistance, searchMminAge, searchMmaxAge, function(data) {
-=======
-            userDB.updatePreferences(searchGender, searchMaxDistance, searchMminAge, searchMmaxAge, function (data) {
                 console.log(data);
->>>>>>> 63d411675d4f725e0982776e97b1ea912a44d5a1
                 if (data.success == true) {
                     $scope.signedUser = userDB.signedUser;
                     console.log($scope.signedUser);
@@ -267,17 +275,17 @@ app.config(function ($routeProvider) {
             });
         };
 
-        $('#profileImageInput').change(function () {
+        $('#profileImageInput').change(function() {
             var file = $('#profileImageInput').prop('files')[0];
 
             if (file != null) {
                 var reader = new FileReader();
 
                 reader.readAsDataURL(file);
-                reader.onload = function () {
+                reader.onload = function() {
                     // var imageWithType = "data:image; base64, ";
 
-                    userDB.updateUserImage(reader.result, function (data) {
+                    userDB.updateUserImage(reader.result, function(data) {
                         if (data.success == true) {
                             var thumbnail = $('#userPhoto');
 
@@ -287,44 +295,44 @@ app.config(function ($routeProvider) {
                         }
                     });
                 };
-                reader.onerror = function (error) {
+                reader.onerror = function(error) {
                     console.log('Error: ', error);
                 };
             }
         });
     })
-    .controller('fbLogin', function ($scope, $location) {
-        $scope.fbLogin = function () {
-            FB.login(function (response) {
+    .controller('fbLogin', function($scope, $location) {
+        $scope.fbLogin = function() {
+            FB.login(function(response) {
                 console.log(response);
                 if (response.status === 'connected') {
                     var fbId = response.authResponse.userID;
 
-                    userDB.checkFbUser(fbId, function (checkData) {
+                    userDB.checkFbUser(fbId, function(checkData) {
                         if (checkData.success == true && checkData.exists == true) {
-                            userDB.loginWithFb(fbId, function (loginData) {
+                            userDB.loginWithFb(fbId, function(loginData) {
                                 handleLogin(loginData, $scope, $location);
                             });
                         } else {
-                            FB.api('/me', { fields: 'first_name, last_name, email' }, function (meResponse) {
+                            FB.api('/me', { fields: 'first_name, last_name, email' }, function(meResponse) {
                                 // I think this password is secure!
-                                userDB.register(meResponse.first_name, meResponse.last_name, '', meResponse.email, fbId, function (data) {
+                                userDB.register(meResponse.first_name, meResponse.last_name, '', meResponse.email, fbId, function(data) {
                                     if (data.success) {
-                                        userDB.loginWithFb(fbId, function (loginData) {
+                                        userDB.loginWithFb(fbId, function(loginData) {
                                             handleLogin(loginData, $scope, $location);
 
                                             FB.api(
                                                 '/' + fbId + '/picture?type=square&width=300&height=300',
-                                                function (picResponse) {
+                                                function(picResponse) {
                                                     if (picResponse && !picResponse.error) {
                                                         var url = picResponse.data.url;
                                                         var xhr = new XMLHttpRequest();
 
-                                                        xhr.onload = function () {
+                                                        xhr.onload = function() {
                                                             var reader = new FileReader();
 
-                                                            reader.onloadend = function () {
-                                                                userDB.updateUserImage(reader.result, function (data) {
+                                                            reader.onloadend = function() {
+                                                                userDB.updateUserImage(reader.result, function(data) {
                                                                     if (data.success == true) {
                                                                         var thumbnail = $('#userPhoto');
 
@@ -346,7 +354,7 @@ app.config(function ($routeProvider) {
                                     } else {
                                         $('#notification p').html('&times; Грешно въведени данни. Моля, опитайте отново!');
                                         $('#notification').css('background-color', '#e5b85c').fadeIn('400');
-                                        setTimeout(function () {
+                                        setTimeout(function() {
                                             $('#notification').fadeOut('400');
                                         }, 3000);
                                     }
@@ -358,14 +366,14 @@ app.config(function ($routeProvider) {
                     // alert('Mi ni staa!');
                     $('#notification p').html('&times; Възникна грешка!');
                     $('#notification').css('background-color', '#e5b85c').fadeIn('400');
-                    setTimeout(function () {
+                    setTimeout(function() {
                         $('#notification').fadeOut('400');
                     }, 3000);
                 }
             }, { scope: 'public_profile, email' });
         };
 
-        window.fbAsyncInit = function () {
+        window.fbAsyncInit = function() {
             FB.init({
                 appId: '132563934170714',
                 cookie: true, // enable cookies to allow the server to access
@@ -375,9 +383,9 @@ app.config(function ($routeProvider) {
             });
 
             if (!localStorage.getItem('doNotAutoLogin')) {
-                FB.getLoginStatus(function (response) {
+                FB.getLoginStatus(function(response) {
                     if (response.status == 'connected') {
-                        userDB.loginWithFb(response.authResponse.userID, function (loginData) {
+                        userDB.loginWithFb(response.authResponse.userID, function(loginData) {
                             handleLogin(loginData, $scope, $location);
                         });
                     }
@@ -385,7 +393,7 @@ app.config(function ($routeProvider) {
             }
         };
 
-        (function (d, s, id) {
+        (function(d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
 
             if (d.getElementById(id)) return;
@@ -396,47 +404,47 @@ app.config(function ($routeProvider) {
         }(document, 'script', 'facebook-jssdk'));
     })
 
-    .controller('newpeople', function ($scope) {
-        // Stores the latest random user;
-        var newPerson = null;
+.controller('newpeople', function($scope) {
+    // Stores the latest random user;
+    var newPerson = null;
 
-        // Loads and displays a random person;
-        function getRandomUser() {
-            userDB.getRandomUser(function (data) {
-                if (data.success == true) {
-                    newPerson = data.user;
-                    $scope.newPerson = data.user;
-                    $scope.$apply();
-                }
-            });
-        }
-        getRandomUser();
-        // Function for Like and check if you are a match and show the next random user;
-        $scope.likeUser = function () {
-            userDB.likeUser(newPerson._id, function (data) {
-                if (data.success == true && data.isMatch == true) {
-                    // alert('Match!');
-                    $('#notification p').html('&#10003; Имате съвпадение!');
-                    $('#notification').css('background-color', '#3399cc').fadeIn('400');
-                    setTimeout(function () {
-                        $('#notification').fadeOut('400');
-                    }, 3000);
-                }
-                getRandomUser();
-            });
-        };
-        // Function for Dislike and show the next random user;
-        $scope.dislikeUser = function () {
-            userDB.dislikeUser(newPerson._id, function (data) {
-                getRandomUser();
-            });
-        };
-    });
+    // Loads and displays a random person;
+    function getRandomUser() {
+        userDB.getRandomUser(function(data) {
+            if (data.success == true) {
+                newPerson = data.user;
+                $scope.newPerson = data.user;
+                $scope.$apply();
+            }
+        });
+    }
+    getRandomUser();
+    // Function for Like and check if you are a match and show the next random user;
+    $scope.likeUser = function() {
+        userDB.likeUser(newPerson._id, function(data) {
+            if (data.success == true && data.isMatch == true) {
+                // alert('Match!');
+                $('#notification p').html('&#10003; Имате съвпадение!');
+                $('#notification').css('background-color', '#3399cc').fadeIn('400');
+                setTimeout(function() {
+                    $('#notification').fadeOut('400');
+                }, 3000);
+            }
+            getRandomUser();
+        });
+    };
+    // Function for Dislike and show the next random user;
+    $scope.dislikeUser = function() {
+        userDB.dislikeUser(newPerson._id, function(data) {
+            getRandomUser();
+        });
+    };
+});
 
 function updateUserLocation() {
     if (userDB.signedUser) {
-        navigator.geolocation.getCurrentPosition(function (location) {
-            userDB.updateUserLocation(location.coords.latitude, location.coords.longitude, function (data) {
+        navigator.geolocation.getCurrentPosition(function(location) {
+            userDB.updateUserLocation(location.coords.latitude, location.coords.longitude, function(data) {
                 setTimeout(updateUserLocation, 60000);
             });
         });
