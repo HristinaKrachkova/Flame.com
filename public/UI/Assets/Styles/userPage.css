@@ -201,6 +201,7 @@
 
 .checkbox {
     width: 10px !important;
+    height:10px !important;
     transform: scale(2, 2)
 }
 
