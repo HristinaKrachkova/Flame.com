@@ -48,13 +48,19 @@
             </label>
             <input type="text" id="userPassEdit" placeholder="Промени паролата ...">
             <p>Възраст:
-                <span id="ageInput">{{signedUser.age}}</span>
+                <span id="ageInput"><input type='text' id='inputAge' class='changeInput' value='{{signedUser.age}}'></span>
             </p>
             <p>Височина:
-                <span id="heightInput">{{signedUser.height}}</span>
+                <span id="heightInput"><input type='text' id='inputHeight' class='changeInput' value='{{signedUser.height}}'></span>
             </p>
             <p>Пол:
-                <span id="genderInput">{{signedUser.gender}}</span>
+                <span id="genderInput">
+                    <select id='inputGender' class='changeInput' ng-model='signedUser.gender'>
+                        <option value=''></option>
+                        <option value='мъж'>мъж</option>
+                        <option value='жена'>жена</option>
+                    </select>
+                </span>
             </p>
             <p>
                 <textarea id="moreInfo" placeholder="Повече информация" rows="4" cols="70">{{signedUser.moreInfo}}</textarea>
@@ -195,6 +201,5 @@
 <br>
 <br>
 <br>
-<script src="Assets/javascript/modifyUserData.js"></script>
 <script src="Assets/javascript/changeProfileImage.js"></script>
 <script src="Assets/javascript/slides.js"></script>
