@@ -65,17 +65,33 @@ cursor: pointer;
     display:block;
 }
 
-.messagesContainer{
+.container{
     position:fixed;
-    right:5%;;
-    bottom:0;
-    width:300px;
-    background:linear-gradient(135deg, rgba(221,70,135,0.56) 0%, rgba(255,139,66,0.35) 100%);
-    height:400px;
+    top:50%;
+    margin-top:-247px;
+    left:50%;
+    margin-left:-374px;
+    width:727px;
+    background-color:#eee;
+    height:480px;
     display:inline-block;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    overflow: scroll;
+    border-radius:10px;
+    padding:14px;
+    z-index:15;
+    display:none;
+}
+
+#mapContainer, #mapContainer img{
+    border-radius:10px;
+}
+
+.messagesContainer{
+    width:360px;
+    margin-right:14px;
+}
+
+.row{
+    display:flex;
 }
 
 .messagesContainer h1{
@@ -83,24 +99,28 @@ cursor: pointer;
 }
 
 #textarea{
-    width:96%;
+    width:100%;
     background-color:white;
     border-radius:10px;
     border:none;
-    height:50px;
-    margin-top:8px;
+    height:60px;
+    margin-top:7px;
+    padding:10px;
+    font-size:1em;
+    font-family: 'PT Sans Narrow', sans-serif;
 }
 
 #chat{
-    height:250px;
-    width:90%;
-    margin-top:8px;
+    height:396px;
     background-color:white;
     border-radius:10px;
-    margin:auto;
     overflow: scroll;
     padding:10px;
     text-align: left;
+    font-size:1em;
+    font-family: 'PT Sans Narrow', sans-serif;
+    color:lightcoral;
+    font-weight:bolder;
 }
 
 #clear{

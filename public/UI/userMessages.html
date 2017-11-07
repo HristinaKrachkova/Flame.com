@@ -53,15 +53,16 @@
     <div class="container">
         <div class="row">
             <div class="messagesContainer">
-                <h1>
+                <!-- <h1>
                     Flame chat
                     <button id="clear" ng-click='clearMessages()'>Clear</button>
-                </h1>
+                </h1> -->
                 <div id="chat">
                     <br>
                     <div class="card">
                         <div id="messages">
-                            <p class='chat-message' ng-repeat='message in messages' , ng-if='messages.length > 0'>{{message.name}} : {{message.message}}</p>
+                            <p class='chat-message' ng-repeat='message in messages' , ng-if='messages.length > 0'>{{message.time}} {{message.name}} : {{message.message}}
+                            </p>
                         </div>
                     </div>
                     <!-- <div id="status" , ng-if='status'>
@@ -70,6 +71,9 @@
                     <br>
                 </div>
                 <textarea id="textarea" placeholder="Enter message..." , ng-keyup='sendMessage($event)' , ng-model='newMessage'></textarea>
+            </div>
+            <div id="mapContainer">
+                <img src="https://maps.google.com/maps/api/staticmap?center=37.7803,-122.4167&zoom=15&size=360x480&markers=color:red|37.7833,-122.4167" alt="">
             </div>
         </div>
     </div>
