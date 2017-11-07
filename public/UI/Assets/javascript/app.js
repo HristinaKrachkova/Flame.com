@@ -43,10 +43,6 @@ app.config(function($routeProvider) {
         });
 })
     .factory('socket', function($rootScope) {
-<<<<<<< HEAD
-=======
-        // var socket = io.connect('https://young-crag-36367.herokuapp.com');
->>>>>>> 71309f853d8b8fcc2869b59ae50d765912bcac06
         var socket = io.connect('http://127.0.0.1:4000');
 
         return {
@@ -206,6 +202,13 @@ app.config(function($routeProvider) {
         $scope.contacts = function() {
             $location.path('/contacts');
         };
+        $scope.indexurl=function(){
+            if(userDB.signedUser){
+                $location.path("/user");
+            }else{
+                $location.path("/");
+            }
+        }
     })
     .controller('login', function($scope, $location) {
         $scope.login = function() {
