@@ -202,20 +202,20 @@ module.exports = function(router) {
                 {
                     $match: {
                         '$and': [{
-                                '_id': { '$nin': req.currentUser.likes }
-                            },
-                            {
-                                '_id': { '$nin': req.currentUser.dislikes }
-                            },
-                            {
-                                '_id': { '$ne': req.currentUser._id }
-                            },
-                            {
-                                'age': { '$gt': req.currentUser.searchMminAge, '$lt': req.currentUser.searchMmaxAge }
-                            },
-                            {
-                                'gender': { '$eq': req.currentUser.searchGender }
-                            }
+                            '_id': { '$nin': req.currentUser.likes }
+                        },
+                        {
+                            '_id': { '$nin': req.currentUser.dislikes }
+                        },
+                        {
+                            '_id': { '$ne': req.currentUser._id }
+                        },
+                        {
+                            'age': { '$gt': req.currentUser.searchMminAge, '$lt': req.currentUser.searchMmaxAge }
+                        },
+                        {
+                            'gender': { '$eq': req.currentUser.searchGender }
+                        }
                         ]
                     }
                 },
@@ -377,20 +377,20 @@ module.exports = function(router) {
         // Select a random person from the database, that has not already been liked/disliked
         User.aggregate(
             [{
-                    $match: {
-                        '_id': { '$in': req.currentUser.matches }
-                    },
-                },
-                {
-                    $project: {
-                        'firstName': true,
-                        'lastName': true,
-                        'age': true,
-                        'height': true,
-                        'gender': true,
-                        'profileImage': true
-                    }
+                $match: {
+                    '_id': { '$in': req.currentUser.matches }
                 }
+            },
+            {
+                $project: {
+                    'firstName': true,
+                    'lastName': true,
+                    'age': true,
+                    'height': true,
+                    'gender': true,
+                    'profileImage': true
+                }
+            }
             ],
             function(err, users) {
                 if (err) {
@@ -404,7 +404,6 @@ module.exports = function(router) {
         );
     });
 
-
     router.post('/getPreviousMessages', function(req, res) {
         // Check if logged in
         if (!req.currentUser) {
@@ -415,6 +414,7 @@ module.exports = function(router) {
 
         var id1 = req.body.id;
         var id2 = req.currentUser._id;
+
         console.log(id1);
         console.log(id2);
         id1 = mongoose.Types.ObjectId(id1);
@@ -424,13 +424,13 @@ module.exports = function(router) {
             [{
                 $match: {
                     '$or': [{
-                            'sender': id1,
-                            'receiver': id2
-                        },
-                        {
-                            'sender': id2,
-                            'receiver': id1
-                        }
+                        'sender': id1,
+                        'receiver': id2
+                    },
+                    {
+                        'sender': id2,
+                        'receiver': id1
+                    }
                     ]
                 }
             }],

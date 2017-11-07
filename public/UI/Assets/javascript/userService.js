@@ -1,4 +1,12 @@
 var userDB = (function() {
+    function empty(obj) {
+        return obj == null || obj == '' || obj == 'undefined';
+    }
+
+    function notEmpty(obj) {
+        return empty(obj) == false;
+    }
+
     function _userDB() {
         this.signedUser = null;
     }
@@ -166,7 +174,22 @@ var userDB = (function() {
             data: { newEmail: newEmail, newPass: newPass, age: age, height: height, gender: gender, moreInfo: moreInfo }
         }).done(function(data) {
             if (data.success == true) {
-                self.signedUser = data.user;
+                // self.signedUser = data.user;
+                if (notEmpty(newEmail)) {
+                    self.signedUser.email = newEmail;
+                }
+                if (notEmpty(age)) {
+                    self.signedUser.age = parseInt(age);
+                }
+                if (notEmpty(height)) {
+                    self.signedUser.height = parseInt(height);
+                }
+                if (notEmpty(gender)) {
+                    self.signedUser.gender = gender;
+                }
+                if (notEmpty(moreInfo)) {
+                    self.signedUser.moreInfo = moreInfo;
+                }
             }
             callback(data);
         });
