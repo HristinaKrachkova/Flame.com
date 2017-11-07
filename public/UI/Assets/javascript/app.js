@@ -19,29 +19,29 @@ function handleLogin(data, $scope, $location) {
 }
 
 app.config(function($routeProvider) {
-    $routeProvider
-        .when('/', {
-            templateUrl: 'mainPage.html'
-        })
-        .when('/login', {
-            templateUrl: 'emailLogIn.html'
-        })
-        .when('/user', {
-            templateUrl: 'userProfile.html'
-        })
-        .when('/messages', {
-            templateUrl: 'userMessages.html'
-        })
-        .when('/newpeople', {
-            templateUrl: 'newPeople.html'
-        })
-        .when('/aboutUs', {
-            templateUrl: 'aboutUs.html'
-        })
-        .when('/contacts', {
-            templateUrl: 'contacts.html'
-        });
-})
+        $routeProvider
+            .when('/', {
+                templateUrl: 'mainPage.html'
+            })
+            .when('/login', {
+                templateUrl: 'emailLogIn.html'
+            })
+            .when('/user', {
+                templateUrl: 'userProfile.html'
+            })
+            .when('/messages', {
+                templateUrl: 'userMessages.html'
+            })
+            .when('/newpeople', {
+                templateUrl: 'newPeople.html'
+            })
+            .when('/aboutUs', {
+                templateUrl: 'aboutUs.html'
+            })
+            .when('/contacts', {
+                templateUrl: 'contacts.html'
+            });
+    })
     .factory('socket', function($rootScope) {
         var socket = io.connect('http://127.0.0.1:4000');
 
@@ -95,7 +95,7 @@ app.config(function($routeProvider) {
             }
         };
 
-        socket.on('output', function (data) {
+        socket.on('output', function(data) {
             data.forEach(function(msg) {
                 msg.time = new Date(msg.time);
             });
@@ -153,7 +153,7 @@ app.config(function($routeProvider) {
             $('.container').fadeIn('400');
             $('#blackBackground').fadeIn('400');
             $('body').css('overflow', 'hidden');
-            userDB.getPreviousMessages(user, function (messages) {
+            userDB.getPreviousMessages(user, function(messages) {
                 $scope.messages = messages;
                 $scope.$apply();
             });
@@ -247,9 +247,14 @@ app.config(function($routeProvider) {
                     // error updating user data
                 }
             });
+            $('#notification p').html('&#10003; Промените са запазени!');
+            $('#notification').css('background-color', '#3399cc').fadeIn('400');
+            setTimeout(function() {
+                $('#notification').fadeOut('400');
+            }, 3000);
         };
 
-        $scope.savePreferences = function () {
+        $scope.savePreferences = function() {
             if ($('#genderPrefMale').prop('checked') == true) {
                 var searchGender = $('#genderPrefMale').val();
             } else {
@@ -279,6 +284,11 @@ app.config(function($routeProvider) {
                     // error updating user data
                 }
             });
+            $('#notification p').html('&#10003; Промените са запазени!');
+            $('#notification').css('background-color', '#3399cc').fadeIn('400');
+            setTimeout(function() {
+                $('#notification').fadeOut('400');
+            }, 3000);
         };
 
         $('#profileImageInput').change(function() {
@@ -415,7 +425,7 @@ app.config(function($routeProvider) {
 
         // Loads and displays a random person;
         function getRandomUser() {
-            userDB.getRandomUser(function (data) {
+            userDB.getRandomUser(function(data) {
                 if (data.success == true) {
                     newPerson = data.user;
                     $scope.newPerson = data.user;
@@ -425,13 +435,13 @@ app.config(function($routeProvider) {
         }
         getRandomUser();
         // Function for Like and check if you are a match and show the next random user;
-        $scope.likeUser = function () {
-            userDB.likeUser(newPerson._id, function (data) {
+        $scope.likeUser = function() {
+            userDB.likeUser(newPerson._id, function(data) {
                 if (data.success == true && data.isMatch == true) {
                     // alert('Match!');
                     $('#notification p').html('&#10003; Имате съвпадение!');
                     $('#notification').css('background-color', '#3399cc').fadeIn('400');
-                    setTimeout(function () {
+                    setTimeout(function() {
                         $('#notification').fadeOut('400');
                     }, 3000);
                 }
@@ -439,8 +449,8 @@ app.config(function($routeProvider) {
             });
         };
         // Function for Dislike and show the next random user;
-        $scope.dislikeUser = function () {
-            userDB.dislikeUser(newPerson._id, function (data) {
+        $scope.dislikeUser = function() {
+            userDB.dislikeUser(newPerson._id, function(data) {
                 getRandomUser();
             });
         };
