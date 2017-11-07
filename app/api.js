@@ -191,7 +191,15 @@ module.exports = function(router) {
 
         // Select a random person from the database, that has not already been liked/disliked
         User.aggregate(
-            [{
+            [
+                // {
+                //     $geoNear: {
+                //         near: { type: "Point", coordinates: req.currentUser.location },
+                //         distanceField: "dist.calculated",
+                //         maxDistance: req.currentUser.searchMaxDistance / 6371,
+                //     }
+                // },
+                {
                     $match: {
                         '$and': [{
                                 '_id': { '$nin': req.currentUser.likes }
@@ -201,6 +209,12 @@ module.exports = function(router) {
                             },
                             {
                                 '_id': { '$ne': req.currentUser._id }
+                            },
+                            {
+                                'age': { '$gt': req.currentUser.searchMminAge, '$lt': req.currentUser.searchMmaxAge }
+                            },
+                            {
+                                'gender': { '$eq': req.currentUser.searchGender }
                             }
                         ]
                     }

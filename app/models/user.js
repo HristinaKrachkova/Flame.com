@@ -61,8 +61,8 @@ var passwordValidator = [
 
 // User Mongoose Schema
 var UserSchema = new Schema({
-    firstName: { type: String, required: true},
-    lastName: { type: String, required: true},
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
     password: { type: String, required: false },
     email: { type: String, required: true, lowercase: true, unique: true, validate: emailValidator },
     age: { type: Number, required: false },
@@ -81,9 +81,9 @@ var UserSchema = new Schema({
     messages: { type: Array, required: false, default: [] },
     preferences: { type: Object, required: false },
     searchGender: { type: String, required: false },
-    searchMaxDistance: { type: String, required: false },
-    searchMminAge: { type: String, required: false },
-    searchMmaxAge: { type: String, required: false },
+    searchMaxDistance: { type: Number, required: false },
+    searchMminAge: { type: Number, required: false },
+    searchMmaxAge: { type: Number, required: false },
 });
 // Middleware to ensure password is encrypted before saving user to database
 // UserSchema.pre('save', function(next) {

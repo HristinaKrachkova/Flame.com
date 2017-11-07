@@ -120,9 +120,9 @@
             </div>
             <div class="check">
                 <span id="targetGender">Търся: </span>
-                <input type="checkBox" id="genderPrefMale" class="checkbox" value="Мъж">
+                <input type="checkBox" id="genderPrefMale" class="checkbox" value="мъж">
                 <label for="genderPrefMale">Мъж</label>
-                <input type="checkBox" id="genderPrefFemale" class="checkbox" value="Жена">
+                <input type="checkBox" id="genderPrefFemale" class="checkbox" value="жена">
                 <label for="genderPrefFemale">Жена</label>
             </div>
             <div id="sliderKM">
@@ -144,15 +144,15 @@
 </div>
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         $(document).on("scroll", onScroll);
 
         //smoothscroll
-        $('a[href^="#"]').on('click', function (e) {
+        $('a[href^="#"]').on('click', function(e) {
             e.preventDefault();
             $(document).off("scroll");
 
-            $('a').each(function () {
+            $('a').each(function() {
                 $(this).removeClass('active');
             })
             $(this).addClass('active');
@@ -167,7 +167,7 @@
             }
             $('html, body').stop().animate({
                 'scrollTop': $target.offset().top - topDistance
-            }, 500, 'swing', function () {
+            }, 500, 'swing', function() {
                 $(document).on("scroll", onScroll);
             });
         });
@@ -175,7 +175,7 @@
 
     function onScroll(event) {
         var scrollPos = $(document).scrollTop();
-        $('#userOptions a').each(function () {
+        $('#userOptions a').each(function() {
             var currLink = $(this);
             var refElement = $(currLink.attr("href"));
             if (refElement.position().top <= scrollPos && refElement.position().top + refElement.height() > scrollPos) {
